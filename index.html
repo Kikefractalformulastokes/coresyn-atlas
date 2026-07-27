@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Coresyn Atlas Research Universe",
+  "schemaVersion": 1,
+  "description": "CoreSyn Atlas · Research Universe — hoja de ruta científica pública y viva. Universo interactivo (canvas) con CoreSyn en el centro y los territorios científicos como estrellas que se iluminan solo cuando la evidencia lo permite. Tres estados honestos: 🟢 Validated (evidencia enlazada), 🟡 Active Research (en curso), 🔵 Future Horizons (visión, nunca 'coming soon'). Secciones: Research Universe, Validation Observatory (verified today), Frontier Lab (investigación activa), Future Horizons (visión), Research Constellations (relaciones/desbloqueo por evidencia), Timeline y Evidence Editor (fija estados reales + export/import JSON). Los dominios futuros aparecen bloqueados hasta validar sus dependencias, como un árbol tecnológico.",
+  "mcpTools": [],
+  "mcpServerNames": []
+}
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoreSyn Atlas · Research Universe</title>
+<style>
+:root{--bg:#060B12;--bg2:#0A1420;--panel:#0E1C2B;--line:#1C3346;--ink:#E8F1EE;--mut:#8DA5B0;
+--val:#2FBF8F;--act:#E0A400;--rec:#F2792B;--fut:#4D8FD6;--gold:#C9A227;--green:#1F8F6B}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;overflow-x:hidden}
+header{padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0A1420,#060B12)}
+header h1{margin:0;font-size:19px;letter-spacing:2px;font-weight:600}
+header h1 b{color:var(--gold);font-weight:700}
+header .tag{color:var(--mut);font-size:11.5px;letter-spacing:1px;text-transform:uppercase}
+.legend{display:flex;gap:16px;font-size:11.5px;color:var(--mut);flex-wrap:wrap}
+.legend b{color:var(--ink);font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.dot.v{background:var(--val);box-shadow:0 0 8px var(--val)}.dot.a{background:var(--act);box-shadow:0 0 8px var(--act)}.dot.r{background:var(--rec);box-shadow:0 0 8px var(--rec)}.dot.f{background:var(--fut);box-shadow:0 0 8px var(--fut)}
+nav{display:flex;gap:2px;padding:0 16px;border-bottom:1px solid var(--line);background:#0A1420;flex-wrap:wrap;position:sticky;top:0;z-index:40}
+nav button{background:none;border:none;color:var(--mut);padding:12px 14px;font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;letter-spacing:.3px}
+nav button.active{color:var(--ink);border-bottom-color:var(--gold)}nav button:hover{color:var(--ink)}
+main{max-width:1320px;margin:0 auto;padding:20px}
+.tab{display:none}.tab.active{display:block;animation:f .3s ease}
+@keyframes f{from{opacity:0}to{opacity:1}}
+h2{font-size:17px;margin:0 0 4px;letter-spacing:.3px}.lead{color:var(--mut);margin:0 0 18px;max-width:820px;line-height:1.6}
+.universe{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#0C1B2B 0%,#060B12 70%)}
+#uc{display:block;width:100%;cursor:grab}#uc:active{cursor:grabbing}
+.ficha{position:absolute;top:14px;right:14px;width:300px;max-height:calc(100% - 28px);overflow:auto;background:rgba(14,28,43,.96);border:1px solid var(--line);border-radius:14px;padding:16px;backdrop-filter:blur(6px);display:none}
+.ficha.show{display:block}
+.ficha h3{margin:0 0 2px;font-size:16px}.ficha .st{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:10px}
+.ficha .row{margin:9px 0;font-size:12.5px}.ficha .row b{display:block;color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}.chip{background:#12283A;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:11px}
+.close{position:absolute;top:10px;right:12px;cursor:pointer;color:var(--mut);font-size:18px;border:none;background:none}
+.ufilters{position:absolute;left:14px;top:14px;display:flex;gap:6px;flex-wrap:wrap}
+.ufilters button{background:rgba(14,28,43,.9);border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:5px 12px;font-size:11.5px;cursor:pointer}
+.ufilters button.on{color:var(--ink);border-color:var(--gold)}
+.uhint{position:absolute;left:14px;bottom:12px;font-size:11px;color:var(--mut)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.kpi .c{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .n{font-size:24px;font-weight:700}.kpi .l{font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px}
+.node-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;overflow:hidden}
+.node-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+.node-card.v::before{background:var(--val)}.node-card.a::before{background:var(--act)}.node-card.r::before{background:var(--rec)}.node-card.f::before{background:var(--fut)}
+.node-card h4{margin:0 0 3px;font-size:14.5px}.node-card .st{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-bottom:8px}
+.node-card p{margin:0 0 8px;font-size:12.3px;color:var(--mut);line-height:1.5}
+.stv{color:var(--val)}.sta{color:var(--act)}.str{color:var(--rec)}.stf{color:var(--fut)}
+.obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.obs .c{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+.obs .c .big{font-size:30px;font-weight:800;color:var(--val)}.obs .c .z{color:var(--mut)}
+.obs .c .l{font-size:12px;margin-top:4px}.obs .c .await{font-size:10.5px;color:var(--mut);margin-top:6px;font-style:italic}
+.tl{position:relative;padding-left:22px}.tl::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:var(--line)}
+.tl .it{position:relative;margin-bottom:14px}.tl .it::before{content:"";position:absolute;left:-20px;top:4px;width:11px;height:11px;border-radius:50%;background:var(--fut);box-shadow:0 0 8px var(--fut)}
+.tl .it.v::before{background:var(--val);box-shadow:0 0 8px var(--val)}.tl .it.a::before{background:var(--act);box-shadow:0 0 8px var(--act)}.tl .it.r::before{background:var(--rec);box-shadow:0 0 8px var(--rec)}
+.tl .yr{font-size:11px;color:var(--gold);font-weight:700;letter-spacing:1px}
+.edit-row{display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+select,input[type=number]{background:#0A1622;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 8px;font-size:12.5px;font-family:inherit}
+.btn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer;font-size:13px}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.note{font-size:11.5px;color:var(--mut);line-height:1.6}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px}
+.pill.v{background:rgba(47,191,143,.15);color:var(--val)}.pill.a{background:rgba(224,164,0,.15);color:var(--act)}.pill.r{background:rgba(242,121,43,.15);color:var(--rec)}.pill.f{background:rgba(77,143,214,.15);color:var(--fut)}
+.cons{overflow:auto}
+/* Observatory evidence detail */
+.obs .c.clk{cursor:pointer;transition:border-color .15s,transform .15s}.obs .c.clk:hover{border-color:var(--gold);transform:translateY(-2px)}
+.obs .c .see{font-size:10.5px;color:var(--fut);margin-top:6px;font-weight:600}
+#obsDetail{display:none;margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+#obsDetail.show{display:block;animation:f .25s ease}
+.evhd{font-size:13px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.evitem{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#0A1622}
+.evt{font-size:13.5px;font-weight:600;margin-bottom:6px}
+.evmeta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:7px}
+.tagd{font-size:10.5px;color:var(--mut);background:#12283A;border:1px solid var(--line);border-radius:6px;padding:1px 7px}
+.evsum{font-size:12.3px;color:var(--ink);line-height:1.5;margin-bottom:6px}
+.evlim{font-size:11.5px;color:var(--mut);line-height:1.5;margin-bottom:8px}
+.evlim b{color:var(--act)}
+.evlink a{color:var(--fut);font-size:12px;text-decoration:none;font-weight:600}.evlink a:hover{text-decoration:underline}
+.disc{font-size:12px;color:var(--ink);background:rgba(224,164,0,.08);border:1px solid var(--act);border-left:3px solid var(--act);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.55}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>CORESYN <b>ATLAS</b></h1><div class="tag">Research Universe · Living Scientific Roadmap</div></div>
+  <div class="legend">
+    <span><i class="dot v"></i><b>Validated</b> · evidencia sólida</span>
+    <span><i class="dot a"></i><b>Active Research</b> · en curso</span>
+    <span><i class="dot r"></i><b>Research Recovery</b> · recuperando</span>
+    <span><i class="dot f"></i><b>Future Horizons</b> · visión</span>
+  </div>
+</header>
+<nav>
+  <button class="active" data-tab="universe">🌌 Research Universe</button>
+  <button data-tab="observatory">🧭 Validation Observatory</button>
+  <button data-tab="frontier">🚀 Frontier Lab</button>
+  <button data-tab="horizons">🔭 Future Horizons</button>
+  <button data-tab="constellations">✨ Constellations</button>
+  <button data-tab="timeline">🌍 Timeline</button>
+  <button data-tab="editor">⚙️ Evidence Editor</button>
+</nav>
+<main>
+
+<section class="tab active" id="universe">
+  <h2>Research Universe</h2>
+  <p class="lead">Cada estrella es un territorio científico. Un dominio solo se <b>ilumina</b> cuando la evidencia lo permite; los futuros aparecen atenuados y se desbloquean al validar sus dependencias. No es una web: es un laboratorio vivo. <span style="color:var(--mut)">Clic en una estrella para su ficha · arrastra para mover · rueda para zoom.</span></p>
+  <div class="kpi" id="uniKpis"></div>
+  <div class="universe" style="height:600px">
+    <canvas id="uc"></canvas>
+    <div class="ufilters" id="uFilters">
+      <button data-f="all" class="on">Todo</button>
+      <button data-f="validated"><i class="dot v"></i>Validated</button>
+      <button data-f="active"><i class="dot a"></i>Active</button>
+      <button data-f="recovery"><i class="dot r"></i>Recovery</button>
+      <button data-f="future"><i class="dot f"></i>Future</button>
+    </div>
+    <div class="uhint">CoreSyn en el centro · las ramas crecen con la evidencia</div>
+    <div class="ficha" id="ficha"><button class="close" id="fClose">×</button><div id="fBody"></div></div>
+  </div>
+  <p class="note" style="margin-top:12px">🟢 <b>Validated</b> = evidencia enlazada y verificable · 🟡 <b>Active Research</b> = trabajo real en curso · 🔵 <b>Future Horizons</b> = línea de investigación prevista, no una promesa. Nunca "coming soon". Los estados se fijan en el <b>Evidence Editor</b> a partir de evidencia real.</p>
+</section>
+
+<section class="tab" id="observatory">
+  <h2>Validation Observatory · Verified Today</h2>
+  <p class="lead">Los contadores se <b>derivan de un único registro de evidencia</b> (no se teclean a mano). Cada tarjeta con valor &gt;0 es <b>clicable</b> y muestra sus ítems con estado, fuente, limitación y enlace (o marca 🔒 PRIVATE si la fuente es confidencial). La honestidad es la característica: si aún no hay evidencia, se dice.</p>
+  <p class="disc">Documented evidence does not by itself imply independent scientific validation, commercial engagement or field deployment.</p>
+  <div class="obs" id="obsGrid"></div>
+  <div id="obsDetail"></div>
+  <p class="note" style="margin-top:14px">Regla de conteo: cada ítem único cuenta una vez. No se cuentan copias en Drive, variantes PDF/presentación ni documentos de difusión como evidencia separada. <b>Experimental Validation = 1</b>: el paquete reproducible CCFA-001 (pipeline 2M++, 22/22 tests, 5/5 checks, hashes verificados), validación interna. <b>Pilot Projects</b> se mantiene a 0: no hay piloto formalmente acordado/ejecutado verificado.</p>
+  <h2 style="margin-top:26px;font-size:15px">En curso · aún no verificado</h2>
+  <p class="lead" style="margin-bottom:12px">Trabajo real localizado en Drive/Gmail que <b>todavía no</b> es evidencia verificada: borradores, paquetes en recuperación y revisión externa en gestión. <b>No cuenta</b> en los contadores de arriba ni pasa ningún dominio a Validated — se muestra para ser honestos sobre el estado real.</p>
+  <div id="wipGrid"></div>
+</section>
+
+<section class="tab" id="frontier">
+  <h2>Frontier Lab · Active Research</h2>
+  <p class="lead">Investigaciones que <b>ya han comenzado</b> de verdad. No ideas: trabajo en marcha con su estado (research started, prototype, dataset collection, concept validation).</p>
+  <div class="grid" id="frontierGrid"></div>
+</section>
+
+<section class="tab" id="horizons">
+  <h2>Future Horizons · Vision</h2>
+  <p class="lead">La ventana al futuro: líneas de investigación que la plataforma aspira a explorar cuando la evidencia lo permita. Etiquetadas como <b>Vision / Exploring / Concept</b> — nunca como producto disponible.</p>
+  <div class="grid" id="horizonsGrid"></div>
+</section>
+
+<section class="tab" id="constellations">
+  <h2>Research Constellations</h2>
+  <p class="lead">No los proyectos, sino <b>cómo se relacionan</b>. Cada validación desbloquea la siguiente: la evidencia de un dominio es la dependencia del siguiente. Así el mensaje es "expandimos el alcance cuando la evidencia lo permite".</p>
+  <div class="cons universe" style="height:520px;padding:0"><canvas id="cc"></canvas></div>
+  <p class="note" style="margin-top:12px">Patrón de constelación: Dominio → Validación → Benchmark → Paper → Industria → siguiente Dominio. Las líneas verdes ya están recorridas; las azules son el camino previsto.</p>
+</section>
+
+<section class="tab" id="timeline">
+  <h2>CoreSyn Timeline</h2>
+  <p class="lead">La expansión de la plataforma en el tiempo. Los hitos validados quedan fijados con su evidencia; los futuros muestran el año previsto.</p>
+  <div class="tl" id="tl"></div>
+</section>
+
+<section class="tab" id="editor">
+  <h2>Evidence Editor</h2>
+  <p class="lead">La fuente de verdad del Atlas. Fija el estado real de cada dominio y las cifras de evidencia. <b>Regla:</b> solo pasa a 🟢 Validated lo que tenga prueba enlazada. Exporta el JSON para conservar el estado entre sesiones.</p>
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="btn" id="exp">⬇️ Exportar estado</button>
+    <label class="btn ghost" style="cursor:pointer">⬆️ Importar<input type="file" id="imp" accept="application/json" style="display:none"></label>
+    <button class="btn ghost" id="demo">▶︎ Ver ejemplo animado</button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" id="edWrap">
+    <div><h3 style="font-size:14px;margin:0 0 8px">Dominios</h3><div id="edNodes"></div></div>
+    <div><h3 style="font-size:14px;margin:0 0 8px">Evidencia (Validation Observatory)</h3><div id="edEvid"></div>
+      <p class="note" style="margin-top:12px">Cada cifra debe corresponder a evidencia real y enlazable. El Observatory muestra "Awaiting evidence" mientras esté a 0 — eso es una fortaleza, no una carencia.</p></div>
+  </div>
+</section>
+
+</main>
+<script>
+// ============ DATA MODEL (honest by default) ============
+// Estados sincronizados con el Company State CANÓNICO v4 + evidencia verificada esta sesión.
+// Regla: 🟢 Validated = validación reproducible y verificable con evidencia enlazada
+// (tests + hashes + reproducibilidad). La revisión externa independiente de terceros
+// es un nivel ADICIONAL (en gestión), no requisito para 'validated'.
+// Validado hoy: CCFA001 (pipeline 2M++ · 22/22 tests · 5/5 checks · hashes verificados).
+// Active = trabajo real en curso (prototipo/validación interna).
+// state: 'validated' | 'active' | 'recovery' | 'future'  (recovery = trabajo real en pausa/recuperación)
+const NODES=[
+ {id:'core',name:'CoreSyn',branch:'core',state:'active',status:'Platform Core · dev 60%',vision:'Núcleo de la plataforma: AI Assurance y validación como capacidad transversal.',goal:'Plataforma de AI Assurance: generar evidencia verificable sobre el comportamiento de sistemas de IA como capacidad transversal reutilizable entre dominios.',deps:[],apps:['AI Assurance'],sectors:['Cross-domain'],year:2026},
+ {id:'k3',name:'CoreSyn-K3',branch:'core',state:'active',status:'Project Hub + documentación técnica',vision:'Línea CoreSyn-K3.',goal:'Línea CoreSyn-K3: hub de proyecto y documentación técnica en desarrollo.',deps:['core'],apps:['Project Hub'],sectors:['Deep tech'],year:2026},
+ {id:'temporal',name:'Temporal Lab',branch:'core',state:'active',status:'Certificado de reproducibilidad M2 · hash register · listo para revisión externa',vision:'Programa matemático de geometría temporal (T-MDS).',goal:'Programa T-MDS con certificado de reproducibilidad M2 (152 archivos con hash, root SHA-256, re-runs deterministas Cl(3,3) y mass-ratio) y READY_FOR_EXTERNAL_REVIEW. Es reproducibilidad, NO validación científica: M3 LOCKED, ninguna afirmación SUPPORTED, teoría ni validada ni refutada.',deps:['core'],apps:['Mathematical models'],sectors:['Deep tech'],year:2026},
+ {id:'ccfa001',name:'CCFA001 · Cosmology (2M++)',branch:'science',state:'validated',status:'Validación reproducible cerrada · 22/22 tests · 5/5 checks · hashes verificados',vision:'Pipeline cosmológico 2M++ (densidad + velocidad peculiar).',goal:'Pipeline CCFA-001 sobre los arrays reales 2M++ con validación reproducible cerrada: 22/22 tests, 5/5 checks, SHA-256 verificados y reproducibilidad ~7 cifras. Validación INTERNA (Cowork); la revisión externa independiente es un nivel adicional, en gestión.',deps:['core'],apps:['Cosmology'],sectors:['Science'],year:2026},
+ {id:'milkyway',name:'Milky Way Dynamics',branch:'science',state:'active',status:'Cosmología observacional · en curso',vision:'Dinámica galáctica y estructura a gran escala.',goal:'Rama de dinámica de la Vía Láctea / estructura a gran escala, diferenciada de CCFA001 como cosmología observacional.',deps:['core'],apps:['Large-scale structure'],sectors:['Science'],year:2027},
+ {id:'neoflow',name:'NeoFlow Biomedical',branch:'medical',state:'active',status:'Línea de investigación · sin validación clínica',vision:'Línea biomédica NeoFlow.',goal:'Línea biomédica NeoFlow en investigación; sin validación clínica ni claims médicos.',deps:['core'],apps:['Biomedical'],sectors:['Healthcare'],year:2027},
+ {id:'plaplacian',name:'p-Laplacian SGS (CFD)',branch:'aerospace',state:'validated',status:'Validado reproducible · 9/9 tests · v1.0.0',vision:'Cierre sub-malla p-Laplacian para LES 2D.',goal:'Cierre sub-malla p-Laplacian para Navier-Stokes 2D: pipeline reproducible (9/9 tests, demo con seed), −10% error L2 vs solver desnudo, gana a Smagorinsky/Dynamic/Leith con significancia estadística. Validación INTERNA (referencia = misma malla fina); coste ~19% energía y ~33% enstrofía documentado. Preprint en preparación.',deps:['core'],apps:['LES','CFD','SGS closure'],sectors:['Aerospace','CFD','Industry'],year:2026},
+ {id:'assurance',name:'AI Assurance',branch:'assurance',state:'active',status:'Prototipo v0.1 · investigación en curso',vision:'Garantizar (assurance) el comportamiento de sistemas de IA con evidencia verificable.',goal:'Medir y garantizar el comportamiento de modelos de IA con evidencia reproducible (validación, riesgo, cumplimiento). Validación interna en curso; sin validación independiente aún.',deps:['core'],apps:['Model validation','Risk','Compliance'],sectors:['Software','Regulated AI'],year:2026},
+ {id:'materials',name:'Materials Intelligence',branch:'materials',state:'active',status:'Proyecto previo · reingesta de evidencia pendiente',vision:'AI Assurance aplicada a materiales.',goal:'AI Assurance en descubrimiento y QA de materiales. El proyecto existió; pendiente de reingestar su evidencia antes de poder elevarlo a Validated.',deps:['core'],apps:['Materials discovery','QA'],sectors:['Manufacturing','Chemicals'],year:2026},
+ {id:'risk',name:'Risk Intelligence',branch:'risk',state:'active',status:'Motor v0.1 (RiesgoDeObra / AuditFlow) · gate no aprobado',vision:'Cuantificación y aseguramiento de riesgo con IA.',goal:'Detección y aseguramiento de régimen/riesgo con IA (motor No-Action Intelligence): veredictos auditables, nunca predicción de mercado. Prototipo v0.1; validación financiera = 0.',deps:['core'],apps:['Risk scoring','Audit'],sectors:['Finance','Insurance'],year:2026},
+ {id:'energy',name:'Energy & Infrastructure',branch:'energy',state:'active',status:'Posicionamiento + material técnico · sin pilotos cerrados',vision:'Assurance para sistemas energéticos e infraestructuras.',goal:'Assurance para previsión y optimización en energía e infraestructuras. Posicionamiento y material técnico en curso; sin pilotos formalmente cerrados.',deps:['core'],apps:['Forecasting','Optimisation'],sectors:['Utilities','Infrastructure'],year:2027},
+ {id:'medical',name:'Medical',branch:'medical',state:'future',status:'Concept Phase',vision:'Validación de IA en contextos clínicos.',goal:'Validar IA de apoyo clínico con evidencia reproducible; sin diagnóstico ni claims médicos.',deps:['core'],apps:['Diagnostics support'],sectors:['Healthcare'],year:2027},
+ {id:'robotics',name:'Robotics',branch:'robotics',state:'future',status:'Concept Phase',vision:'Assurance para percepción y control robótico.',goal:'Assurance de percepción y control en robótica.',deps:['core'],apps:['Perception','Control'],sectors:['Industrial robotics'],year:2027},
+ {id:'threed',name:'3D',branch:'3d',state:'future',status:'Concept Phase',vision:'Llevar AI Assurance a entornos 3D completos.',goal:'Bring AI Assurance into full 3D environments.',deps:['assurance'],apps:['CAD','BIM','XR'],sectors:['Design','Construction'],year:2027},
+ {id:'aerospace',name:'Aerospace',branch:'aerospace',state:'active',status:'Validación interna (NACA 0012)',vision:'Assurance para sistemas aeroespaciales.',goal:'Assurance de IA aeroespacial. Antecedente metodológico interno en aerodinámica: NS-MDS sobre NACA 0012 (Cl/Cp, dynamic stall, wake vortex). INTERNAL — no es validación externa ni financiera.',deps:['threed'],apps:['Inspection','Simulation'],sectors:['Aerospace','Defence'],year:2028},
+ {id:'quantum',name:'Quantum',branch:'quantum',state:'future',status:'Future Programme',vision:'Explorar assurance en el paradigma cuántico.',goal:'Explorar assurance de modelos en computación cuántica.',deps:['core'],apps:['Quantum ML'],sectors:['Deep tech'],year:2028},
+ {id:'climate',name:'Climate',branch:'energy',state:'future',status:'Future Programme',vision:'Modelos climáticos asegurados.',goal:'Asegurar modelos climáticos y su cuantificación de incertidumbre.',deps:['energy'],apps:['Climate models'],sectors:['Public sector','Insurance'],year:2028},
+ // NEXT FRONTIERS (segundo anillo)
+ {id:'materials2',name:'Materials 2',branch:'materials',state:'future',status:'Planning',vision:'Segunda generación de Materials, tras validación y compute.',goal:'Segunda generación de Materials tras validación y compute suficientes.',deps:['materials'],apps:['Advanced materials'],sectors:['Manufacturing'],year:2027},
+ {id:'threedassurance',name:'3D Assurance',branch:'3d',state:'future',status:'Concept Phase',vision:'AI Assurance nativa en 3D para inspección y manufactura.',goal:'Bring AI Assurance into full 3D environments.',deps:['threed'],apps:['CAD','BIM','Robotics','Industrial inspection','Manufacturing','XR','Aerospace'],sectors:['Industry','Design'],year:2027},
+ {id:'renewable',name:'Renewable Energy',branch:'energy',state:'future',status:'Future Programme',vision:'AI Assurance para previsión y optimización de renovables.',goal:'AI Assurance for renewable energy forecasting and optimisation.',deps:['energy'],apps:['Forecasting','Optimisation'],sectors:['Solar','Wind','Storage','Grid'],year:2027},
+ {id:'digitaltwins',name:'Digital Twins (Recovery)',branch:'3d',state:'recovery',status:'Recovery in progress · 2 twins por recuperar',vision:'Gemelos digitales asegurados.',goal:'Gemelos digitales con comportamiento asegurado y monitorizado. En recuperación: los dos twins aún no se han recuperado.',deps:['threed','materials'],apps:['Simulation','Monitoring'],sectors:['Industry','Infrastructure'],year:2028},
+ {id:'medimaging',name:'Medical Imaging',branch:'medical',state:'future',status:'Concept Phase',vision:'Assurance para imagen médica.',goal:'Assurance de calidad en imagen médica; sin claims diagnósticos.',deps:['medical'],apps:['Imaging QA'],sectors:['Healthcare'],year:2028},
+ {id:'infra',name:'Infrastructure AI',branch:'risk',state:'future',status:'Concept Phase',vision:'Assurance para IA en infraestructuras críticas.',goal:'Assurance de IA en infraestructuras críticas (monitorización y mantenimiento predictivo).',deps:['risk'],apps:['Monitoring','Predictive maintenance'],sectors:['Infrastructure','Utilities'],year:2028},
+ {id:'indsim',name:'Industrial Simulation',branch:'materials',state:'future',status:'Future Programme',vision:'Simulación industrial asegurada.',goal:'Simulación industrial con resultados asegurados y trazables.',deps:['materials','core'],apps:['Simulation'],sectors:['Manufacturing'],year:2028},
+ {id:'space',name:'Space Systems',branch:'aerospace',state:'future',status:'Future Programme',vision:'Sistemas espaciales asegurados.',goal:'IA embarcada asegurada para sistemas espaciales.',deps:['aerospace'],apps:['On-board AI'],sectors:['Space'],year:2029},
+ {id:'quantumassurance',name:'Quantum Assurance',branch:'quantum',state:'future',status:'Future Programme',vision:'Assurance en computación cuántica.',goal:'Verificación y assurance en computación cuántica.',deps:['quantum','assurance'],apps:['Quantum verification'],sectors:['Deep tech'],year:2029},
+];
+// ============ EVIDENCE REGISTRY (single source of truth) ============
+// Los contadores del Observatory se DERIVAN de este registro (no se teclean a mano).
+// Regla de conteo: cada ítem único cuenta una vez. No se cuentan copias en Drive,
+// variantes PDF/presentación ni documentos de difusión como evidencia separada.
+// Estados permitidos: VERIFIED_DOCUMENT | VERIFIED_BENCHMARK_SOURCE | PENDING_REPRODUCTION | PROPOSAL_ONLY | PRIVATE | PUBLIC
+// Visibilidad: 'public' | 'private'. Los privados muestran solo metadatos, nunca el contenido confidencial.
+const REGISTRY=[
+ {id:'exp-ccfa001-2mpp', title:'CCFA-001 · Validación reproducible del pipeline cosmológico 2M++', category:'experimental', branch:'science', date:'2026-07-24', status:'VERIFIED_DOCUMENT', summary:'Ejecución sobre los arrays reales 2M++ (densidad 257³ y velocidad 3×257³, 0 NaN/Inf): pytest 22/22, 5/5 validation checks (density_shape, velocity_shape, finite_values, velocity_vectors, coordinate_consistency), SHA-256 del archivo y de los arrays verificados, reproducibilidad ~7 cifras significativas frente a la referencia y preservación byte-a-byte de los originales.', evidenceUrl:null, sourceType:'Paquete forense reproducible (CERTIFICATION.md + tests + hashes)', limitations:'Validación reproducible INTERNA (operador: Cowork, ejecutada en el equipo del usuario el 2026-07-24), no revisión independiente de terceros; requiere las dependencias declaradas scipy y astropy. La revisión externa independiente es un nivel adicional, aún en gestión.', visibility:'private'},
+ {id:'exp-plaplacian-sgs', title:'p-Laplacian SGS 2D · benchmark reproducible de cierres sub-malla', category:'experimental', branch:'aerospace', date:'2026-04', status:'VERIFIED_DOCUMENT', summary:'Pipeline reproducible de LES 2D (Navier-Stokes) que caracteriza un cierre sub-malla p-Laplacian: 9/9 tests, demo reproducible (seed 42), −10% error L2 de velocidad vs solver desnudo y gana a Smagorinsky (22/22), Dynamic (9/9) y Leith (5/5) con significancia; mejor espectro a pequeña escala.', evidenceUrl:null, sourceType:'Paquete reproducible v1.0.0 (código + tests + benchmarks, MIT, CITATION.cff)', limitations:'Validación INTERNA (referencia = mismo solver en malla fina, no dato experimental externo). Coste ~19% energía cinética y ~33% distorsión de enstrofía; solo gana a pequeña escala; daña flujos laminares bien resueltos. Preprint en preparación.', visibility:'private'},
+ {id:'bm-naca0012-gregory', title:"NACA 0012 — Coeficiente de presión (Gregory & O'Reilly)", category:'benchmarks', branch:'aerospace', date:'ref. pública', status:'VERIFIED_BENCHMARK_SOURCE', summary:'Caso de referencia aerodinámica del perfil NACA 0012 basado en los datos públicos de coeficiente de presión de Gregory & O’Reilly, usado como contraste externo del motor NS-MDS.', evidenceUrl:'https://turbmodels.larc.nasa.gov/naca0012_val.html', sourceType:'Benchmark público de terceros (dato de referencia)', limitations:'Dato de referencia público; no implica relación ni validación por parte de NASA ni de los autores. Contraste metodológico interno, no validación independiente de CoreSyn.', visibility:'public'},
+ {id:'bm-naca0012-ladson', title:'NACA 0012 — Polar aerodinámica (Ladson)', category:'benchmarks', branch:'aerospace', date:'ref. pública', status:'VERIFIED_BENCHMARK_SOURCE', summary:'Caso de referencia de fuerzas/polar aerodinámica del NACA 0012 basado en los datos públicos de Ladson, usado como contraste externo del motor NS-MDS.', evidenceUrl:'https://turbmodels.larc.nasa.gov/naca0012_val.html', sourceType:'Benchmark público de terceros (dato de referencia)', limitations:'Dato de referencia público; no implica relación ni validación por parte de NASA ni de los autores. Contraste metodológico interno, no validación independiente de CoreSyn.', visibility:'public'},
+ {id:'wp-coresyn-2026-07', title:'CoreSyn Technical Whitepaper — Julio 2026', category:'whitepapers', branch:'assurance', date:'2026-07', status:'VERIFIED_DOCUMENT', summary:'Whitepaper técnico de CoreSyn (metodología de AI Assurance y evidencia). Documento verificado internamente.', evidenceUrl:null, sourceType:'Documento técnico propio', limitations:'Publicación externa pendiente; documentar no equivale a validación independiente.', visibility:'private'},
+ {id:'tr-nsmds-oem-brief', title:'CoreSyn NS-MDS — Executive Brief (difusión OEM aeroespacial)', category:'techreports', branch:'aerospace', date:'2026', status:'VERIFIED_DOCUMENT', summary:'Informe ejecutivo de difusión del motor NS-MDS dirigido a un OEM aeroespacial.', evidenceUrl:null, sourceType:'Material de difusión (outreach)', limitations:'Material de difusión dirigido a un OEM aeroespacial; NO implica relación comercial, partnership ni validación por parte de ningún fabricante. IP del NS-MDS confidencial.', visibility:'private'},
+ {id:'tr-validation-investor-brief', title:'CoreSyn — Validation Investor Brief', category:'techreports', branch:'assurance', date:'2026', status:'VERIFIED_DOCUMENT', summary:'Informe de validación orientado a inversores con el estado interno de la evidencia.', evidenceUrl:null, sourceType:'Documento para inversores', limitations:'Cifras internas y heurísticas; no constituye validación científica independiente.', visibility:'private'},
+ {id:'tr-nsmds-project-diary', title:'NS-MDS — Project Diary', category:'techreports', branch:'aerospace', date:'2026', status:'VERIFIED_DOCUMENT', summary:'Registro interno de desarrollo del proyecto NS-MDS (bitácora técnica).', evidenceUrl:null, sourceType:'Registro interno de desarrollo', limitations:'Bitácora interna; no reproducible públicamente y no equivale a validación externa.', visibility:'private'},
+ {id:'tr-temporal-m2-repro', title:'Temporal Lab (T-MDS) · Certificado de reproducibilidad M2', category:'techreports', branch:'core', date:'2026-07-18', status:'VERIFIED_DOCUMENT', summary:'Certificado de reproducibilidad del repo coresyn-temporal-lab: 152 archivos con hash (register root SHA-256 49fb567e…), entorno capturado y dos verificaciones máquina deterministas (Cl(3,3) γ₅ y ajuste de mass-ratio) que re-ejecutan con idéntico resultado. M2 READY_FOR_EXTERNAL_REVIEW.', evidenceUrl:'https://docs.google.com/document/d/1UUbQycMByAyNptSRxAis8cFleys_30MC7BXn_giVIZo/edit', sourceType:'Certificado de reproducibilidad (hash register + re-run determinista)', limitations:'Es REPRODUCIBILIDAD, no validación científica: la teoría auditada (paper externo) ni se valida ni se refuta, ninguna afirmación pasa a SUPPORTED y M3 sigue LOCKED. No sube ningún dominio a Validated.', visibility:'public'},
+];
+const EVID_LABELS={experimental:'Experimental Validation',benchmarks:'Benchmarks',whitepapers:'White Papers',techreports:'Technical Reports',pilots:'Pilot Projects',library:'Evidence Library'};
+function evidenceCounts(){const c={experimental:0,benchmarks:0,whitepapers:0,techreports:0,pilots:0,library:0};REGISTRY.forEach(it=>{if(c[it.category]!==undefined&&it.category!=='library')c[it.category]++;});c.library=REGISTRY.length;return c;}
+const EVIDENCE=evidenceCounts(); // 0 / 2 / 1 / 3 / 0 / 6 — derivado, no tecleado
+// ===== WORK IN PROGRESS (NO verificado; NO cuenta como evidencia verificada) =====
+// Artefactos reales encontrados en Drive/Gmail que aún no son evidencia verificada
+// (borradores, paquetes en recuperación, revisión externa en gestión). Se listan aparte
+// para ser honestos sin inflar los contadores verificados ni pasar nada a Validated.
+const WIP=[
+ {title:'Paper 01 — borrador (NS-MDS / CoreSyn)', status:'PROPOSAL_ONLY', date:'2026', link:null, note:'Borrador citado como fuente interna; no publicado ni con preprint. Publicación = paso futuro de la cadena investigación→evidencia→paper→revisión.'},
+ {title:'CoreSyn-K3 · Project Hub + handoff v0.2', status:'PRIVATE', date:'2026-07', link:null, note:'Documentación de la colaboración K3. En las fuentes conectadas no aparece un informe de validación independiente asociado.'},
+ {title:'Revisión externa independiente (Temporal M2) · en curso', status:'PENDING_REPRODUCTION', date:'2026-07-24', link:null, note:'Revisión de consistencia independiente ACORDADA con QMUL (Prof. Valiente Kroon); paquete M2 enviado el 24-jul (SHA-256 9274711f…), outreach también a USAL (J. Beltrán). Pendiente de que corran los scripts y devuelvan el formulario Q1–Q10. Sin dictamen aún; explícitamente sin endorsement.'},
+];
+const STCOL={validated:'--val',active:'--act',recovery:'--rec',future:'--fut'};
+const STLABEL={validated:'Validated',active:'Active Research',recovery:'Research Recovery',future:'Future Horizons'};
+const STKEY={validated:'val',active:'act',recovery:'rec',future:'fut'};
+
+let filter='all';
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+// ============ LAYOUT (radial) ============
+function layout(){
+  const core=NODES.find(n=>n.id==='core');core.bx=0;core.by=0;
+  const primaries=NODES.filter(n=>n.deps.length===1&&n.deps[0]==='core'&&n.id!=='core');
+  const R1=180,R2=330;
+  primaries.forEach((n,i)=>{const a=(i/primaries.length)*Math.PI*2 - Math.PI/2;n.ang=a;n.bx=Math.cos(a)*R1;n.by=Math.sin(a)*R1;});
+  // secundarios: cerca de su primer dep primario
+  NODES.filter(n=>!(n.id==='core')&&!primaries.includes(n)).forEach((n,i)=>{
+    const p=NODES.find(x=>x.id===n.deps[0])||core;const base=p.ang!==undefined?p.ang:(i*0.5);
+    const off=((i%3)-1)*0.28; const a=base+off; n.ang=a; n.bx=Math.cos(a)*R2 + (Math.random?0:0); n.by=Math.sin(a)*R2;
+  });
+  // reparto determinista para secundarios sin solaparse mucho
+  let k=0;NODES.filter(n=>n.id!=='core'&&!primaries.includes(n)).forEach(n=>{const p=NODES.find(x=>x.id===n.deps[0])||core;const a=(p.ang||0)+(((k%3)-1)*0.30);k++;n.ang=a;n.bx=Math.cos(a)*R2;n.by=Math.sin(a)*R2;});
+}
+layout();
+
+// ============ CANVAS UNIVERSE ============
+const uc=document.getElementById('uc'),uctx=uc.getContext('2d');
+let view={s:1,ox:0,oy:0},drag=null,stars=[],t=0;
+function initStars(){stars=[];for(let i=0;i<160;i++)stars.push({x:(Math.random()*2-1)*700,y:(Math.random()*2-1)*500,r:Math.random()*1.4+.3,p:Math.random()*6.28});}
+initStars();
+function resize(c){const r=c.parentElement.getBoundingClientRect();c.width=r.width*devicePixelRatio;c.height=r.height*devicePixelRatio;c.style.width=r.width+'px';c.style.height=r.height+'px';}
+function visible(n){return filter==='all'||n.state===filter;}
+function locked(n){ // future bloqueado SOLO si su dependencia aún no ha empezado (sigue en 'future');
+  // si el dominio del que depende ya está en curso (active/recovery) o validado, se ilumina.
+  if(n.state!=='future')return false;return n.deps.some(d=>{const dn=NODES.find(x=>x.id===d);return dn&&dn.state==='future';});}
+function draw(){
+  t+=0.016;resize(uc);const w=uc.width,h=uc.height;uctx.setTransform(1,0,0,1,0,0);uctx.clearRect(0,0,w,h);
+  const cx=w/2+view.ox*devicePixelRatio, cy=h/2+view.oy*devicePixelRatio, S=view.s*devicePixelRatio;
+  // starfield
+  stars.forEach(st=>{const tw=.5+.5*Math.sin(t+st.p);uctx.globalAlpha=.25+tw*.5;uctx.fillStyle='#9fb8c8';uctx.beginPath();uctx.arc(cx+st.x*S,cy+st.y*S,st.r*devicePixelRatio,0,6.28);uctx.fill();});
+  uctx.globalAlpha=1;
+  const P=n=>({x:cx+n.bx*S,y:cy+n.by*S});
+  // edges
+  NODES.forEach(n=>{n.deps.forEach(d=>{const dn=NODES.find(x=>x.id===d);if(!dn)return;if(!visible(n)&&!visible(dn))return;const a=P(dn),b=P(n);const val=n.state==='validated'&&dn.state==='validated';uctx.strokeStyle=val?cssv('--val'):'rgba(77,143,214,.28)';uctx.lineWidth=(val?2:1)*devicePixelRatio;uctx.beginPath();uctx.moveTo(a.x,a.y);uctx.lineTo(b.x,b.y);uctx.stroke();});});
+  // nodes
+  NODES.forEach(n=>{if(!visible(n)){return;}const p=P(n);n._sx=p.x/devicePixelRatio;n._sy=p.y/devicePixelRatio;const core=n.id==='core';const col=cssv('--'+STKEY[n.state]);const lk=locked(n);const rad=(core?26:n.deps[0]==='core'?12:9)*devicePixelRatio*(core?1:S<1?1:1);
+    const pulse=n.state==='active'?(1+0.18*Math.sin(t*2+n.bx)):1;
+    // glow
+    const g=uctx.createRadialGradient(p.x,p.y,0,p.x,p.y,rad*3.2*pulse);g.addColorStop(0,col);g.addColorStop(1,'rgba(0,0,0,0)');uctx.globalAlpha=lk?.12:(n.state==='future'?.34:.55);uctx.fillStyle=g;uctx.beginPath();uctx.arc(p.x,p.y,rad*3.2*pulse,0,6.28);uctx.fill();uctx.globalAlpha=1;
+    // core
+    uctx.beginPath();uctx.arc(p.x,p.y,rad*pulse,0,6.28);uctx.fillStyle=lk?'#25384a':col;uctx.fill();
+    if(core){uctx.fillStyle='#fff';uctx.font='bold '+13*devicePixelRatio+'px sans-serif';uctx.textAlign='center';uctx.fillText('CoreSyn',p.x,p.y+4*devicePixelRatio);}
+    // label
+    uctx.globalAlpha=lk?.4:.92;uctx.fillStyle='#dbe8ef';uctx.font=(core?0:11)*devicePixelRatio+'px sans-serif';uctx.textAlign='center';if(!core)uctx.fillText((lk?'🔒 ':'')+n.name,p.x,p.y+rad+13*devicePixelRatio);uctx.globalAlpha=1;
+  });
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+// interaction
+uc.addEventListener('mousedown',e=>{drag={x:e.clientX,y:e.clientY,ox:view.ox,oy:view.oy,moved:false};});
+window.addEventListener('mousemove',e=>{if(!drag)return;view.ox=drag.ox+(e.clientX-drag.x);view.oy=drag.oy+(e.clientY-drag.y);if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>4)drag.moved=true;});
+window.addEventListener('mouseup',()=>{drag=null;});
+uc.addEventListener('wheel',e=>{e.preventDefault();view.s=Math.max(.5,Math.min(2.2,view.s*(e.deltaY<0?1.1:0.9)));},{passive:false});
+uc.addEventListener('click',e=>{if(drag&&drag.moved)return;const r=uc.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;let hit=null;NODES.forEach(n=>{if(!visible(n)||n._sx==null)return;const d=Math.hypot(mx-n._sx,my-n._sy);if(d<20)hit=n;});if(hit)openFicha(hit);});
+document.getElementById('fClose').onclick=()=>document.getElementById('ficha').classList.remove('show');
+function openFicha(n){const f=document.getElementById('ficha');const cls=STKEY[n.state];const col=cssv('--'+STKEY[n.state]);
+  document.getElementById('fBody').innerHTML=`<h3>${n.name}</h3><div class="st" style="color:${col}">${STLABEL[n.state]} · ${n.status}</div>
+  <div class="row"><b>Vision</b>${n.vision}</div>
+  <div class="row"><b>Research goal</b>${n.goal}</div>
+  <div class="row"><b>Dependencies</b><div class="chips">${n.deps.length?n.deps.map(d=>{const dn=NODES.find(x=>x.id===d);const ok=dn&&dn.state==='validated';return `<span class="chip">${ok?'✓':'○'} ${dn?dn.name:d}</span>`;}).join(''):'<span class="chip">—</span>'}</div></div>
+  <div class="row"><b>Potential applications</b><div class="chips">${n.apps.map(a=>`<span class="chip">${a}</span>`).join('')}</div></div>
+  <div class="row"><b>Sectors</b><div class="chips">${n.sectors.map(a=>`<span class="chip">${a}</span>`).join('')}</div></div>
+  <div class="row"><b>Expected</b>${n.year}</div>`;
+  f.classList.add('show');}
+document.querySelectorAll('#uFilters button').forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll('#uFilters button').forEach(x=>x.classList.remove('on'));b.classList.add('on');});
+
+// ============ CONSTELLATIONS canvas (path pattern) ============
+const cc=document.getElementById('cc'),cctx=cc.getContext('2d');
+const CPATH=['Domain','Validation','Benchmark','Paper','Industry','Next Domain'];
+function drawCons(){resize(cc);const w=cc.width,h=cc.height;cctx.setTransform(1,0,0,1,0,0);cctx.clearRect(0,0,w,h);
+  const n=CPATH.length,padx=90*devicePixelRatio;const gap=(w-padx*2)/(n-1);const y=h/2;
+  // progress hasta donde haya evidencia
+  const prog=(EVIDENCE.experimental>0?1:0)+(EVIDENCE.benchmarks>0?1:0)+(EVIDENCE.whitepapers>0?1:0)+(EVIDENCE.pilots>0?1:0);
+  for(let i=0;i<n-1;i++){const x1=padx+gap*i,x2=padx+gap*(i+1);cctx.strokeStyle=i<prog?cssv('--val'):'rgba(77,143,214,.35)';cctx.lineWidth=2*devicePixelRatio;cctx.beginPath();cctx.moveTo(x1,y);cctx.lineTo(x2,y);cctx.stroke();}
+  CPATH.forEach((lbl,i)=>{const x=padx+gap*i;const done=i<prog;const col=done?cssv('--val'):cssv('--fut');const g=cctx.createRadialGradient(x,y,0,x,y,40*devicePixelRatio);g.addColorStop(0,col);g.addColorStop(1,'rgba(0,0,0,0)');cctx.globalAlpha=done?.5:.25;cctx.fillStyle=g;cctx.beginPath();cctx.arc(x,y,40*devicePixelRatio,0,6.28);cctx.fill();cctx.globalAlpha=1;cctx.fillStyle=col;cctx.beginPath();cctx.arc(x,y,10*devicePixelRatio,0,6.28);cctx.fill();cctx.fillStyle='#dbe8ef';cctx.font=12*devicePixelRatio+'px sans-serif';cctx.textAlign='center';cctx.fillText(lbl,x,y+34*devicePixelRatio);});
+}
+
+// ============ RENDER SECTIONS ============
+function counts(){const c={validated:0,active:0,recovery:0,future:0};NODES.forEach(n=>{if(n.id!=='core')c[n.state]++;});return c;}
+function renderUniKpis(){const c=counts();document.getElementById('uniKpis').innerHTML=
+  `<div class="c"><div class="n" style="color:var(--val)">${c.validated}</div><div class="l">Validated domains</div></div>
+   <div class="c"><div class="n" style="color:var(--act)">${c.active}</div><div class="l">Active research</div></div>
+   <div class="c"><div class="n" style="color:var(--rec)">${c.recovery}</div><div class="l">Research recovery</div></div>
+   <div class="c"><div class="n" style="color:var(--fut)">${c.future}</div><div class="l">Future horizons</div></div>
+   <div class="c"><div class="n">${NODES.length-1}</div><div class="l">Territorios en el mapa</div></div>`;}
+function renderObs(){const g=document.getElementById('obsGrid');g.innerHTML='';for(const k in EVID_LABELS){const v=EVIDENCE[k];const clk=v>0;g.innerHTML+=`<div class="c ${clk?'clk':''}" ${clk?`data-cat="${k}"`:''}><div class="big ${v?'':'z'}">${v}</div><div class="l">${EVID_LABELS[k]}</div>${v?`<div class="see">${k==='library'?'Ver los '+v+' ítems ▾':'Ver evidencia ▾'}</div>`:'<div class="await">Awaiting first verified evidence</div>'}</div>`;}
+  g.querySelectorAll('.c.clk').forEach(c=>c.onclick=()=>showEvid(c.dataset.cat));}
+function evStatusColor(s){return s&&s.indexOf('VERIFIED')===0?'var(--val)':s==='PENDING_REPRODUCTION'?'var(--act)':s==='PROPOSAL_ONLY'?'var(--fut)':'var(--mut)';}
+function showEvid(cat){const items=cat==='library'?REGISTRY.slice():REGISTRY.filter(i=>i.category===cat);const box=document.getElementById('obsDetail');
+  box.innerHTML=`<div class="evhd"><b>${EVID_LABELS[cat]}</b> · ${items.length} ítem(s) único(s) <button class="btn ghost" id="evClose" style="float:right;padding:3px 10px">Cerrar ×</button></div>`+
+   items.map(i=>{const pub=i.visibility==='public'&&i.evidenceUrl;const link=pub?`<div class="evlink"><a href="${i.evidenceUrl}" target="_blank" rel="noopener">${i.sourceType} ↗</a></div>`:`<div class="evlink"><span class="pill r">🔒 PRIVATE · ${i.sourceType} — metadatos públicos, sin contenido confidencial</span></div>`;
+     return `<div class="evitem"><div class="evt">${i.title}</div><div class="evmeta"><span class="pill" style="border:1px solid var(--line);color:${evStatusColor(i.status)}">${i.status}</span><span class="tagd">${i.date}</span><span class="tagd">rama: ${i.branch}</span><span class="tagd">${i.visibility==='public'?'público':'privado'}</span></div><div class="evsum">${i.summary}</div><div class="evlim"><b>Limitación:</b> ${i.limitations}</div>${link}</div>`;}).join('');
+  box.classList.add('show');document.getElementById('evClose').onclick=()=>box.classList.remove('show');box.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function renderWIP(){const g=document.getElementById('wipGrid');if(!g)return;g.innerHTML=WIP.map(i=>{const link=i.link?`<div class="evlink"><a href="${i.link}" target="_blank" rel="noopener">Ver artefacto ↗</a></div>`:`<div class="evlink"><span class="pill r">🔒 sin enlace público</span></div>`;return `<div class="evitem"><div class="evt">${i.title}</div><div class="evmeta"><span class="pill" style="border:1px solid var(--line);color:${evStatusColor(i.status)}">${i.status}</span><span class="tagd">${i.date}</span><span class="tagd">no verificado</span></div><div class="evlim"><b>Estado:</b> ${i.note}</div>${link}</div>`;}).join('');}
+function cardHTML(n){const cls=STKEY[n.state];const stc='st'+STKEY[n.state];return `<div class="node-card ${cls}"><h4>${n.name}</h4><div class="st ${stc}">${STLABEL[n.state]} · ${n.status}</div><p>${n.goal.startsWith('[[')?n.vision:n.goal}</p><div class="chips">${n.sectors.slice(0,4).map(s=>`<span class="chip">${s}</span>`).join('')}</div></div>`;}
+function renderFrontier(){const order={active:0,recovery:1};const items=NODES.filter(n=>(n.state==='active'||n.state==='recovery')&&n.id!=='core').sort((a,b)=>order[a.state]-order[b.state]);const g=document.getElementById('frontierGrid');g.innerHTML=items.length?items.map(cardHTML).join(''):`<div class="note">Aún no hay investigación activa registrada. Cuando un dominio empiece de verdad, promuévelo a <b>Active Research</b> en el Evidence Editor y aparecerá aquí con su estado.</div>`;}
+function renderHorizons(){const items=NODES.filter(n=>n.state==='future');document.getElementById('horizonsGrid').innerHTML=items.map(cardHTML).join('');}
+function renderTimeline(){const items=NODES.filter(n=>n.id!=='core').slice().sort((a,b)=>a.year-b.year);const byYear={};items.forEach(n=>{(byYear[n.year]=byYear[n.year]||[]).push(n);});const tl=document.getElementById('tl');tl.innerHTML='';Object.keys(byYear).sort().forEach(y=>{byYear[y].forEach(n=>{const cls=n.state==='future'?'':STKEY[n.state];tl.innerHTML+=`<div class="it ${cls}"><div class="yr">${y}</div><div style="font-weight:600">${n.name} <span class="pill ${STKEY[n.state]}">${STLABEL[n.state]}</span></div><div class="note">${n.vision}</div></div>`;});});}
+function renderEditor(){const en=document.getElementById('edNodes');en.innerHTML='';NODES.filter(n=>n.id!=='core').forEach(n=>{en.innerHTML+=`<div class="edit-row"><span>${n.name}</span><select data-id="${n.id}"><option value="future"${n.state==='future'?' selected':''}>🔵 Future</option><option value="active"${n.state==='active'?' selected':''}>🟡 Active</option><option value="recovery"${n.state==='recovery'?' selected':''}>🟠 Recovery</option><option value="validated"${n.state==='validated'?' selected':''}>🟢 Validated</option></select></div>`;});
+  en.querySelectorAll('select').forEach(s=>s.onchange=e=>{NODES.find(n=>n.id===e.target.dataset.id).state=e.target.value;renderAll();});
+  const ee=document.getElementById('edEvid');ee.innerHTML='';for(const k in EVID_LABELS){ee.innerHTML+=`<div class="edit-row"><span>${EVID_LABELS[k]}</span><b style="text-align:right;color:${EVIDENCE[k]?'var(--val)':'var(--mut)'}">${EVIDENCE[k]}</b></div>`;}
+  ee.insertAdjacentHTML('beforeend',`<p class="note" style="margin-top:8px">Estas cifras se derivan del <b>registro de evidencia</b> (${REGISTRY.length} ítems únicos), no se editan a mano. Para cambiarlas, edita el registro en el código o el archivo <code>data/evidence-registry.json</code>.</p>`);}
+function renderAll(){renderUniKpis();renderObs();renderWIP();renderFrontier();renderHorizons();renderTimeline();renderEditor();drawCons();}
+renderAll();
+
+// nav
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.tab).classList.add('active');if(b.dataset.tab==='constellations')setTimeout(drawCons,30);});
+
+// export/import
+document.getElementById('exp').onclick=()=>{const s={nodes:NODES.map(n=>({id:n.id,state:n.state})),evidence:EVIDENCE};const blob=new Blob([JSON.stringify(s,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='coresyn_atlas_state.json';a.click();};
+document.getElementById('imp').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);(s.nodes||[]).forEach(x=>{const n=NODES.find(y=>y.id===x.id);if(n)n.state=x.state;});/* evidence NO se importa: se deriva del registro (fuente única de verdad) */renderAll();}catch(err){alert('JSON no válido');}};r.readAsText(f);};
+document.getElementById('demo').onclick=()=>{ // ejemplo "what-if": ilumina algunos horizontes como Active (no fabrica Validated ni evidencia)
+  const seq=[['threed','active'],['digitaltwins','active'],['space','active']];let i=0;
+  const step=()=>{if(i>=seq.length){renderAll();return;}const [id,st]=seq[i++];const n=NODES.find(x=>x.id===id);if(n)n.state=st;renderAll();setTimeout(step,700);};step();
+  document.querySelector('nav button[data-tab="universe"]').click();};
+</script>
+</body>
+</html>

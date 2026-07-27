@@ -1,0 +1,130 @@
+{
+  "version": "2026-07-24",
+  "counters": {
+    "experimental": 2,
+    "benchmarks": 2,
+    "whitepapers": 1,
+    "techreports": 4,
+    "pilots": 0,
+    "library": 9
+  },
+  "items": [
+    {
+      "id": "exp-ccfa001-2mpp",
+      "title": "CCFA-001 · Validación reproducible del pipeline cosmológico 2M++",
+      "category": "experimental",
+      "branch": "science",
+      "date": "2026-07-24",
+      "status": "VERIFIED_DOCUMENT",
+      "summary": "Ejecución sobre los arrays reales 2M++ (densidad 257³ y velocidad 3×257³, 0 NaN/Inf): pytest 22/22, 5/5 validation checks (density_shape, velocity_shape, finite_values, velocity_vectors, coordinate_consistency), SHA-256 del archivo y de los arrays verificados, reproducibilidad ~7 cifras significativas frente a la referencia y preservación byte-a-byte de los originales.",
+      "evidenceUrl": null,
+      "sourceType": "Paquete forense reproducible (CERTIFICATION.md + tests + hashes)",
+      "limitations": "Validación reproducible INTERNA (operador: Cowork, ejecutada en el equipo del usuario el 2026-07-24), no revisión independiente de terceros; requiere las dependencias declaradas scipy y astropy. La revisión externa independiente es un nivel adicional, aún en gestión.",
+      "visibility": "private"
+    },
+    {
+      "id": "exp-plaplacian-sgs",
+      "title": "p-Laplacian SGS 2D · benchmark reproducible de cierres sub-malla",
+      "category": "experimental",
+      "branch": "aerospace",
+      "date": "2026-04",
+      "status": "VERIFIED_DOCUMENT",
+      "summary": "Pipeline reproducible de LES 2D (Navier-Stokes) que caracteriza un cierre sub-malla p-Laplacian: 9/9 tests, demo reproducible (seed 42), −10% error L2 de velocidad vs solver desnudo y gana a Smagorinsky (22/22), Dynamic (9/9) y Leith (5/5) con significancia; mejor espectro a pequeña escala.",
+      "evidenceUrl": null,
+      "sourceType": "Paquete reproducible v1.0.0 (código + tests + benchmarks, MIT, CITATION.cff)",
+      "limitations": "Validación INTERNA (referencia = mismo solver en malla fina, no dato experimental externo). Coste ~19% energía cinética y ~33% distorsión de enstrofía; solo gana a pequeña escala; daña flujos laminares bien resueltos. Preprint en preparación.",
+      "visibility": "private"
+    },
+    {
+      "id": "bm-naca0012-gregory",
+      "title": "NACA 0012 — Coeficiente de presión (Gregory & O'Reilly)",
+      "category": "benchmarks",
+      "branch": "aerospace",
+      "date": "ref. pública",
+      "status": "VERIFIED_BENCHMARK_SOURCE",
+      "summary": "Caso de referencia aerodinámica del perfil NACA 0012 basado en los datos públicos de coeficiente de presión de Gregory & O’Reilly, usado como contraste externo del motor NS-MDS.",
+      "evidenceUrl": "https://turbmodels.larc.nasa.gov/naca0012_val.html",
+      "sourceType": "Benchmark público de terceros (dato de referencia)",
+      "limitations": "Dato de referencia público; no implica relación ni validación por parte de NASA ni de los autores. Contraste metodológico interno, no validación independiente de CoreSyn.",
+      "visibility": "public"
+    },
+    {
+      "id": "bm-naca0012-ladson",
+      "title": "NACA 0012 — Polar aerodinámica (Ladson)",
+      "category": "benchmarks",
+      "branch": "aerospace",
+      "date": "ref. pública",
+      "status": "VERIFIED_BENCHMARK_SOURCE",
+      "summary": "Caso de referencia de fuerzas/polar aerodinámica del NACA 0012 basado en los datos públicos de Ladson, usado como contraste externo del motor NS-MDS.",
+      "evidenceUrl": "https://turbmodels.larc.nasa.gov/naca0012_val.html",
+      "sourceType": "Benchmark público de terceros (dato de referencia)",
+      "limitations": "Dato de referencia público; no implica relación ni validación por parte de NASA ni de los autores. Contraste metodológico interno, no validación independiente de CoreSyn.",
+      "visibility": "public"
+    },
+    {
+      "id": "wp-coresyn-2026-07",
+      "title": "CoreSyn Technical Whitepaper — Julio 2026",
+      "category": "whitepapers",
+      "branch": "assurance",
+      "date": "2026-07",
+      "status": "VERIFIED_DOCUMENT",
+      "summary": "Whitepaper técnico de CoreSyn (metodología de AI Assurance y evidencia). Documento verificado internamente.",
+      "evidenceUrl": null,
+      "sourceType": "Documento técnico propio",
+      "limitations": "Publicación externa pendiente; documentar no equivale a validación independiente.",
+      "visibility": "private"
+    },
+    {
+      "id": "tr-nsmds-oem-brief",
+      "title": "CoreSyn NS-MDS — Executive Brief (difusión OEM aeroespacial)",
+      "category": "techreports",
+      "branch": "aerospace",
+      "date": "2026",
+      "status": "VERIFIED_DOCUMENT",
+      "summary": "Informe ejecutivo de difusión del motor NS-MDS dirigido a un OEM aeroespacial.",
+      "evidenceUrl": null,
+      "sourceType": "Material de difusión (outreach)",
+      "limitations": "Material de difusión dirigido a un OEM aeroespacial; NO implica relación comercial, partnership ni validación por parte de ningún fabricante. IP del NS-MDS confidencial.",
+      "visibility": "private"
+    },
+    {
+      "id": "tr-validation-investor-brief",
+      "title": "CoreSyn — Validation Investor Brief",
+      "category": "techreports",
+      "branch": "assurance",
+      "date": "2026",
+      "status": "VERIFIED_DOCUMENT",
+      "summary": "Informe de validación orientado a inversores con el estado interno de la evidencia.",
+      "evidenceUrl": null,
+      "sourceType": "Documento para inversores",
+      "limitations": "Cifras internas y heurísticas; no constituye validación científica independiente.",
+      "visibility": "private"
+    },
+    {
+      "id": "tr-nsmds-project-diary",
+      "title": "NS-MDS — Project Diary",
+      "category": "techreports",
+      "branch": "aerospace",
+      "date": "2026",
+      "status": "VERIFIED_DOCUMENT",
+      "summary": "Registro interno de desarrollo del proyecto NS-MDS (bitácora técnica).",
+      "evidenceUrl": null,
+      "sourceType": "Registro interno de desarrollo",
+      "limitations": "Bitácora interna; no reproducible públicamente y no equivale a validación externa.",
+      "visibility": "private"
+    },
+    {
+      "id": "tr-temporal-m2-repro",
+      "title": "Temporal Lab (T-MDS) · Certificado de reproducibilidad M2",
+      "category": "techreports",
+      "branch": "core",
+      "date": "2026-07-18",
+      "status": "VERIFIED_DOCUMENT",
+      "summary": "Certificado de reproducibilidad del repo coresyn-temporal-lab: 152 archivos con hash (register root SHA-256 49fb567e…), entorno capturado y dos verificaciones máquina deterministas (Cl(3,3) γ₅ y ajuste de mass-ratio) que re-ejecutan con idéntico resultado. M2 READY_FOR_EXTERNAL_REVIEW.",
+      "evidenceUrl": "https://docs.google.com/document/d/1UUbQycMByAyNptSRxAis8cFleys_30MC7BXn_giVIZo/edit",
+      "sourceType": "Certificado de reproducibilidad (hash register + re-run determinista)",
+      "limitations": "Es REPRODUCIBILIDAD, no validación científica: la teoría auditada (paper externo) ni se valida ni se refuta, ninguna afirmación pasa a SUPPORTED y M3 sigue LOCKED. No sube ningún dominio a Validated.",
+      "visibility": "public"
+    }
+  ]
+}
