@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0.0",
+  "program": "CoreSyn Pyramid",
+  "surface": "Pyramid Lab",
+  "atlas_snapshot": "2026-08-02T06:24:00+02:00",
+  "governance": {
+    "owner": "Atlas",
+    "independent_reviewer": "CMOS",
+    "acceptance_policy": "No gate is self-accepted. DONE means implementation complete and pending independent CMOS review.",
+    "claim_policy": "Measured facts, documentary facts, academic hypotheses, analogies and myths remain separated. Mathematical compatibility is not historical truth."
+  },
+  "summary": {
+    "gates_done_pending_cmos": 7,
+    "gates_open": 1,
+    "tests_passed": 40,
+    "external_review_requests_sent": 5,
+    "unsafe_coordinate_fusions": 0,
+    "sensational_claims": 0
+  },
+  "current_gate": {
+    "id": "PYR-M6-SYNTHETIC-HOLDOUT-001",
+    "title": "Synthetic holdout and failure detection",
+    "status": "OPEN",
+    "objective": "Generate known-geometry cases with controlled noise, incompatible frames and claim traps to measure whether PYR-BENCH detects real failures.",
+    "required_outputs": [
+      "preregistered synthetic generator",
+      "hidden holdout partition",
+      "coordinate-frame trap cases",
+      "claim-boundary trap cases",
+      "benchmark scorecard",
+      "reproducible package with hashes"
+    ]
+  },
+  "gates": [
+    {
+      "id": "PYR-M0-SOURCE-001",
+      "title": "Source and claim boundary",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": ["14 sources", "12 classified claims", "7/7 tests"],
+      "sha256": "8d7147490bc79869659976889310d63a81f48001521d854332a0e14c8a6ff68d"
+    },
+    {
+      "id": "PYR-M1-INGEST-001",
+      "title": "Published measurement ingest",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": ["10 published estimates", "2 independent instrument families", "7/7 tests"],
+      "sha256": "ac31bbc1cd37777fb40ebdd514329933d777806ca7041e0d3175fecc14dd1890"
+    },
+    {
+      "id": "PYR-M2-FRAME-001",
+      "title": "Coordinate-frame registry",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": ["3 frames registered", "unsafe position fusion blocked"],
+      "sha256": "e27e1adae587afc1a48bcaaed7a2229bc30b34ab538cd5f0e3cc376d7d80082c"
+    },
+    {
+      "id": "PYR-M3-BASELINE-001",
+      "title": "Independent-family compatibility baseline",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": ["width z=1.20", "height z=1.59", "7/7 tests"],
+      "sha256": "9b5b36bce11f644240d36e2f6c5514af775b07446353ebe4c578f8e5227c869e"
+    },
+    {
+      "id": "PYR-M4-EXTERNAL-REVIEW-SUPERGATE",
+      "title": "Adversarial external review",
+      "status": "DONE_PENDING_RESPONSES_AND_CMOS",
+      "metrics": ["5 requests sent", "AERA/Lehner", "IFAO/Tallet", "Fermilab/Bross", "CEA/Procureur", "Nagoya/Morishima"],
+      "sha256": "7f8654b5c3350d5e3b7fe3e30f48aeaa40b411dcf5272d4a8acc38d3e7bbf45b"
+    },
+    {
+      "id": "PYR-M5-INVERSE-CLOSURE-001",
+      "title": "Conditional inverse closure",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": ["200000 Monte Carlo samples", "conditional rectangular volume 35.25 +/- 1.94 m3", "4/4 tests"],
+      "sha256": "b21e087d0aa06d4b0e42a86b40edbd55d9a64d8db3cffe634775d912f153a697"
+    },
+    {
+      "id": "PYR-BENCH-001",
+      "title": "Audit benchmark specification",
+      "status": "SPEC_DONE_PENDING_CMOS",
+      "metrics": ["6 benchmark tasks", "2 independent reviewers required", "3 clean reproductions required", "4/4 tests"],
+      "sha256": "7ae884152799a232d27a307156554e2acd17f64969e06fd0a18a4130868681eb"
+    }
+  ],
+  "measured_results": {
+    "combined_width_m": {"value": 1.9856, "standard_uncertainty": 0.0527},
+    "combined_height_m": {"value": 1.9597, "standard_uncertainty": 0.0980},
+    "single_family_length_m": {"value": 9.06, "standard_uncertainty": 0.07, "boundary": "Nagoya only"},
+    "conditional_rectangular_volume_m3": {"value": 35.25, "standard_uncertainty": 1.94, "boundary": "Model-dependent; not an exact physical volume"}
+  },
+  "contradictions_and_blocks": [
+    "Published detector-family dimensions can be compared, but lateral positions cannot be fused without a documented transform and covariance.",
+    "Raw particle tracks, author reconstruction code and full 3D source model have not been acquired.",
+    "Muon evidence supports a corridor/void observation; it does not establish purpose or construction method.",
+    "External-review silence is not validation."
+  ],
+  "product": {
+    "name": "Pyramid Reconstruction Assurance Pack",
+    "legitimate_category": "Auditable comparison and reconstruction framework",
+    "users": ["archaeology teams", "digital heritage teams", "museums", "scientific documentary teams"],
+    "deliverable": "Provenance, measurements with uncertainty, direct/inverse comparison, compatible alternatives, hashes, tests and claim limits.",
+    "prohibited_positioning": "Not a validated historical solution to pyramid construction."
+  }
+}
