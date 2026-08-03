@@ -1,0 +1,25 @@
+{
+  "protocol_id": "PYR-M6-R3-RECONSTRUCTION-PREREG-001",
+  "status": "FROZEN_NOT_EXECUTED",
+  "created_at": "2026-08-03T14:35:00+02:00",
+  "master_seed": 26080301,
+  "case_count": 240,
+  "partitions": {"development": 120, "hidden_holdout": 120},
+  "geometry_families": ["rectangular", "trapezoidal", "sloped_rectangular"],
+  "noise_regimes": ["gaussian_nominal", "student_t_df4", "heteroscedastic"],
+  "frame_conditions": ["same_frame", "documented_transform", "missing_transform", "wrong_handed_transform"],
+  "claim_classes": ["measured_fact", "documentary_fact", "academic_hypothesis", "analogy", "myth", "unsupported_historical_inference"],
+  "primary_gates": {
+    "coverage_95_width_min": 0.90,
+    "coverage_95_height_min": 0.90,
+    "coverage_95_length_min": 0.90,
+    "coverage_95_conditional_volume_min": 0.90,
+    "unsafe_frame_fusion_rate_max": 0.0,
+    "critical_claim_false_positive_rate_max": 0.0,
+    "compatibility_decision_accuracy_min": 0.95,
+    "clean_reproductions_required": 3
+  },
+  "package_sha256": "64f851e84b80b09b3d5752039989e199da06a4239e2c3ce2770e47e491699d18",
+  "lost_m6_relationship": "Independent reconstruction protocol; not a byte-identical replay and not evidence that the lost M6 implementation was correct or incorrect.",
+  "amendment_policy": "Any modification after package hash publication requires a new protocol ID and deviation report."
+}
