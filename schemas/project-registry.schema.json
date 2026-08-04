@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Project Registry",
+  "description": "Research programs and delivery repositories, distinct from Agent Registry (executable identities) and Person Registry (individuals). Does NOT duplicate atlas-state.json's 26 component/domain nodes — those remain the canonical internal research-domain graph (see PR #6's Dependency Graph). This registry covers what atlas-state.json doesn't: (a) delivery repositories this session directly verified, (b) project identifiers referenced by the founder or a third party that this session could not independently verify, tracked honestly rather than omitted or asserted.",
+  "type": "object",
+  "required": ["projects"],
+  "properties": {
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "name", "status", "verified_by", "verification_method"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": {
+            "enum": ["REPOSITORY", "ATLAS_DOMAIN_REF", "EXTERNAL_CLAIM_UNVERIFIED"],
+            "description": "REPOSITORY = a real GitHub repository this session worked in directly. ATLAS_DOMAIN_REF = a pointer to an existing atlas-state.json node id, never a data duplicate. EXTERNAL_CLAIM_UNVERIFIED = a project name referenced externally (e.g. by the founder relaying another node) with no independently verifiable artifact yet."
+          },
+          "name": { "type": "string" },
+          "status": {
+            "enum": ["ACTIVE", "ARCHIVED", "SOURCE_NOT_INGESTED", "NOT_VERIFIED_IN_THIS_SCOPE", "WAITING_FOR_NEW_EVIDENCE"],
+            "description": "SOURCE_NOT_INGESTED / NOT_VERIFIED_IN_THIS_SCOPE / WAITING_FOR_NEW_EVIDENCE do not assert non-existence, only that this session has no independently verifiable evidence yet"
+          },
+          "repo_url": { "type": ["string", "null"], "description": "required context for kind=REPOSITORY, null otherwise" },
+          "atlas_domain_ref": { "type": ["string", "null"], "description": "must resolve to a real atlas-state.json node id when kind=ATLAS_DOMAIN_REF, null otherwise" },
+          "verified_by": { "type": "string" },
+          "verification_method": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" },
+          "last_verified_at": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  }
+}

@@ -13,7 +13,8 @@
         "properties": {
           "conflict_id": { "type": "string" },
           "type": {
-            "enum": ["DUPLICATE_ID", "ID_NAMESPACE_COLLISION", "HASH_MISMATCH", "COMPETING_STATUS", "SCHEMA_INVALID", "MASTER_REGISTRY_DANGLING_REF"]
+            "enum": ["DUPLICATE_ID", "ID_NAMESPACE_COLLISION", "HASH_MISMATCH", "COMPETING_STATUS", "SCHEMA_INVALID", "MASTER_REGISTRY_DANGLING_REF", "EXTERNAL_CLAIM_UNVERIFIED"],
+            "description": "EXTERNAL_CLAIM_UNVERIFIED: another node/party reported an entity this node could not independently verify. Recorded so the claim isn't lost, never auto-resolved — only a founder decision or new independently-checkable evidence moves it out of OPEN/UNDER_REVIEW."
           },
           "detected_at": { "type": "string", "format": "date" },
           "detected_by": { "type": "string", "description": "e.g. tools/registry_guardian.py run reference" },

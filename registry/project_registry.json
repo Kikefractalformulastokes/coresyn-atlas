@@ -1,0 +1,121 @@
+{
+  "projects": [
+    {
+      "id": "proj-repo-coresyn-atlas",
+      "kind": "REPOSITORY",
+      "name": "coresyn-atlas",
+      "status": "ACTIVE",
+      "repo_url": "https://github.com/Kikefractalformulastokes/coresyn-atlas",
+      "atlas_domain_ref": null,
+      "verified_by": "this session, direct repository work",
+      "verification_method": ["git clone", "commit history inspection", "file hashing"],
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-repo-riesgodeobra-site",
+      "kind": "REPOSITORY",
+      "name": "riesgodeobra-site",
+      "status": "ACTIVE",
+      "repo_url": "https://github.com/Kikefractalformulastokes/riesgodeobra-site",
+      "atlas_domain_ref": "risk",
+      "verified_by": "this session, direct repository work",
+      "verification_method": ["git clone", "commits pushed", "Lighthouse runs", "pull request opened (#4)"],
+      "notes": "Corresponds to atlas-state.json node 'risk' (Risk Intelligence / RiesgoDeObra / AuditFlow) — cross-referenced via atlas_domain_ref, not duplicated as separate data.",
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-repo-coresyn-alpha-gate",
+      "kind": "REPOSITORY",
+      "name": "coresyn-alpha-gate",
+      "status": "ACTIVE",
+      "repo_url": "https://github.com/Kikefractalformulastokes/coresyn-alpha-gate",
+      "atlas_domain_ref": null,
+      "verified_by": "this session, direct repository work",
+      "verification_method": ["git clone", "test suite run (36/36 passing after fix)"],
+      "notes": "Bug fix branch created locally this session; not yet pushed pending explicit founder go-ahead.",
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-repo-coresyn-lab",
+      "kind": "REPOSITORY",
+      "name": "coresyn-lab",
+      "status": "ACTIVE",
+      "repo_url": null,
+      "atlas_domain_ref": null,
+      "verified_by": "this session, direct repository work",
+      "verification_method": ["git clone", "branch created locally"],
+      "notes": "Branch created locally this session; not yet pushed. repo_url omitted rather than guessed — not confirmed public during this session.",
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-repo-core-aero-001-verifier",
+      "kind": "REPOSITORY",
+      "name": "coresyn-core-aero-001-verifier",
+      "status": "ACTIVE",
+      "repo_url": "https://github.com/Kikefractalformulastokes/coresyn-core-aero-001-verifier",
+      "atlas_domain_ref": "aerospace",
+      "verified_by": "this session, direct repository work",
+      "verification_method": ["git clone", "verify.sh executed 3 times, identical result.json SHA-256 each run"],
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-repo-nsmds",
+      "kind": "REPOSITORY",
+      "name": "Nsmds",
+      "status": "ACTIVE",
+      "repo_url": null,
+      "atlas_domain_ref": null,
+      "verified_by": "this session, working directory of this session itself",
+      "verification_method": ["direct filesystem inspection"],
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-materials-domain-xref",
+      "kind": "ATLAS_DOMAIN_REF",
+      "name": "Materials Intelligence",
+      "status": "ACTIVE",
+      "repo_url": null,
+      "atlas_domain_ref": "materials",
+      "verified_by": "atlas-state.json (canonical, pre-existing)",
+      "verification_method": ["repository inspection"],
+      "notes": "Cross-reference only, no duplicated data. Included specifically because 'Matmerize' (see proj-ext-matmerize below) may be a garbled or confused reference to this real, already-tracked domain — that possibility is noted there as an unconfirmed hypothesis, not asserted as fact.",
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-ext-crm-cfd",
+      "kind": "EXTERNAL_CLAIM_UNVERIFIED",
+      "name": "CRM CFD (also referenced as CRM/DPW6, CRM Cycle 006-008b)",
+      "status": "SOURCE_NOT_INGESTED",
+      "repo_url": null,
+      "atlas_domain_ref": null,
+      "verified_by": "not independently verified by this session",
+      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
+      "notes": "Referenced in founder communications this session under several names. No independently verifiable repository, artifact, or hash has been found. Recorded here, and in registry/conflict_registry.json, rather than omitted or asserted.",
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-ext-matmerize",
+      "kind": "EXTERNAL_CLAIM_UNVERIFIED",
+      "name": "Matmerize",
+      "status": "NOT_VERIFIED_IN_THIS_SCOPE",
+      "repo_url": null,
+      "atlas_domain_ref": null,
+      "verified_by": "not independently verified by this session",
+      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
+      "notes": "Possibly related to the real, already-tracked atlas-state.json node 'materials' (Materials Intelligence, status: 'reingesta de evidencia pendiente') given name similarity — see proj-materials-domain-xref. This is an unconfirmed hypothesis, not an identity claim; the two are NOT merged as the same project.",
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "proj-ext-nashgate",
+      "kind": "EXTERNAL_CLAIM_UNVERIFIED",
+      "name": "NashGate",
+      "status": "SOURCE_NOT_INGESTED",
+      "repo_url": null,
+      "atlas_domain_ref": null,
+      "verified_by": "not independently verified by this session",
+      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
+      "notes": "Referenced in founder communications this session. No independently verifiable repository, artifact, or hash has been found.",
+      "last_verified_at": "2026-08-04"
+    }
+  ]
+}

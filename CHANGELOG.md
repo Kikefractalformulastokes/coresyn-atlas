@@ -11,6 +11,15 @@ This changelog starts at the Atlas v1 freeze. Earlier history is the commit log 
 - Registry Guardian's first run against the real repository found one real bootstrapping conflict (`master_registry.json` referenced `conflict_registry.json` before that file existed), logged it, and a second run after resolution reports 0 conflicts, exit 0.
 - Per the founder's explicit decision, PR #6 stays draft/unmerged as-is; this PR is also not merged as part of this delivery. Both are intended to merge together once this infrastructure is reviewed.
 
+## Unreleased — Atlas 1.1 Project/Person/Reviewer Registry (PR #8, stacked on PR #7)
+
+- **Design, not merged.** `design/atlas-1.1-project-person-registry` adds `registry/project_registry.json`, `registry/person_registry.json`, and derived `registry/reviewer_registry.json` (+ schemas, + `tools/generate_reviewer_registry.py`), per founder review of PR #7 distinguishing Agent Registry (executable identities only) from entities that need their own type and status vocabulary. See `ATLAS_1_1_PROJECT_PERSON_REGISTRY.md`.
+- Project Registry does not duplicate `atlas-state.json`'s 26 existing domain nodes — it adds delivery repositories this session verified directly, one explicit cross-reference to node `materials`, and three externally-referenced unverified project claims (`CRM CFD`, `Matmerize`, `NashGate`) carrying the founder's own suggested status vocabulary (`SOURCE_NOT_INGESTED` / `NOT_VERIFIED_IN_THIS_SCOPE`) rather than silence or assertion.
+- Person Registry seeded with `person-enrique` (verified, cross-referenced to Agent Registry) and `person-kroon` (`UNVERIFIED_IN_THIS_SCOPE`).
+- `schemas/conflict-registry.schema.json` gains type `EXTERNAL_CLAIM_UNVERIFIED`; five entries added by hand (not machine-detected) for `CRM CFD`, `Matmerize`, `NashGate`, `Kroon`, and `Node02` — all `UNDER_REVIEW`, never auto-resolved. **`tools/registry_guardian.py` now correctly exits 1** on this branch (5 open items) — this is the intended signal, not a defect; it clears only via independently-checkable evidence or an explicit founder disposition on each.
+- Registry Guardian extended: duplicate-id checks for the two new registries, cross-namespace collision check generalized to four namespaces (evidence/agent/project/person), `atlas_domain_ref` and `agent_registry_ref` dangling-reference checks. All pass clean (0 collisions) on this data.
+- Per the founder's plan, PR #6 and PR #7 stay draft/unmerged; this PR is also not merged as part of this delivery.
+
 ## Unreleased — Atlas 1.1 design (PR #6)
 
 - **Design, not merged.** `design/atlas-1.1-pipelines` adds six subsystems on top of the existing canonical files: Registry Index, Dependency Graph, Research Genome (all three derived by stdlib-only generator scripts from `evidence-registry.json` / `atlas-state.json`), and Scientific Pipeline, Reviewer Pipeline, Commercial Pipeline (all three new empty tracking scaffolds with schemas, seeded with no entries — no history was fabricated to fill them). See `ATLAS_1_1_DESIGN.md`.

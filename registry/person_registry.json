@@ -1,0 +1,25 @@
+{
+  "people": [
+    {
+      "id": "person-enrique",
+      "name": "Enrique",
+      "status": "VERIFIED",
+      "roles": ["FOUNDER"],
+      "agent_registry_ref": "enrique",
+      "verified_by": "this session, direct interaction",
+      "verification_method": ["session interlocutor", "PROTOCOL.md section 1 role reference"],
+      "last_verified_at": "2026-08-04"
+    },
+    {
+      "id": "person-kroon",
+      "name": "Kroon",
+      "status": "UNVERIFIED_IN_THIS_SCOPE",
+      "roles": [],
+      "agent_registry_ref": null,
+      "verified_by": "not independently verified by this session",
+      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
+      "notes": "Referenced in founder communications this session. No independently verifiable identity, affiliation, or artifact found. See registry/conflict_registry.json for the logged claim.",
+      "last_verified_at": "2026-08-04"
+    }
+  ]
+}
