@@ -1,16 +1,22 @@
 # CoreSyn Atlas — Ficha técnica real y plan de migración
-**Respuesta técnica a Brandon / HAI-0000001 · 2026-07-24 · sin humo**
+**Respuesta técnica a Brandon / HAI-0000001 · creado 2026-07-24 · ACTUALIZADO 2026-07-27 · sin humo**
 
-Voy punto por punto con lo que **realmente** existe. No voy a inventar URL, repo, hosting ni backups que no hay: eso sería justo lo contrario de la disciplina del proyecto. El Atlas es real, pero es un **artefacto HTML autocontenido**, no un servicio web desplegado.
+> **ACTUALIZACIÓN 2026-07-27 — YA DESPLEGADO.** Lo que el 24-jul decía "por montar" ya está montado y verificado en vivo. El Atlas tiene ahora **URL pública real, repositorio git público y hosting estático real**. Cambios respecto a la versión original marcados abajo en los puntos 1, 2, 3, 10 y 11. El resto (stack, fuente de datos, ausencia de dominio propio) sigue igual.
+>
+> - **URL EN VIVO:** https://kikefractalformulastokes.github.io/coresyn-atlas/ (verificada: renderiza el v1 congelado, 2 dominios validados, CCFA001 verde, 25 territorios, 0 errores JS).
+> - **Repo:** https://github.com/Kikefractalformulastokes/coresyn-atlas (público).
+> - **Hosting:** GitHub Pages · rama `main` / root.
+
+Voy punto por punto con lo que **realmente** existe. No inventé nada: el 24-jul no había URL/repo/hosting, y lo dije así; el 27-jul ya los hay porque los desplegamos de verdad (commit visible), y lo actualizo aquí.
 
 ## 1. URL real del Atlas en funcionamiento
-**No existe una URL pública.** El Atlas se ejecuta como *Cowork artifact* (id `coresyn-atlas-research-universe`) que se renderiza dentro de la app de escritorio de Claude de Enrique. No hay `https://…` direccionable desde fuera. Cualquiera que te dé una URL "en producción" del Atlas estaría inventando.
+**~~No existe una URL pública.~~ [2026-07-27] SÍ existe:** https://kikefractalformulastokes.github.io/coresyn-atlas/ — sirve el `index.html` autocontenido tal cual (v1 congelado). Verificada abriéndola en navegador: universo renderiza, CCFA001 · Cosmology (2M++) en 🟢, KPIs 2 validados / 9 activos / 1 recovery / 13 futuros / 25 territorios. El *Cowork artifact* (id `coresyn-atlas-research-universe`) sigue existiendo dentro de la app de escritorio como la versión "editable"; la URL de arriba es la versión pública congelada.
 
 ## 2. Repositorio / workspace donde vive
-**No hay repositorio git.** Vive en dos sitios: (a) el almacén de *artifacts* de la app de escritorio de Claude (con historial de versiones del propio artifact), y (b) las copias `index.html` entregadas en el chat de esta sesión. No hay GitHub/GitLab todavía.
+**~~No hay repositorio git.~~ [2026-07-27] Repo git público:** https://github.com/Kikefractalformulastokes/coresyn-atlas — primer commit "Atlas v1 2026-07-24 — estado congelado (26 nodos / 28 aristas)", 7 archivos: `index.html`, `atlas-state.json`, `evidence-registry.json`, `ATLAS_TECH_SPEC.md`, `README.md`, `LIVING_UNIVERSE.md`, `DEPLOY.md`, más `.nojekyll`. El artifact de la app de escritorio sigue siendo la copia de trabajo con su propio historial de versiones.
 
 ## 3. Hosting actual
-El "hosting" es el **almacén de artifacts de Claude Desktop** (infra de Anthropic para renderizar artifacts en la barra lateral). No es hosting web tradicional ni es públicamente accesible. No hay servidor, ni contenedor, ni función serverless.
+**~~almacén de artifacts de Claude Desktop~~ [2026-07-27] GitHub Pages** (rama `main` / root del repo de arriba). Hosting estático real, público, HTTPS, sin servidor/contenedor/función serverless — se sirve el HTML tal cual. El almacén de artifacts de Claude Desktop sigue existiendo en paralelo para la versión editable.
 
 ## 4. Fuente de datos de nodos y aristas
 **Hardcoded dentro del propio HTML.** Dos arrays JavaScript:
@@ -38,17 +44,17 @@ El propio Atlas tiene un "Evidence Editor" que exporta/importa el estado como JS
 **Ninguna.** No hay dominio ni DNS asociados.
 
 ## 10. Sistema de backups
-**No hay sistema formal de backups.** Redundancia existente: copias `index.html` en el chat + versiones del artifact en la app + los JSON exportables. (El plan de migración de abajo resuelve esto de verdad.)
+**~~No hay sistema formal de backups.~~ [2026-07-27] Sí lo hay:** el historial completo de git en GitHub (cada commit es un backup versionado e inmutable) + los JSON exportables + las copias del artifact en la app. Pendiente opcional: crear un *release* etiquetado (`v1`) por hito para sellar el estado congelado.
 
-## 11. Plan de migración SIN pérdida (preservar el que existe, NO reconstruir)
+## 11. Plan de migración SIN pérdida (preservar el que existe, NO reconstruir) — **ESTADO DE EJECUCIÓN**
 Objetivo: convertir el Atlas actual en referencia canónica versionada, **conservando byte a byte** el estado de hoy.
-1. **Congelar** el `index.html` actual como `v1` (hash SHA-256 para sellarlo).
-2. **Repo git** (GitHub) `coresyn-atlas`: subir el `index.html` tal cual + `atlas-state.json` + `evidence-registry.json`. Primer commit = estado 2026-07-24.
-3. **Hosting estático**: GitHub Pages / Vercel / Netlify apuntando al repo → así aparece la **URL real** que hoy no existe. (5 min con tu cuenta.)
-4. **Dominio** (opcional): CNAME a `atlas.coresyn.io`.
-5. **Versionado del estado**: cada cambio de nodo/evidencia = commit; el `atlas-state.json` es el diff legible. Opcional: separar los arrays a `data/atlas-state.json` y que el HTML los cargue, para versionar datos y lógica por separado — **sin cambiar nada del comportamiento actual**.
-6. **Backups**: el propio git (historial completo) + release por hito.
-Regla de la migración: no se reconstruye el Atlas; se toma el archivo existente y se le pone control de versiones + hosting encima. El estado actual es la fuente.
+1. ✅ **[HECHO] Congelar** el `index.html` actual como `v1` (hash SHA-256 `817a8d1719dc28d59ac9476d5863270c20b649678b4f1bcd87118f7af81830c2`).
+2. ✅ **[HECHO] Repo git** (GitHub) `coresyn-atlas`: `index.html` tal cual + `atlas-state.json` + `evidence-registry.json` + docs. Primer commit = estado 2026-07-24 → https://github.com/Kikefractalformulastokes/coresyn-atlas
+3. ✅ **[HECHO] Hosting estático**: GitHub Pages apuntando al repo → **URL real verificada:** https://kikefractalformulastokes.github.io/coresyn-atlas/
+4. ⏳ **[PENDIENTE OPCIONAL] Dominio**: CNAME a `atlas.coresyn.io` (requiere config DNS de Enrique).
+5. ⏳ **[PENDIENTE OPCIONAL] Versionado del estado**: cada cambio de nodo/evidencia = commit; el `atlas-state.json` es el diff legible. Separar los arrays a `data/atlas-state.json` que el HTML cargue — **sin cambiar el comportamiento actual**.
+6. ✅ **[HECHO] Backups**: el propio git (historial completo). ⏳ Pendiente: *release* etiquetado por hito.
+Regla de la migración: no se reconstruye el Atlas; se toma el archivo existente y se le pone control de versiones + hosting encima. El estado actual es la fuente. **Cumplida byte a byte.**
 
 ---
-**Resumen para Brandon:** el Atlas es real y te entrego su código completo y su estado exportado. Lo que NO es, es un servicio desplegado con URL/repo/dominio/backup — eso está por montar, y el plan del punto 11 lo monta preservando exactamente lo que hay. Si alguien te presenta una URL/repo "ya en producción", trátalo como `CLAIM_SIN_EVIDENCIA` hasta ver el commit.
+**Resumen para Brandon [2026-07-27]:** ya no es "por montar". El Atlas tiene **URL pública real, repo git público y hosting estático verificado en vivo**, preservando exactamente el estado del 24-jul. El plan del punto 11 está ejecutado en sus pasos 1-3 y 6; solo queda opcional el dominio propio y separar datos/lógica. Si alguien te presenta una URL/repo, ahora **sí** hay commit que enseñar: https://github.com/Kikefractalformulastokes/coresyn-atlas — trátalo como verdad verificable, no como `CLAIM_SIN_EVIDENCIA`.
