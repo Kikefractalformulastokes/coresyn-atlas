@@ -13,13 +13,21 @@
     {
       "id": "person-kroon",
       "name": "Kroon",
-      "status": "UNVERIFIED_IN_THIS_SCOPE",
-      "roles": [],
+      "status": "VERIFIED",
+      "roles": ["REVIEWER"],
       "agent_registry_ref": null,
-      "verified_by": "not independently verified by this session",
-      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
-      "notes": "Referenced in founder communications this session. No independently verifiable identity, affiliation, or artifact found. See registry/conflict_registry.json for the logged claim.",
-      "last_verified_at": "2026-08-04"
+      "verified_by": "this session, direct Gmail search",
+      "verification_method": ["Gmail search: 'Matmerize OR Kroon OR NashGate', 2026-08-04 — real thread with j.a.valiente-kroon@qmul.ac.uk"],
+      "notes": "Identified as Prof. Juan A. Valiente Kroon, Queen Mary University of London (j.a.valiente-kroon@qmul.ac.uk). Real, ongoing, dated correspondence about an independent bounded consistency review of the M2 package: initial request 2026-07-22, Kroon's acceptance 2026-07-23, package-on-hold discussion through 2026-07-31, a follow-up from Enrique checking receipt on 2026-08-04. Identity and correspondence are verified; the review itself has not concluded — no response confirming the review's outcome was found. roles now includes REVIEWER (a real bounded external review is in progress, per PROTOCOL.md section 9), which also means this entry now appears in the derived registry/reviewer_registry.json.",
+      "last_verified_at": "2026-08-04",
+      "evidence_history": [
+        {
+          "status": "UNVERIFIED_IN_THIS_SCOPE",
+          "as_of": "2026-08-04",
+          "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
+          "note": "Initial PR #8 status, before this session's own Gmail check. GitHub/Drive/local-branch search alone did not surface the real correspondence, which only exists in Gmail."
+        }
+      ]
     }
   ]
 }

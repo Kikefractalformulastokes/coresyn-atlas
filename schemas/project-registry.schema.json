@@ -14,7 +14,7 @@
           "id": { "type": "string" },
           "kind": {
             "enum": ["REPOSITORY", "ATLAS_DOMAIN_REF", "EXTERNAL_CLAIM_UNVERIFIED"],
-            "description": "REPOSITORY = a real GitHub repository this session worked in directly. ATLAS_DOMAIN_REF = a pointer to an existing atlas-state.json node id, never a data duplicate. EXTERNAL_CLAIM_UNVERIFIED = a project name referenced externally (e.g. by the founder relaying another node) with no independently verifiable artifact yet."
+            "description": "Describes PROVENANCE (how this entry entered the registry), not current verification state — an EXTERNAL_CLAIM_UNVERIFIED entry's kind does not change even after its status is upgraded by new evidence; only its status field does. REPOSITORY = a real GitHub repository this session worked in directly. ATLAS_DOMAIN_REF = a pointer to an existing atlas-state.json node id, never a data duplicate. EXTERNAL_CLAIM_UNVERIFIED = a project name first referenced externally (e.g. by the founder relaying another node), regardless of whether it has since been independently verified."
           },
           "name": { "type": "string" },
           "status": {
@@ -26,7 +26,21 @@
           "verified_by": { "type": "string" },
           "verification_method": { "type": "array", "items": { "type": "string" } },
           "notes": { "type": "string" },
-          "last_verified_at": { "type": "string", "format": "date" }
+          "last_verified_at": { "type": "string", "format": "date" },
+          "evidence_history": {
+            "type": "array",
+            "description": "append-only record of status transitions for this entry, per PROTOCOL.md section 7 (history is not silently rewritten). A status change updates the top-level status/verified_by/verification_method/last_verified_at fields AND appends the prior state here — it never replaces it.",
+            "items": {
+              "type": "object",
+              "required": ["status", "as_of", "verification_method"],
+              "properties": {
+                "status": { "enum": ["ACTIVE", "ARCHIVED", "SOURCE_NOT_INGESTED", "NOT_VERIFIED_IN_THIS_SCOPE", "WAITING_FOR_NEW_EVIDENCE"] },
+                "as_of": { "type": "string", "format": "date" },
+                "verification_method": { "type": "array", "items": { "type": "string" } },
+                "note": { "type": "string" }
+              }
+            }
+          }
         }
       }
     }

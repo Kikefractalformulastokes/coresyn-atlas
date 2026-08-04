@@ -1,4 +1,10 @@
 {
   "generated_from": "registry/person_registry.json",
-  "reviewers": []
+  "reviewers": [
+    {
+      "name": "Kroon",
+      "person_id": "person-kroon",
+      "status": "VERIFIED"
+    }
+  ]
 }

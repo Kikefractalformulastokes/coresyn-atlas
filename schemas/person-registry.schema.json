@@ -26,7 +26,21 @@
           "verified_by": { "type": "string" },
           "verification_method": { "type": "array", "items": { "type": "string" } },
           "notes": { "type": "string" },
-          "last_verified_at": { "type": "string", "format": "date" }
+          "last_verified_at": { "type": "string", "format": "date" },
+          "evidence_history": {
+            "type": "array",
+            "description": "append-only record of status transitions for this entry, per PROTOCOL.md section 7 (history is not silently rewritten). A status change updates the top-level status/verified_by/verification_method/last_verified_at fields AND appends the prior state here — it never replaces it.",
+            "items": {
+              "type": "object",
+              "required": ["status", "as_of", "verification_method"],
+              "properties": {
+                "status": { "enum": ["VERIFIED", "UNVERIFIED_IN_THIS_SCOPE"] },
+                "as_of": { "type": "string", "format": "date" },
+                "verification_method": { "type": "array", "items": { "type": "string" } },
+                "note": { "type": "string" }
+              }
+            }
+          }
         }
       }
     }

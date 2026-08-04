@@ -89,21 +89,29 @@
       "repo_url": null,
       "atlas_domain_ref": null,
       "verified_by": "not independently verified by this session",
-      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
-      "notes": "Referenced in founder communications this session under several names. No independently verifiable repository, artifact, or hash has been found. Recorded here, and in registry/conflict_registry.json, rather than omitted or asserted.",
+      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match", "Gmail search 'CRM OR DPW6 OR \"Cycle 006\" OR \"Cycle 008\"', 2026-08-04: 3 threads matched, all false positives on unrelated content (a real-estate presentation, a generic CRM-software ad, an unrelated forward) — no evidence of the claimed research line"],
+      "notes": "Referenced in founder communications this session under several names. No independently verifiable repository, artifact, or hash has been found across four independent search channels. Recorded here, and in registry/conflict_registry.json, rather than omitted or asserted.",
       "last_verified_at": "2026-08-04"
     },
     {
       "id": "proj-ext-matmerize",
       "kind": "EXTERNAL_CLAIM_UNVERIFIED",
       "name": "Matmerize",
-      "status": "NOT_VERIFIED_IN_THIS_SCOPE",
+      "status": "WAITING_FOR_NEW_EVIDENCE",
       "repo_url": null,
       "atlas_domain_ref": null,
-      "verified_by": "not independently verified by this session",
-      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
-      "notes": "Possibly related to the real, already-tracked atlas-state.json node 'materials' (Materials Intelligence, status: 'reingesta de evidencia pendiente') given name similarity — see proj-materials-domain-xref. This is an unconfirmed hypothesis, not an identity claim; the two are NOT merged as the same project.",
-      "last_verified_at": "2026-08-04"
+      "verified_by": "this session, direct Gmail search",
+      "verification_method": ["Gmail search: 'Matmerize OR Kroon OR NashGate', 2026-08-04 — real thread, ccRecipients hansa.makhija@matmerize.com"],
+      "notes": "Verified as a real company (materials data licensing). Introduced 2026-07-31 by Prof. Rampi Ramprasad (Georgia Tech, rampi.ramprasad@mse.gatech.edu) on a polyVERSE gas-permeability dataset licensing question; Enrique emailed Hansa Makhija (Matmerize, Director of Business Ops & Strategy) 2026-08-01. No reply from Matmerize found yet as of this check — status reflects that, not a concluded relationship. Possibly related to the real, already-tracked atlas-state.json node 'materials' (Materials Intelligence, status: 'reingesta de evidencia pendiente') given name similarity — see proj-materials-domain-xref. That link remains an unconfirmed hypothesis, not an identity claim; the two are NOT merged as the same project — Matmerize is a distinct third-party company, materials-domain-xref is CoreSyn's own internal research domain.",
+      "last_verified_at": "2026-08-04",
+      "evidence_history": [
+        {
+          "status": "NOT_VERIFIED_IN_THIS_SCOPE",
+          "as_of": "2026-08-04",
+          "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
+          "note": "Initial PR #8 status, before this session's own Gmail check. GitHub/Drive/local-branch search alone did not surface the real correspondence, which only exists in Gmail."
+        }
+      ]
     },
     {
       "id": "proj-ext-nashgate",
@@ -113,8 +121,8 @@
       "repo_url": null,
       "atlas_domain_ref": null,
       "verified_by": "not independently verified by this session",
-      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match"],
-      "notes": "Referenced in founder communications this session. No independently verifiable repository, artifact, or hash has been found.",
+      "verification_method": ["GitHub search_repositories: no match", "Google Drive search_files: no match", "local branch search: no match", "Gmail search: 'NashGate', 2026-08-04 — 0 threads found"],
+      "notes": "Referenced in founder communications this session. No independently verifiable repository, artifact, or hash has been found across four independent search channels.",
       "last_verified_at": "2026-08-04"
     }
   ]

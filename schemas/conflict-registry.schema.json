@@ -21,7 +21,8 @@
           "involved_ids": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
           "description": { "type": "string" },
           "state": { "enum": ["OPEN", "UNDER_REVIEW", "RESOLVED", "WONT_FIX"] },
-          "resolution": { "type": "string" }
+          "resolution": { "type": "string" },
+          "canonical_impact": { "type": "string", "description": "explicit statement of whether/which canonical coresyn-atlas file was changed as a result of this conflict — 'UNCHANGED' when the conflict concerns an external artifact this repository does not own" }
         }
       }
     }
