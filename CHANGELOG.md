@@ -4,7 +4,14 @@ Prose record of governance-relevant changes to this repository. This file is han
 
 This changelog starts at the Atlas v1 freeze. Earlier history is the commit log itself (`git log`), not restated here.
 
-## Unreleased — Atlas 1.1 design (this branch)
+## Unreleased — Atlas 1.1 governance infrastructure (PR #7, stacked on PR #6)
+
+- **Design, not merged.** `design/atlas-1.1-registry-guardian` adds Capability Registry, Agent Registry, Master Registry, Conflict Registry (`registry/*.json` + `schemas/*.json`) and `tools/registry_guardian.py`, a stdlib-only consistency checker (duplicate ids, cross-registry id collisions, dangling capability/instance/path references). See `ATLAS_1_1_GOVERNANCE_INFRA.md`.
+- Agent Registry seeded with only verifiable entries: the four `PROTOCOL.md` §1 roles plus `codex-evidence-executor-01` (this session's own disclosed identity, now committed at `governance/CODEX_EVIDENCE_EXECUTOR_ROLE.json`). Deliberately does not include `Node02`/`Matmerize`/`Kroon`/`NashGate` or any CRM/DPW6 agent-mesh entity referenced in founder review of PR #6 — this session found no independently verifiable evidence for any of them, consistent with every prior search this session.
+- Registry Guardian's first run against the real repository found one real bootstrapping conflict (`master_registry.json` referenced `conflict_registry.json` before that file existed), logged it, and a second run after resolution reports 0 conflicts, exit 0.
+- Per the founder's explicit decision, PR #6 stays draft/unmerged as-is; this PR is also not merged as part of this delivery. Both are intended to merge together once this infrastructure is reviewed.
+
+## Unreleased — Atlas 1.1 design (PR #6)
 
 - **Design, not merged.** `design/atlas-1.1-pipelines` adds six subsystems on top of the existing canonical files: Registry Index, Dependency Graph, Research Genome (all three derived by stdlib-only generator scripts from `evidence-registry.json` / `atlas-state.json`), and Scientific Pipeline, Reviewer Pipeline, Commercial Pipeline (all three new empty tracking scaffolds with schemas, seeded with no entries — no history was fabricated to fill them). See `ATLAS_1_1_DESIGN.md`.
 - `PROTOCOL.md` gains section 11 ("Change management"), a pure append ratifying six rules the founder set for this phase: no mixed-scope PRs, one evidence item per branch, a five-part merge gate (branch + PR + clean clone + independent re-verification + rollback instructions), Evidence Registry entry independence, mandatory post-merge regeneration of derived files, and extension discipline for new subsystems. Sections 1-10 are unchanged.

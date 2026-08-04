@@ -1,0 +1,17 @@
+{
+  "conflicts": [
+    {
+      "conflict_id": "conf-master-registry-dangling-ref-117b9de1aab7",
+      "description": "master_registry.json entry 'conflict_registry' references path='registry/conflict_registry.json', which does not exist on disk",
+      "detected_at": "2026-08-04",
+      "detected_by": "tools/registry_guardian.py",
+      "involved_ids": [
+        "conflict_registry",
+        "registry/conflict_registry.json"
+      ],
+      "state": "RESOLVED",
+      "type": "MASTER_REGISTRY_DANGLING_REF",
+      "resolution": "Bootstrapping artifact: this conflict was self-detected on the Guardian's first run, before this seed file existed. The Guardian created this file as a side effect of that same run (see reconcile_conflict_registry). Resolved by the file's own existence; left in the ledger rather than deleted, per the no-silent-deletion rule this registry itself follows."
+    }
+  ]
+}

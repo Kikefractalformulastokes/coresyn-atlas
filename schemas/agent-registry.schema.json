@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Agent Registry",
+  "description": "Roles and concrete session identities that act under PROTOCOL.md. An entry may be an abstract protocol role (e.g. CMOS) or a concrete instance of one (e.g. a specific executor session), linked via instance_of. Every capability an entry claims must exist in capability_registry.json.",
+  "type": "object",
+  "required": ["agents"],
+  "properties": {
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["agent_id", "kind", "capabilities", "writes_registry", "external_actions", "verified_by", "verification_method", "status"],
+        "properties": {
+          "agent_id": { "type": "string" },
+          "kind": { "enum": ["HUMAN", "PROTOCOL_ROLE", "SESSION_INSTANCE"] },
+          "instance_of": { "type": "string", "description": "agent_id of the abstract PROTOCOL_ROLE this entry instantiates, if kind is SESSION_INSTANCE" },
+          "capabilities": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+            "description": "must each match an id in capability_registry.json"
+          },
+          "writes_registry": { "type": "boolean", "description": "can this agent write canonical registry files directly, without going through a PR + founder merge" },
+          "external_actions": { "type": "boolean", "description": "can this agent take actions visible outside this repository (publish, email, pay, contract) on its own" },
+          "verified_by": { "type": "string" },
+          "verification_method": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "how this entry's existence/role was confirmed, e.g. 'PROTOCOL.md section reference', 'session self-declaration + founder acknowledgment'"
+          },
+          "status": { "enum": ["ACTIVE", "DEFINED_NOT_YET_INSTANTIATED", "RETIRED"] },
+          "source_ref": { "type": "string", "description": "file or document defining this agent" },
+          "last_verified_at": { "type": "string", "format": "date" },
+          "explicit_disclaimers": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

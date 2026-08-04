@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Master Registry",
+  "description": "Pure index. Points at the canonical/derived registry files that exist; stores no data of its own. Regenerable, but hand-maintained here since the file set changes rarely — tools/registry_guardian.py verifies every ref resolves to a real path on every run.",
+  "type": "object",
+  "required": ["registries", "not_yet_implemented"],
+  "properties": {
+    "registries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "path", "schema"],
+        "properties": {
+          "name": { "type": "string" },
+          "path": { "type": "string", "description": "repo-relative path" },
+          "schema": { "type": ["string", "null"], "description": "repo-relative path to the schema this file validates against, or null for pre-Atlas-1.1 canonical files that predate a JSON Schema (evidence-registry.json, atlas-state.json) — null is honest here, not a placeholder for a schema that should exist but doesn't" },
+          "kind": { "enum": ["CANONICAL", "DERIVED", "TRACKING_SCAFFOLD"] }
+        }
+      }
+    },
+    "not_yet_implemented": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "named registries proposed but not built in this or any prior PR — kept visible here rather than silently dropped from the design conversation"
+    }
+  }
+}
