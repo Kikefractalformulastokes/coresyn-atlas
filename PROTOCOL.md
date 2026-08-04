@@ -84,3 +84,14 @@ A reviewer or umbrella institution receives a bounded package and a precise ques
 `Paper -> Reproduction -> Stress test -> Improvement -> Evidence -> External validation -> Publication -> SEO -> Product`
 
 A later stage cannot imply completion of an earlier gate.
+
+## 11. Change management (ratified 2026-08-04)
+
+This section extends the protocol; it does not amend or supersede sections 1-10.
+
+1. **No mixed-scope pull requests.** A pull request that changes the canonical manifest (or the files it covers), a pull request that changes `evidence-registry.json`, and a pull request that changes governance documents (this file, role definitions, schemas) are never combined. Each is its own branch and its own pull request.
+2. **One evidence item, one branch.** Each new or amended Evidence Registry entry is proposed on its own branch and reviewed on its own pull request, independent of any other entry. Entries are never batched.
+3. **Merge gate.** No merge into `main` without, in order: a dedicated branch, an open pull request, a fresh independent clone (not the authoring working directory), independent re-hashing (and re-execution where the change is reproducible evidence) of every changed artifact, and written rollback instructions. A merge is not authorized by an executor; it requires explicit founder sign-off referencing the specific pull request.
+4. **Evidence Registry independence.** Each entry in `evidence-registry.json` stands on its own evidence chain per section 3. Adding, amending or reproducing one entry never implies a status change for any other entry, and no entry's evidence needs are satisfied by another entry's package.
+5. **Post-merge propagation.** After a merge that changes `evidence-registry.json` or `atlas-state.json`, `CHANGELOG.md`, the Registry Index, and the Dependency Graph are regenerated from the merged canonical files before the branch is considered closed. Regeneration is derivation from canonical sources, never hand-editing of the derived files.
+6. **Extension discipline.** New Atlas subsystems (see `ATLAS_1_1_DESIGN.md`) are governed by sections 1-10 exactly as existing subsystems are. A subsystem addition is delivered as design plus the pull request(s) needed to scaffold it; it is not merged automatically, and it does not relax any evidence, lifecycle or claims rule defined above.

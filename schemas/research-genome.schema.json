@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Research Genome",
+  "description": "Derived, regenerable view mapping each evidence-registry.json item to its position on the PROTOCOL.md section 10 publication chain. Never hand-edited; regenerate with tools/generate_research_genome.py. Does not alter or gate any item's real status.",
+  "type": "object",
+  "required": ["generated_from", "publication_chain", "mapping_table_version", "items"],
+  "properties": {
+    "generated_from": { "const": "evidence-registry.json" },
+    "publication_chain": {
+      "type": "array",
+      "description": "verbatim from PROTOCOL.md section 10, in order",
+      "items": { "type": "string" },
+      "const": ["Paper", "Reproduction", "Stress test", "Improvement", "Evidence", "External validation", "Publication", "SEO", "Product"]
+    },
+    "mapping_table_version": { "type": "string", "description": "identifies which documented status->stage table in ATLAS_1_1_DESIGN.md section 3 was used" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "registry_status", "stage"],
+        "properties": {
+          "evidence_id": { "type": "string" },
+          "registry_status": { "type": "string" },
+          "stage": {
+            "type": "string",
+            "description": "one of publication_chain's values, or UNMAPPED if registry_status has no documented mapping"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Registry Index",
+  "description": "Derived, regenerable index over evidence-registry.json. Never hand-edited; regenerate with tools/generate_registry_index.py.",
+  "type": "object",
+  "required": ["generated_from", "source_version", "generated_at_commit", "by_category", "by_branch", "by_status", "by_visibility", "total_items"],
+  "properties": {
+    "generated_from": { "const": "evidence-registry.json" },
+    "source_version": { "type": "string", "description": "the 'version' field read from evidence-registry.json at generation time" },
+    "generated_at_commit": { "type": "string", "description": "git commit hash of the canonical file this index was derived from, or 'UNCOMMITTED' if run against a dirty working tree" },
+    "total_items": { "type": "integer", "minimum": 0 },
+    "by_category": {
+      "type": "object",
+      "description": "map of category -> array of item ids",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    },
+    "by_branch": {
+      "type": "object",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    },
+    "by_status": {
+      "type": "object",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    },
+    "by_visibility": {
+      "type": "object",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Dependency Graph",
+  "description": "Derived, regenerable graph merging atlas-state.json component topology with evidence-registry.json branch links. Never hand-edited; regenerate with tools/generate_dependency_graph.py.",
+  "type": "object",
+  "required": ["generated_from", "nodes", "edges", "evidence_links", "unlinked_items"],
+  "properties": {
+    "generated_from": {
+      "type": "array",
+      "items": { "type": "string" },
+      "const": ["atlas-state.json", "evidence-registry.json"]
+    },
+    "nodes": {
+      "type": "array",
+      "description": "verbatim copy of atlas-state.json nodes (id, name, state, status, deps, year)",
+      "items": { "type": "object", "required": ["id"] }
+    },
+    "edges": {
+      "type": "array",
+      "description": "verbatim copy of atlas-state.json edges (from, to)",
+      "items": {
+        "type": "object",
+        "required": ["from", "to"],
+        "properties": { "from": { "type": "string" }, "to": { "type": "string" } }
+      }
+    },
+    "evidence_links": {
+      "type": "array",
+      "description": "one entry per evidence-registry.json item whose 'branch' field exactly matches an atlas-state.json node id",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "node_id"],
+        "properties": {
+          "evidence_id": { "type": "string" },
+          "node_id": { "type": "string" }
+        }
+      }
+    },
+    "unlinked_items": {
+      "type": "array",
+      "description": "evidence-registry.json item ids whose 'branch' field does not exactly match any atlas-state.json node id. Not guessed or fuzzy-matched.",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "branch_value"],
+        "properties": {
+          "evidence_id": { "type": "string" },
+          "branch_value": { "type": "string" }
+        }
+      }
+    }
+  }
+}
