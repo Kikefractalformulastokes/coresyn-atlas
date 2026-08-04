@@ -1,0 +1,17 @@
+{
+  "capabilities": [
+    { "id": "AUTHORIZE_MERGE", "description": "Give final sign-off for a pull request to merge into main, per PROTOCOL.md section 11.3.", "risk_tier": "HIGH" },
+    { "id": "AUTHORIZE_COMMERCIAL_MOTION", "description": "Authorize a commercial-pipeline motion (contracts, exclusivity, IP assignment, payment terms), per PROTOCOL.md section 9.", "risk_tier": "HIGH" },
+    { "id": "AUTHORIZE_EXTERNAL_REVIEW_CONTRACT", "description": "Authorize the contractual terms of sending evidence to an external reviewer, per PROTOCOL.md section 9.", "risk_tier": "HIGH" },
+    { "id": "DEFINE_CLAIM_SCOPE", "description": "Determine scientific priority and the exact falsifiable scope of a claim, per PROTOCOL.md section 1.", "risk_tier": "MEDIUM" },
+    { "id": "SET_EVIDENCE_REQUIREMENTS", "description": "Determine what evidence a claim needs to advance, per PROTOCOL.md section 1.", "risk_tier": "MEDIUM" },
+    { "id": "STORE_PROVENANCE", "description": "Hold the canonical graph, provenance chain, contradictions and handoffs, per PROTOCOL.md section 1's Atlas role.", "risk_tier": "MEDIUM" },
+    { "id": "EXECUTE_AUTHORIZED_TASK", "description": "Carry out a task already scoped and claimed under the section 2 lifecycle, and record evidence for it. Never self-approves.", "risk_tier": "MEDIUM" },
+    { "id": "CAN_EXECUTE_PYTHON", "description": "Run code locally within a session/sandbox.", "risk_tier": "LOW" },
+    { "id": "CAN_WRITE_CANONICAL_REGISTRY", "description": "Write directly to a canonical registry file without a PR + founder merge gate.", "risk_tier": "HIGH" },
+    { "id": "CAN_MERGE_PR", "description": "Merge a pull request into main.", "risk_tier": "HIGH" },
+    { "id": "CAN_PUBLISH", "description": "Push content to a public-facing surface (site, paper, registry visibility flip to public).", "risk_tier": "HIGH" },
+    { "id": "CAN_WRITE_EXTERNAL_STORAGE", "description": "Write files to a third-party store outside this repository (e.g. Google Drive) on the agent's own initiative.", "risk_tier": "MEDIUM" },
+    { "id": "CAN_TAKE_EXTERNAL_ACTION", "description": "Take any action visible outside this repository on its own initiative (email, publish, pay, contract) without a human relaying it.", "risk_tier": "HIGH" }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Conflict Registry",
+  "description": "Ledger of consistency conflicts detected across canonical/derived registries by tools/registry_guardian.py. A conflict is never deleted, only resolved (state change, append-only history) — mirrors PROTOCOL.md section 7's 'history is not silently rewritten'.",
+  "type": "object",
+  "required": ["conflicts"],
+  "properties": {
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["conflict_id", "type", "detected_at", "detected_by", "involved_ids", "description", "state"],
+        "properties": {
+          "conflict_id": { "type": "string" },
+          "type": {
+            "enum": ["DUPLICATE_ID", "ID_NAMESPACE_COLLISION", "HASH_MISMATCH", "COMPETING_STATUS", "SCHEMA_INVALID", "MASTER_REGISTRY_DANGLING_REF"]
+          },
+          "detected_at": { "type": "string", "format": "date" },
+          "detected_by": { "type": "string", "description": "e.g. tools/registry_guardian.py run reference" },
+          "involved_ids": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "description": { "type": "string" },
+          "state": { "enum": ["OPEN", "UNDER_REVIEW", "RESOLVED", "WONT_FIX"] },
+          "resolution": { "type": "string" }
+        }
+      }
+    }
+  }
+}

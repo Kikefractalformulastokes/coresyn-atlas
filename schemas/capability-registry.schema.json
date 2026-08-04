@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Capability Registry",
+  "description": "Catalog of capability flags an Agent Registry entry may claim. This file defines what each flag means and how risky it is; it does not grant capabilities to anyone. Hand-maintained: a new capability is proposed here before any agent entry can claim it.",
+  "type": "object",
+  "required": ["capabilities"],
+  "properties": {
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "risk_tier"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+          "description": { "type": "string" },
+          "risk_tier": {
+            "enum": ["LOW", "MEDIUM", "HIGH"],
+            "description": "HIGH = external-facing or canonical-write action (publish, merge, pay, contract); MEDIUM = local execution or non-canonical write; LOW = read-only / advisory"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "agents": [
+    {
+      "agent_id": "enrique",
+      "kind": "HUMAN",
+      "capabilities": ["AUTHORIZE_MERGE", "AUTHORIZE_COMMERCIAL_MOTION", "AUTHORIZE_EXTERNAL_REVIEW_CONTRACT"],
+      "writes_registry": false,
+      "external_actions": true,
+      "verified_by": "PROTOCOL.md section 1",
+      "verification_method": ["protocol document reference"],
+      "status": "ACTIVE",
+      "source_ref": "PROTOCOL.md#1-roles",
+      "last_verified_at": "2026-08-04",
+      "explicit_disclaimers": [
+        "external_actions=true reflects human authority outside this repository (commercial, legal, disclosure decisions); it is not a machine-execution capability"
+      ]
+    },
+    {
+      "agent_id": "coresyn-scientific-brain",
+      "kind": "PROTOCOL_ROLE",
+      "capabilities": ["DEFINE_CLAIM_SCOPE", "SET_EVIDENCE_REQUIREMENTS"],
+      "writes_registry": false,
+      "external_actions": false,
+      "verified_by": "PROTOCOL.md section 1",
+      "verification_method": ["protocol document reference"],
+      "status": "DEFINED_NOT_YET_INSTANTIATED",
+      "source_ref": "PROTOCOL.md#1-roles",
+      "last_verified_at": "2026-08-04",
+      "explicit_disclaimers": [
+        "No distinct running session or system has been independently verified as an active instance of this role as of this record's date; it exists in this registry as a defined protocol role only"
+      ]
+    },
+    {
+      "agent_id": "atlas",
+      "kind": "PROTOCOL_ROLE",
+      "capabilities": ["STORE_PROVENANCE"],
+      "writes_registry": false,
+      "external_actions": false,
+      "verified_by": "PROTOCOL.md section 1; this repository's own canonical files (atlas-state.json, evidence-registry.json) implement the role",
+      "verification_method": ["protocol document reference", "repository inspection"],
+      "status": "ACTIVE",
+      "source_ref": "PROTOCOL.md#1-roles",
+      "last_verified_at": "2026-08-04",
+      "explicit_disclaimers": [
+        "Atlas here denotes the canonical data-store role (this repository), not an autonomous agent with its own write access — all writes to files this role stores happen via human-approved pull requests",
+        "'Atlas 3.33' is not a version of this role that has been verified to exist"
+      ]
+    },
+    {
+      "agent_id": "cmos",
+      "kind": "PROTOCOL_ROLE",
+      "capabilities": ["EXECUTE_AUTHORIZED_TASK"],
+      "writes_registry": false,
+      "external_actions": false,
+      "verified_by": "PROTOCOL.md section 1",
+      "verification_method": ["protocol document reference"],
+      "status": "ACTIVE",
+      "source_ref": "PROTOCOL.md#1-roles",
+      "last_verified_at": "2026-08-04",
+      "explicit_disclaimers": [
+        "CMOS executes and records evidence but never approves its own work, per PROTOCOL.md section 1 — its writes are proposals (branches/PRs), not canonical merges"
+      ]
+    },
+    {
+      "agent_id": "codex-evidence-executor-01",
+      "kind": "SESSION_INSTANCE",
+      "instance_of": "cmos",
+      "capabilities": ["EXECUTE_AUTHORIZED_TASK", "CAN_EXECUTE_PYTHON"],
+      "writes_registry": false,
+      "external_actions": false,
+      "verified_by": "founder (Enrique), this session, 2026-08-04",
+      "verification_method": ["founder assignment", "session self-declaration", "demonstrated track record — see source_ref"],
+      "status": "ACTIVE",
+      "source_ref": "governance/CODEX_EVIDENCE_EXECUTOR_ROLE.json",
+      "last_verified_at": "2026-08-04"
+    }
+  ]
+}
