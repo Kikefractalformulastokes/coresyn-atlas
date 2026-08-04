@@ -1,0 +1,56 @@
+{
+  "artifact_id": "CORE-AERO-001",
+  "repository": "github.com/Kikefractalformulastokes/coresyn-core-aero-001-verifier",
+  "commit": "88d06e74bae6bbebacd63d1fcc75f90fc79457d2",
+  "packet_filename": "CORE-AERO-001_VERIFIER_PACKET.zip",
+  "packet_sha256": "461b49901520d0c4faf06b1e1669408329e19436251d489a89c5cc401cb541d0",
+  "environment": {
+    "os": "Linux vm 6.18.5-fc-v18 x86_64 GNU/Linux",
+    "python_version": "3.11.15",
+    "python_implementation": "CPython",
+    "matches_architecture_pin": true,
+    "dependency_lock": "stdlib only (json, math, hashlib, os, sys) — zero third-party deps"
+  },
+  "commands": ["bash verify.sh"],
+  "run_1_exit": 0,
+  "run_2_exit": 0,
+  "result_hash_run_1": "0da1be96b7f9d5ab9bdbf13a31c83d86d945930b9c4feab47fc6d1faaff35ef2",
+  "result_hash_run_2": "0da1be96b7f9d5ab9bdbf13a31c83d86d945930b9c4feab47fc6d1faaff35ef2",
+  "deterministic_across_runs": true,
+  "nan_inf_check": "clean — one grep false-positive on the substring 'nan' inside the word 'provenance', no actual NaN/Inf values in outputs",
+  "warnings_check": "clean under python3 -W error",
+  "model_class": "D — reduced-order analytical model (confirmed by reading reproduce_naca0012.py directly, not by name): thin-airfoil/Glauert-Fourier theory, composite Simpson integration, pure Python stdlib, no numpy/BLAS, no mesh, no boundary conditions, no iterative solver, no flow field output — produces only a derived lift-slope coefficient",
+  "physics_scope": "small-angle inviscid lift-curve slope only; no viscosity, no stall, no thickness-lift correction, no compressibility",
+  "reference_value": 6.283185307179586,
+  "recorded_reference_from_manifest": 6.283187,
+  "observed_value": 6.2831853072,
+  "absolute_difference_vs_recorded": 1.6928e-06,
+  "tolerance": 0.0001,
+  "within_tolerance": true,
+  "limitations": [
+    "Independent clean-room reimplementation — NOT byte-identical to a sealed original artifact (a different, unavailable original output hash 95ca4b38... is referenced in the packet's own manifest.json but not present in this build environment)",
+    "Reduced-order inviscid thin-airfoil model only — not valid outside small-angle, attached-flow assumptions",
+    "Bit-for-bit guarantee holds only under the stated architecture pin (CPython 3.11.x, pure-Python, no BLAS)",
+    "Self-declared — no third party has executed or reviewed this packet as of this record"
+  ],
+  "blocked_overclaims_per_manifest": [
+    "externally validated",
+    "independently reproduced (by a third party)",
+    "byte-identical to the sealed original CORE-AERO-001 artifact",
+    "NASA-validated",
+    "TRL 3-4 / industrial 3D / RANS-equivalent"
+  ],
+  "explicit_negatives": {
+    "is_cfd": false,
+    "is_mesh_based": false,
+    "produces_flow_field": false,
+    "industrially_validated": false,
+    "nasa_validated": false,
+    "externally_replicated": false
+  },
+  "protocol_lifecycle_state": "DONE",
+  "protocol_evidence_level": "E2 — internal reproduction with frozen hashes and stated limitations",
+  "external_review_status": "PENDING — no independent reviewer has run or reviewed this packet",
+  "next_gate": "E4: an independent reviewer (not this session, not the packet's author) runs verify.sh in their own environment and signs EXTERNAL_REVIEWER_ATTESTATION_TEMPLATE.md, moving the coordinate from A0 (self-declared) toward A2",
+  "verified_by": "independent audit, this session, 2026-08-04 — executed twice from an unmodified extraction of the packet, hashes and exit codes recorded directly from command output, not transcribed from the packet's own claims"
+}
