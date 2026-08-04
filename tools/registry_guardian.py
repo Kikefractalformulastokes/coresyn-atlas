@@ -51,13 +51,19 @@ def check():
     conflicts = []
 
     evidence, _ = load("evidence-registry.json")
+    atlas_state, _ = load("atlas-state.json")
     agents, _ = load("registry/agent_registry.json")
     capabilities, _ = load("registry/capability_registry.json")
+    projects, _ = load("registry/project_registry.json")
+    people, _ = load("registry/person_registry.json")
     master, _ = load("registry/master_registry.json")
 
+    node_ids = [n["id"] for n in atlas_state.get("nodes", [])] if atlas_state else []
     evidence_ids = [i["id"] for i in evidence.get("items", [])] if evidence else []
     agent_ids = [a["agent_id"] for a in agents.get("agents", [])] if agents else []
     capability_ids = [c["id"] for c in capabilities.get("capabilities", [])] if capabilities else []
+    project_ids = [p["id"] for p in projects.get("projects", [])] if projects else []
+    person_ids = [p["id"] for p in people.get("people", [])] if people else []
 
     if evidence:
         conflicts += find_duplicate_ids(evidence["items"], "id", "evidence-registry.json")
@@ -65,15 +71,53 @@ def check():
         conflicts += find_duplicate_ids(agents["agents"], "agent_id", "registry/agent_registry.json")
     if capabilities:
         conflicts += find_duplicate_ids(capabilities["capabilities"], "id", "registry/capability_registry.json")
+    if projects:
+        conflicts += find_duplicate_ids(projects["projects"], "id", "registry/project_registry.json")
+    if people:
+        conflicts += find_duplicate_ids(people["people"], "id", "registry/person_registry.json")
 
-    # cross-namespace collisions: an id must not be reused as both an evidence id and an agent id
-    overlap = set(evidence_ids) & set(agent_ids)
-    for val in overlap:
-        conflicts.append({
-            "type": "ID_NAMESPACE_COLLISION",
-            "involved_ids": [val],
-            "description": f"id '{val}' is used in both evidence-registry.json and registry/agent_registry.json",
-        })
+    # cross-namespace collisions: an id must not be reused across evidence / agent / project / person ids
+    namespaces = {
+        "evidence-registry.json": set(evidence_ids),
+        "registry/agent_registry.json": set(agent_ids),
+        "registry/project_registry.json": set(project_ids),
+        "registry/person_registry.json": set(person_ids),
+    }
+    ns_names = list(namespaces.keys())
+    for i in range(len(ns_names)):
+        for j in range(i + 1, len(ns_names)):
+            a_name, b_name = ns_names[i], ns_names[j]
+            overlap = namespaces[a_name] & namespaces[b_name]
+            for val in overlap:
+                conflicts.append({
+                    "type": "ID_NAMESPACE_COLLISION",
+                    "involved_ids": [val],
+                    "description": f"id '{val}' is used in both {a_name} and {b_name}",
+                })
+
+    # every project's atlas_domain_ref (kind=ATLAS_DOMAIN_REF) must resolve to a real atlas-state.json node
+    if projects and atlas_state:
+        node_set = set(node_ids)
+        for p in projects["projects"]:
+            ref = p.get("atlas_domain_ref")
+            if ref and ref not in node_set:
+                conflicts.append({
+                    "type": "MASTER_REGISTRY_DANGLING_REF",
+                    "involved_ids": [p["id"], ref],
+                    "description": f"project '{p['id']}' has atlas_domain_ref='{ref}', which is not a known atlas-state.json node id",
+                })
+
+    # every person's agent_registry_ref must resolve to a real agent
+    if people and agents:
+        agent_set = set(agent_ids)
+        for p in people["people"]:
+            ref = p.get("agent_registry_ref")
+            if ref and ref not in agent_set:
+                conflicts.append({
+                    "type": "MASTER_REGISTRY_DANGLING_REF",
+                    "involved_ids": [p["id"], ref],
+                    "description": f"person '{p['id']}' has agent_registry_ref='{ref}', which is not a known agent_id",
+                })
 
     # every agent capability must exist in the capability registry
     if agents and capabilities:

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Reviewer Registry",
+  "description": "Derived, regenerable view: registry/person_registry.json entries whose roles include REVIEWER. Never hand-edited; regenerate with tools/generate_reviewer_registry.py. This is WHO could review (identities); PROTOCOL.md section 9's actual review requests are tracked separately in pipelines/reviewer-pipeline.json (PR #6) — the two are not merged into one file so that identity data and request/disposition data don't share a single source of truth.",
+  "type": "object",
+  "required": ["generated_from", "reviewers"],
+  "properties": {
+    "generated_from": { "const": "registry/person_registry.json" },
+    "reviewers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["person_id", "name", "status"],
+        "properties": {
+          "person_id": { "type": "string" },
+          "name": { "type": "string" },
+          "status": { "enum": ["VERIFIED", "UNVERIFIED_IN_THIS_SCOPE"] }
+        }
+      }
+    }
+  }
+}

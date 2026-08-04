@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Person Registry",
+  "description": "Individuals referenced in CoreSyn governance or research, distinct from Agent Registry (executable identities). A person with an Agent Registry counterpart (e.g. the founder) is cross-referenced via agent_registry_ref, never duplicated as separate unlinked data.",
+  "type": "object",
+  "required": ["people"],
+  "properties": {
+    "people": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "status", "roles", "verified_by", "verification_method"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "status": {
+            "enum": ["VERIFIED", "UNVERIFIED_IN_THIS_SCOPE"],
+            "description": "UNVERIFIED_IN_THIS_SCOPE does not assert the person doesn't exist, only that this session found no independently verifiable identity, affiliation or artifact for them"
+          },
+          "roles": {
+            "type": "array",
+            "items": { "enum": ["FOUNDER", "REVIEWER"] },
+            "description": "roles/reviewer_registry.json is derived by filtering people whose roles includes REVIEWER"
+          },
+          "agent_registry_ref": { "type": ["string", "null"], "description": "must resolve to a real registry/agent_registry.json agent_id if set" },
+          "verified_by": { "type": "string" },
+          "verification_method": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" },
+          "last_verified_at": { "type": "string", "format": "date" },
+          "evidence_history": {
+            "type": "array",
+            "description": "append-only record of status transitions for this entry, per PROTOCOL.md section 7 (history is not silently rewritten). A status change updates the top-level status/verified_by/verification_method/last_verified_at fields AND appends the prior state here — it never replaces it.",
+            "items": {
+              "type": "object",
+              "required": ["status", "as_of", "verification_method"],
+              "properties": {
+                "status": { "enum": ["VERIFIED", "UNVERIFIED_IN_THIS_SCOPE"] },
+                "as_of": { "type": "string", "format": "date" },
+                "verification_method": { "type": "array", "items": { "type": "string" } },
+                "note": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

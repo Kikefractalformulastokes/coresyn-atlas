@@ -10,10 +10,12 @@
     { "name": "research_genome", "path": "pipelines/research-genome.json", "schema": "schemas/research-genome.schema.json", "kind": "DERIVED" },
     { "name": "scientific_pipeline", "path": "pipelines/scientific-pipeline.json", "schema": "schemas/scientific-pipeline.schema.json", "kind": "TRACKING_SCAFFOLD" },
     { "name": "reviewer_pipeline", "path": "pipelines/reviewer-pipeline.json", "schema": "schemas/reviewer-pipeline.schema.json", "kind": "TRACKING_SCAFFOLD" },
-    { "name": "commercial_pipeline", "path": "pipelines/commercial-pipeline.json", "schema": "schemas/commercial-pipeline.schema.json", "kind": "TRACKING_SCAFFOLD" }
+    { "name": "commercial_pipeline", "path": "pipelines/commercial-pipeline.json", "schema": "schemas/commercial-pipeline.schema.json", "kind": "TRACKING_SCAFFOLD" },
+    { "name": "project_registry", "path": "registry/project_registry.json", "schema": "schemas/project-registry.schema.json", "kind": "CANONICAL" },
+    { "name": "person_registry", "path": "registry/person_registry.json", "schema": "schemas/person-registry.schema.json", "kind": "CANONICAL" },
+    { "name": "reviewer_registry", "path": "registry/reviewer_registry.json", "schema": "schemas/reviewer-registry.schema.json", "kind": "DERIVED" }
   ],
   "not_yet_implemented": [
-    "project_registry — proposed (CRM, NSMDS, Matmerize, Kroon, etc. as project-level entries) but not built: no verified project-level artifact exists yet for most named candidates beyond NSMDS/RiesgoDeObra, which already live as their own repositories rather than registry entries. Deferred rather than seeded with unverified project names.",
     "human_approval_gate — not a separate file: already enforced structurally by commercial-pipeline.schema.json's required founder_authorization field (PR #6) and by PROTOCOL.md section 11.3's merge gate. A dedicated registry would duplicate, not add, information."
   ]
 }

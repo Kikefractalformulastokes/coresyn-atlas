@@ -12,6 +12,61 @@
       "state": "RESOLVED",
       "type": "MASTER_REGISTRY_DANGLING_REF",
       "resolution": "Bootstrapping artifact: this conflict was self-detected on the Guardian's first run, before this seed file existed. The Guardian created this file as a side effect of that same run (see reconcile_conflict_registry). Resolved by the file's own existence; left in the ledger rather than deleted, per the no-silent-deletion rule this registry itself follows."
+    },
+    {
+      "conflict_id": "conf-ext-claim-crm-cfd",
+      "type": "EXTERNAL_CLAIM_UNVERIFIED",
+      "detected_at": "2026-08-04",
+      "detected_by": "founder review of PR #6 (human-relayed claim, not machine-detected)",
+      "involved_ids": ["proj-ext-crm-cfd"],
+      "description": "Founder communications this session referenced 'CRM CFD' / 'CRM/DPW6' / 'CRM Cycle 006-008b' as an existing research line. This session's independent searches (GitHub, Google Drive, local branches) found no matching repository, artifact, or hash.",
+      "state": "UNDER_REVIEW"
+    },
+    {
+      "conflict_id": "conf-ext-claim-matmerize",
+      "type": "EXTERNAL_CLAIM_UNVERIFIED",
+      "detected_at": "2026-08-04",
+      "detected_by": "founder review of PR #6 (human-relayed claim, not machine-detected)",
+      "involved_ids": ["proj-ext-matmerize"],
+      "description": "Founder communications this session referenced 'Matmerize' as an existing project. Not independently verified. See registry/project_registry.json proj-ext-matmerize for an unconfirmed name-similarity hypothesis linking it to the real atlas-state.json node 'materials' -- not asserted as the same entity.",
+      "state": "UNDER_REVIEW"
+    },
+    {
+      "conflict_id": "conf-ext-claim-nashgate",
+      "type": "EXTERNAL_CLAIM_UNVERIFIED",
+      "detected_at": "2026-08-04",
+      "detected_by": "founder review of PR #6 (human-relayed claim, not machine-detected)",
+      "involved_ids": ["proj-ext-nashgate"],
+      "description": "Founder communications this session referenced 'NashGate' as an existing project. This session's independent searches found no matching repository, artifact, or hash.",
+      "state": "UNDER_REVIEW"
+    },
+    {
+      "conflict_id": "conf-ext-claim-kroon",
+      "type": "EXTERNAL_CLAIM_UNVERIFIED",
+      "detected_at": "2026-08-04",
+      "detected_by": "founder review of PR #6 (human-relayed claim, not machine-detected)",
+      "involved_ids": ["person-kroon"],
+      "description": "Founder communications this session referenced 'Kroon' as a person associated with the same unverified claims as CRM/Matmerize/NashGate. This session found no independently verifiable identity or affiliation.",
+      "state": "UNDER_REVIEW"
+    },
+    {
+      "conflict_id": "conf-ext-claim-node02",
+      "type": "EXTERNAL_CLAIM_UNVERIFIED",
+      "detected_at": "2026-08-04",
+      "detected_by": "founder review of PR #6 (human-relayed claim, not machine-detected)",
+      "involved_ids": ["node02"],
+      "description": "Founder communications this session referenced a 'Node02' as another AI session/node producing evidence. No registry entry exists for it in registry/agent_registry.json or elsewhere in this repository -- 'node02' here is a bare label, not a resolvable id, precisely because it has no corroborated home in any registry yet.",
+      "state": "UNDER_REVIEW"
+    },
+    {
+      "conflict_id": "conf-hash-mismatch-coresyn-master-registry-v2-proposed",
+      "type": "HASH_MISMATCH",
+      "detected_at": "2026-08-04",
+      "detected_by": "this session, direct verification -- downloaded the artifact from Google Drive (file id 11y_4Img_iz3Bp_UN0GVsDZJl5Jn1bPQc) twice independently, computed SHA-256 both times, byte-identical both times",
+      "involved_ids": ["CORESYN_MASTER_REGISTRY.v2.proposed.json"],
+      "description": "A separate handoff artifact (SHA256SUMS_MASTER_REGISTRY_HANDOFF.txt, Drive file id 1ZIZ66fwbYTUXi7y0dEmccrZIFYDHdDAl, produced by a node self-identifying as CODEX-NODE-03) claims CORESYN_MASTER_REGISTRY.v2.proposed.json has SHA-256 560be9b33ee0d07fefe2723bbfef6c99fa0477ec65ba424d57d3fe4154d5ee29 -- the same value is also embedded in that node's own ATLAS_MASTER_REGISTRY_PATCH_PROPOSAL.json (Drive file id 1wV6-fFlUOhEistz3zBBkc6f6H1TN3rXa). This session downloaded the actual file from Drive (file id 11y_4Img_iz3Bp_UN0GVsDZJl5Jn1bPQc) and independently computed 8d77f215754614af18f666e480039c4db99e4b3a0fa21199189f68f8b8cd0e1d -- a genuine mismatch, reproduced on two separate downloads. Downloaded size (2254 bytes) matches Drive's own declared fileSize exactly, ruling out a truncated download. This is NOT one of the two .md files in the same handoff that are unverifiable due to Google Docs export-format conversion (those are a separate, expected, non-conflict situation) -- this is a real flat application/json file with a genuine byte-level discrepancy. Possible causes (file edited after the manifest was computed; manifest not regenerated after a JSON regeneration; a different version was uploaded) cannot be distinguished with information available to this session, and none is asserted.",
+      "state": "UNDER_REVIEW",
+      "canonical_impact": "UNCHANGED -- this artifact is not part of coresyn-atlas's canonical registries (evidence-registry.json, atlas-state.json, or any registry/*.json file in this repository). It is an external Drive proposal this session reviewed on request. No coresyn-atlas file was modified as a result of this finding; v1 (CORESYN_MASTER_REGISTRY.json) and this repository's own registries remain the only canonical references this node maintains."
     }
   ]
 }
