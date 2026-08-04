@@ -1,12 +1,12 @@
 {
   "version": "2026-07-24",
   "counters": {
-    "experimental": 2,
+    "experimental": 3,
     "benchmarks": 2,
     "whitepapers": 1,
     "techreports": 4,
     "pilots": 0,
-    "library": 9
+    "library": 10
   },
   "items": [
     {
@@ -124,6 +124,29 @@
       "evidenceUrl": "https://docs.google.com/document/d/1UUbQycMByAyNptSRxAis8cFleys_30MC7BXn_giVIZo/edit",
       "sourceType": "Certificado de reproducibilidad (hash register + re-run determinista)",
       "limitations": "Es REPRODUCIBILIDAD, no validación científica: la teoría auditada (paper externo) ni se valida ni se refuta, ninguna afirmación pasa a SUPPORTED y M3 sigue LOCKED. No sube ningún dominio a Validated.",
+      "visibility": "public"
+    },
+    {
+      "id": "exp-core-aero-001-naca0012-liftslope",
+      "title": "CORE-AERO-001 · NACA 0012 reduced-order lift-curve slope (clean-room verifier)",
+      "category": "experimental",
+      "branch": "aerospace",
+      "date": "2026-08-02",
+      "status": "INTERNALLY_REPRODUCED",
+      "review_state": "EXTERNAL_REVIEW_PENDING",
+      "model_type": "REDUCED_ORDER_ANALYTICAL",
+      "claim_scope": "SERIALIZED_ANALYTICAL_REFERENCE_REPRODUCTION",
+      "summary": "Independent clean-room reimplementation of thin-airfoil (Glauert) theory reproduces the recorded NACA 0012 lift-curve slope conclusion (~2*pi/rad) within declared tolerance (1e-4). Verified twice this session on an unmodified extraction: exit 0 both runs, identical result.json SHA-256 (0da1be96...), deterministic. Two executions occurred within the SAME workspace/session -- this demonstrates internal repeatability, not external replication.",
+      "evidenceUrl": "https://github.com/Kikefractalformulastokes/coresyn-core-aero-001-verifier",
+      "sourceType": "Verifier packet (code + tests + hashes + architecture pin), reproducible one-command run",
+      "limitations": "Self-declared A0 (F4-with-pin). Reduced-order inviscid model, small-angle only: no viscosity, no stall, no thickness/compressibility corrections. NOT CFD. NOT mesh-based. Produces no flow field. NOT byte-identical to a separate sealed original artifact (different hash 95ca4b38..., not present in this build environment). NOT NASA validated (a NASA reference page is cited as public benchmark data only, implying no relationship or endorsement). NOT externally validated -- no third-party reviewer has run or reviewed this packet. NOT evidence of industrial or certification readiness.",
+      "not_claimed": [
+        "CFD validation",
+        "NASA validation",
+        "external validation",
+        "certification",
+        "industrial readiness"
+      ],
       "visibility": "public"
     }
   ]
