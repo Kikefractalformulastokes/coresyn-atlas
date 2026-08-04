@@ -1,0 +1,423 @@
+{
+  "edges": [
+    {
+      "from": "core",
+      "to": "k3"
+    },
+    {
+      "from": "core",
+      "to": "temporal"
+    },
+    {
+      "from": "core",
+      "to": "ccfa001"
+    },
+    {
+      "from": "core",
+      "to": "milkyway"
+    },
+    {
+      "from": "core",
+      "to": "neoflow"
+    },
+    {
+      "from": "core",
+      "to": "plaplacian"
+    },
+    {
+      "from": "core",
+      "to": "assurance"
+    },
+    {
+      "from": "core",
+      "to": "materials"
+    },
+    {
+      "from": "core",
+      "to": "risk"
+    },
+    {
+      "from": "core",
+      "to": "energy"
+    },
+    {
+      "from": "core",
+      "to": "medical"
+    },
+    {
+      "from": "core",
+      "to": "robotics"
+    },
+    {
+      "from": "assurance",
+      "to": "threed"
+    },
+    {
+      "from": "threed",
+      "to": "aerospace"
+    },
+    {
+      "from": "core",
+      "to": "quantum"
+    },
+    {
+      "from": "energy",
+      "to": "climate"
+    },
+    {
+      "from": "materials",
+      "to": "materials2"
+    },
+    {
+      "from": "threed",
+      "to": "threedassurance"
+    },
+    {
+      "from": "energy",
+      "to": "renewable"
+    },
+    {
+      "from": "threed",
+      "to": "digitaltwins"
+    },
+    {
+      "from": "materials",
+      "to": "digitaltwins"
+    },
+    {
+      "from": "medical",
+      "to": "medimaging"
+    },
+    {
+      "from": "risk",
+      "to": "infra"
+    },
+    {
+      "from": "materials",
+      "to": "indsim"
+    },
+    {
+      "from": "core",
+      "to": "indsim"
+    },
+    {
+      "from": "aerospace",
+      "to": "space"
+    },
+    {
+      "from": "quantum",
+      "to": "quantumassurance"
+    },
+    {
+      "from": "assurance",
+      "to": "quantumassurance"
+    }
+  ],
+  "evidence_links": [
+    {
+      "evidence_id": "exp-plaplacian-sgs",
+      "node_id": "aerospace"
+    },
+    {
+      "evidence_id": "bm-naca0012-gregory",
+      "node_id": "aerospace"
+    },
+    {
+      "evidence_id": "bm-naca0012-ladson",
+      "node_id": "aerospace"
+    },
+    {
+      "evidence_id": "wp-coresyn-2026-07",
+      "node_id": "assurance"
+    },
+    {
+      "evidence_id": "tr-nsmds-oem-brief",
+      "node_id": "aerospace"
+    },
+    {
+      "evidence_id": "tr-validation-investor-brief",
+      "node_id": "assurance"
+    },
+    {
+      "evidence_id": "tr-nsmds-project-diary",
+      "node_id": "aerospace"
+    },
+    {
+      "evidence_id": "tr-temporal-m2-repro",
+      "node_id": "core"
+    }
+  ],
+  "generated_from": [
+    "atlas-state.json",
+    "evidence-registry.json"
+  ],
+  "nodes": [
+    {
+      "deps": [],
+      "id": "core",
+      "name": "CoreSyn",
+      "state": "active",
+      "status": "Platform Core · dev 60%",
+      "year": 2026
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "k3",
+      "name": "CoreSyn-K3",
+      "state": "active",
+      "status": "Project Hub + documentación técnica",
+      "year": 2026
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "temporal",
+      "name": "Temporal Lab",
+      "state": "active",
+      "status": "Certificado de reproducibilidad M2 · hash register · listo para revisión externa",
+      "year": 2026
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "ccfa001",
+      "name": "CCFA001 · Cosmology (2M++)",
+      "state": "validated",
+      "status": "Validación reproducible cerrada · 22/22 tests · 5/5 checks · hashes verificados",
+      "year": 2026
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "milkyway",
+      "name": "Milky Way Dynamics",
+      "state": "active",
+      "status": "Cosmología observacional · en curso",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "neoflow",
+      "name": "NeoFlow Biomedical",
+      "state": "active",
+      "status": "Línea de investigación · sin validación clínica",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "plaplacian",
+      "name": "p-Laplacian SGS (CFD)",
+      "state": "validated",
+      "status": "Validado reproducible · 9/9 tests · v1.0.0",
+      "year": 2026
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "assurance",
+      "name": "AI Assurance",
+      "state": "active",
+      "status": "Prototipo v0.1 · investigación en curso",
+      "year": 2026
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "materials",
+      "name": "Materials Intelligence",
+      "state": "active",
+      "status": "Proyecto previo · reingesta de evidencia pendiente",
+      "year": 2026
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "risk",
+      "name": "Risk Intelligence",
+      "state": "active",
+      "status": "Motor v0.1 (RiesgoDeObra / AuditFlow) · gate no aprobado",
+      "year": 2026
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "energy",
+      "name": "Energy & Infrastructure",
+      "state": "active",
+      "status": "Posicionamiento + material técnico · sin pilotos cerrados",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "medical",
+      "name": "Medical",
+      "state": "future",
+      "status": "Concept Phase",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "robotics",
+      "name": "Robotics",
+      "state": "future",
+      "status": "Concept Phase",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "assurance"
+      ],
+      "id": "threed",
+      "name": "3D",
+      "state": "future",
+      "status": "Concept Phase",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "threed"
+      ],
+      "id": "aerospace",
+      "name": "Aerospace",
+      "state": "active",
+      "status": "Validación interna (NACA 0012)",
+      "year": 2028
+    },
+    {
+      "deps": [
+        "core"
+      ],
+      "id": "quantum",
+      "name": "Quantum",
+      "state": "future",
+      "status": "Future Programme",
+      "year": 2028
+    },
+    {
+      "deps": [
+        "energy"
+      ],
+      "id": "climate",
+      "name": "Climate",
+      "state": "future",
+      "status": "Future Programme",
+      "year": 2028
+    },
+    {
+      "deps": [
+        "materials"
+      ],
+      "id": "materials2",
+      "name": "Materials 2",
+      "state": "future",
+      "status": "Planning",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "threed"
+      ],
+      "id": "threedassurance",
+      "name": "3D Assurance",
+      "state": "future",
+      "status": "Concept Phase",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "energy"
+      ],
+      "id": "renewable",
+      "name": "Renewable Energy",
+      "state": "future",
+      "status": "Future Programme",
+      "year": 2027
+    },
+    {
+      "deps": [
+        "threed",
+        "materials"
+      ],
+      "id": "digitaltwins",
+      "name": "Digital Twins (Recovery)",
+      "state": "recovery",
+      "status": "Recovery in progress · 2 twins por recuperar",
+      "year": 2028
+    },
+    {
+      "deps": [
+        "medical"
+      ],
+      "id": "medimaging",
+      "name": "Medical Imaging",
+      "state": "future",
+      "status": "Concept Phase",
+      "year": 2028
+    },
+    {
+      "deps": [
+        "risk"
+      ],
+      "id": "infra",
+      "name": "Infrastructure AI",
+      "state": "future",
+      "status": "Concept Phase",
+      "year": 2028
+    },
+    {
+      "deps": [
+        "materials",
+        "core"
+      ],
+      "id": "indsim",
+      "name": "Industrial Simulation",
+      "state": "future",
+      "status": "Future Programme",
+      "year": 2028
+    },
+    {
+      "deps": [
+        "aerospace"
+      ],
+      "id": "space",
+      "name": "Space Systems",
+      "state": "future",
+      "status": "Future Programme",
+      "year": 2029
+    },
+    {
+      "deps": [
+        "quantum",
+        "assurance"
+      ],
+      "id": "quantumassurance",
+      "name": "Quantum Assurance",
+      "state": "future",
+      "status": "Future Programme",
+      "year": 2029
+    }
+  ],
+  "unlinked_items": [
+    {
+      "branch_value": "science",
+      "evidence_id": "exp-ccfa001-2mpp"
+    }
+  ]
+}

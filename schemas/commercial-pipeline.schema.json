@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Commercial Pipeline",
+  "description": "Machine-readable ledger of PROTOCOL.md section 10 late-chain (SEO/Product) commercial motions. Hand-maintained. founder_authorization is structurally required, not just conventionally expected — mirrors section 9's requirement that commercial motions need Enrique's explicit authorization.",
+  "type": "object",
+  "required": ["motions"],
+  "properties": {
+    "motions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["motion_id", "evidence_ids", "publication_chain_stage_required", "founder_authorization", "state"],
+        "properties": {
+          "motion_id": { "type": "string" },
+          "evidence_ids": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "publication_chain_stage_required": {
+            "enum": ["External validation", "Publication", "SEO", "Product"],
+            "description": "a commercial motion is not schema-valid if the underlying evidence hasn't reached at least External validation on the section 10 chain"
+          },
+          "founder_authorization": {
+            "type": "object",
+            "required": ["authorized_by", "date", "scope"],
+            "properties": {
+              "authorized_by": { "const": "Enrique" },
+              "date": { "type": "string", "format": "date" },
+              "scope": { "type": "string", "description": "exact scope authorized — a blanket authorization is not accepted" }
+            }
+          },
+          "state": { "enum": ["OPEN", "CLAIMED", "DONE", "ACCEPTED", "REJECTED"] }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Scientific Pipeline",
+  "description": "Machine-readable ledger of PROTOCOL.md section 2 lifecycle tasks/claims. Hand-maintained: one entry added per real task, by the pull request that does the work. Never backfilled with reconstructed history.",
+  "type": "object",
+  "required": ["tasks"],
+  "properties": {
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["task_id", "claim", "state", "owner_role", "evidence_refs", "state_history"],
+        "properties": {
+          "task_id": { "type": "string" },
+          "claim": { "type": "string", "description": "exact falsifiable claim and scope, per PROTOCOL.md section 3.1" },
+          "state": { "enum": ["OPEN", "CLAIMED", "DONE", "ACCEPTED", "REJECTED"] },
+          "owner_role": { "enum": ["Enrique", "CoreSyn Scientific Brain", "Atlas", "CMOS"] },
+          "evidence_refs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "ids into evidence-registry.json; empty until DONE"
+          },
+          "state_history": {
+            "type": "array",
+            "description": "append-only; a new state is a new entry, prior entries are never edited or removed (PROTOCOL.md section 7)",
+            "items": {
+              "type": "object",
+              "required": ["state", "date", "recorded_by"],
+              "properties": {
+                "state": { "enum": ["OPEN", "CLAIMED", "DONE", "ACCEPTED", "REJECTED"] },
+                "date": { "type": "string", "format": "date" },
+                "recorded_by": { "type": "string" },
+                "note": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

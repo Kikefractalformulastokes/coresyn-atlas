@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas 1.1 — Reviewer Pipeline",
+  "description": "Machine-readable ledger of PROTOCOL.md section 9 external review requests. Hand-maintained: one entry per real request actually sent. Never backfilled.",
+  "type": "object",
+  "required": ["requests"],
+  "properties": {
+    "requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["request_id", "evidence_ids", "question", "package_hash", "sent_date", "disposition", "conflicts_declared"],
+        "properties": {
+          "request_id": { "type": "string" },
+          "evidence_ids": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "the bounded set of evidence-registry.json items sent — a request must be scoped, never 'the whole registry'"
+          },
+          "question": { "type": "string", "description": "the precise, bounded question asked, per PROTOCOL.md section 9" },
+          "package_hash": { "type": "string", "description": "SHA-256 of the exact package sent" },
+          "reviewer_identity": { "type": "string" },
+          "sent_date": { "type": "string", "format": "date" },
+          "disposition": { "enum": ["PENDING", "ACCEPTED", "REJECTED", "WITHDRAWN"] },
+          "rerun_log_ref": { "type": "string" },
+          "conflicts_declared": { "type": "string", "description": "conflicts of interest disclosed, or explicit 'none declared'" },
+          "authorization_ref": {
+            "type": "string",
+            "description": "required before any contract, exclusivity, IP assignment or payment term proceeds, per PROTOCOL.md section 9 — points to the founder's explicit authorization record"
+          }
+        }
+      }
+    }
+  }
+}
