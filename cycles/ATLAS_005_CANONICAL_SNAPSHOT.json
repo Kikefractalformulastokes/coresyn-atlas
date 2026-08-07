@@ -1,0 +1,99 @@
+{
+  "cycle": "ATLAS_005",
+  "status": "CLOSED",
+  "closed_on": "2026-08-07",
+  "closure_authority": "ATLAS Owner",
+  "snapshot_type": "CANONICAL_SINGLE",
+  "note": "Closed without CDGA001 / POC-MEM-001 results. Their scopes are to be reconstructed from the canonical registry in ATLAS_006, not recovered from the lost agent runs.",
+
+  "entries": {
+    "ECLIPSE_2026_BLIND_PREDICTION_v1.1": {
+      "state": "LOCAL_CUSTODY_REQUIRED",
+      "prior_state": "BLOCKED_MISSING_ARTIFACT_REFERENCE",
+      "reclassification_basis": "Exhaustive negative search, 2026-08-07",
+      "evidence": {
+        "repos_searched": [
+          "Kikefractalformulastokes/Nsmds@5232a23",
+          "Kikefractalformulastokes/coresyn-atlas@669ccf4",
+          "Kikefractalformulastokes/coresyn-alpha-gate@ff7f365",
+          "Kikefractalformulastokes/coresyn-core-aero-001-verifier@88d06e7",
+          "Kikefractalformulastokes/coresyn-lab@c4b3bcc",
+          "Kikefractalformulastokes/riesgodeobra-site@0fa8517",
+          "Kikefractalformulastokes/coresyn-mission-engine (empty)"
+        ],
+        "method": "content grep + git log --all --name-only across every branch and commit, including deleted files; plus GitHub code search 'ECLIPSE user:Kikefractalformulastokes'",
+        "result": "0 matches. Sole textual hit was a vendored Streamlit JS asset under coresyn-lab/.venv_lab (noise, not artifact).",
+        "caveat": "GitHub code search indexes default branches only; the strong evidence is the local full-history sweep."
+      },
+      "deadline": "2026-08-12 (eclipse event)",
+      "deadline_consequence": "After the event, the pre-event blindness property cannot be reconstructed retrospectively.",
+      "required_action": "OWNER_LOCAL: locate artifact, compute SHA-256, freeze (no further open/edit), record file metadata.",
+      "commitment_channel": "SEPARATE_PUBLIC_CHANNEL — NOT the public NS-MDS repo. Dedicated CoreSyn commitments repo or equivalent public register.",
+      "commitment_publication": "REQUIRES_EXPLICIT_OWNER_APPROVAL"
+    },
+
+    "CDGA001": {
+      "state": "NO_RESULT_RETURNED",
+      "basis": "Background agent unreachable; ListAgents empty; no task notification received. Original prompt not retained in session context.",
+      "carry_forward": "ATLAS_006 — reconstruct mission from canonical registry scope, do not attempt agent-run recovery."
+    },
+
+    "POC-MEM-001": {
+      "state": "NO_RESULT_RETURNED",
+      "basis": "Background agent unreachable; ListAgents empty; no task notification received. Original prompt not retained in session context.",
+      "carry_forward": "ATLAS_006 — reconstruct mission from canonical registry scope, do not attempt agent-run recovery."
+    },
+
+    "coresyn-mission-engine": {
+      "state": "REMOTE_EMPTY",
+      "evidence": {
+        "github_api_list_branches": "[]",
+        "git_ls_remote_heads": "0 refs, exit 0",
+        "local_clone": "contains only .git, 'No commits yet'",
+        "listing_metadata": "pushed_at 2026-08-05T18:37:39Z, private"
+      },
+      "interpretation": "Zero branches on the remote. Do not assume this repo contains anything. If content was expected here, this is a real gap."
+    },
+
+    "CCFA001": {
+      "state": "DATASET_REFERENCE_VERIFIED / BINARY_LOCAL_ONLY",
+      "manuscript_state": "MANUSCRIPT_COMPLETE_PENDING_EVIDENCE_AND_REFERENCES",
+      "explicitly_not": "READY_FOR_PREPRINT",
+      "blockers": [
+        "Placeholder references unresolved",
+        "2M++ gate open"
+      ],
+      "dataset": {
+        "identified_by": "three hashes",
+        "expected_location": "C:\\Users\\kikes\\Downloads\\",
+        "sandbox_reachable": false
+      },
+      "next_actions": [
+        "P0-B OWNER_LOCAL: verify binary, run 5/5 checks, preserve hashes",
+        "P0-C: cross-lineage reproduction gate — REQUIRES a Claude lineage distinct from this one. A second run of this same lineage MUST NOT be labelled 'independent'."
+      ]
+    },
+
+    "TEMPORAL_M2": {
+      "state": "REVIEW_PACK_COMPLETE / EXTERNAL_REPRODUCTION_NOT_ESTABLISHED",
+      "retained_claim": "22/22",
+      "epistemic_note": "22/22 retained, but the strength of the claim is downgraded: internal reproduction only. 'Independent reproduction' is not established.",
+      "open_item": "Kroon hash contradiction — logged as HASH_MISMATCH conflict on external Master Registry handoff, commit 669ccf4 on coresyn-atlas branch design/atlas-1.1-project-person-registry (already present on origin).",
+      "carry_forward": "ATLAS_006 P1"
+    },
+
+    "NSMDS_AERO": {
+      "state": "PERFORMANCE_CONFLICT_OPEN",
+      "carry_forward": "ATLAS_006 P2 — recover original p-Laplacian and NS-MDS Aero artifacts."
+    }
+  },
+
+  "atlas_006_priority_order": [
+    "P0-A  ECLIPSE artifact recovery + pre-event freeze (hard deadline 2026-08-12)",
+    "P0-B  CCFA001 local dataset execution",
+    "P0-C  CCFA001 cross-lineage reproduction gate",
+    "P1    Reconstruct CDGA001 and POC-MEM-001 from canonical scopes",
+    "P1    Temporal M2 reviewer package / Kroon hash contradiction",
+    "P2    Recover original p-Laplacian and NS-MDS Aero artifacts"
+  ]
+}
