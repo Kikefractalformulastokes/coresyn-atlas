@@ -114,7 +114,25 @@
         "future": "Recovering '48h' as a strong claim requires real operational evidence of fulfilment first. Only then is the register updated."
       },
 
-      "status": "OPEN — awaiting remediation and new SHA from the Growth session"
+      "remediation": {
+        "status": "REMEDIATED_AND_VERIFIED",
+        "verified_at_utc": "2026-08-08T02:45Z",
+        "remediation_commit": "b18f771",
+        "remediation_message": "Governance correction: remove propagated '48h' from new pages (owner rejects D2)",
+        "branch_head_after": "a2be1a3",
+        "branch_head_before": "9bf4628",
+        "what_changed": "All 9 added-line occurrences of 'Risk Scan 48h' on the three new pages replaced with the neutral label 'Risk Scan'.",
+        "preserved_as_required": [
+          "Stripe checkout URLs unchanged — only the button label changed",
+          "No price line deleted (490 / 990 / 2500 EUR intact)",
+          "No existing production page reworded for this mission",
+          "Claims register label left at PARTIALLY_SUPPORTED, not redefined"
+        ],
+        "self_report_corrected": "RO_GLOBAL_GROWTH_STATE.md now records the violation, the OWNER decision (D2 rejected) and the remediation, replacing the earlier assertion that 48h had not been propagated.",
+        "verification_by_atlas_owner": "git diff 96d4a1c...a2be1a3, ADDED LINES ONLY, excluding growth/ docs and the state file: zero occurrences of '48h'. Same method that detected the original breach.",
+        "outstanding": "None for this finding."
+      },
+      "status": "CLOSED"
     }
   ],
 
@@ -168,5 +186,85 @@
     "cendoj": "Methodological reconstruction from public sources. Never 'integration', 'connected' or 'real time'.",
     "unsupported_claims": ["65-70% reduction", "AES-256 / security certifications", "automatic CENDOJ integration", "customers / validations / success cases that do not exist"],
     "panama_demo": "Requires full human read before any commercial use."
+  },
+
+  "master_state": {
+    "consolidated_at_utc": "2026-08-08T02:45Z",
+    "consolidated_by": "ATLAS_OWNER",
+    "note": "Every SHA and repository fact below was verified against origin at consolidation time. Items ATLAS_OWNER could not verify are marked as reported, not confirmed.",
+
+    "priority_order": [
+      "P0-A  ECLIPSE — seal before the event",
+      "P0-B  Atlas real external access",
+      "P0-C  Growth correction (now closed)",
+      "P1    Selective Riesgo de Obra launch",
+      "P2    Greg onboarding"
+    ],
+
+    "ECLIPSE": {
+      "priority": "P0 ABSOLUTE",
+      "state": "LOCAL_CUSTODY_REQUIRED",
+      "commitment_channel": "Kikefractalformulastokes/coresyn-public-commitments",
+      "channel_verified": "EXISTS — public, default branch main, created 2026-08-08T00:19:19Z",
+      "remaining": "Recover the real artifact; compute SHA-256 with two independent tools; freeze to read-only; seal the commitment.",
+      "operational_target": "2026-08-10",
+      "hard_deadline": "2026-08-12",
+      "rule": "No hash may be invented, inferred or reconstructed."
+    },
+
+    "MISSION_ENGINE": {
+      "state": "RECOVERED_AND_PUSHED",
+      "supersedes": "ATLAS_005 entry REMOTE_EMPTY — correct at freeze time, not rewritten",
+      "repository": "coresyn-mission-engine",
+      "branch": "master",
+      "head": "7832b22e2ba4b7a62d3ac87f1000791d9a9e88d7",
+      "commits": 6,
+      "head_verified_by_atlas_owner": true,
+      "reported_not_independently_verified": ["secret scan", "hash verification", "contents of the six commits"]
+    },
+
+    "ATLAS_TEAM_WORKSPACE": {
+      "internal_build": "COMPLETE",
+      "repository": "coresyn-agent-factory",
+      "head": "efd5388",
+      "tests": "83/83 — re-run independently by ATLAS_OWNER, not accepted on report alone",
+      "known_defect": "npm test script was non-functional (--test tests/ resolved as a module); fix dispatched",
+      "current_gate": "external access",
+      "target_domain": "atlas.coresyn.io",
+      "domain_fact": "coresyn.io exists but its public site is outside this account's repositories. alpha.coresyn.io already serves Alpha Gate, so the subdomain pattern has precedent.",
+      "before_greg_is_invited": "synthetic invitation + workspace isolation + server-side RBAC + approvals + HTTPS/session handling must all PASS",
+      "delivery_label": "INTERNAL DEVELOPMENT BUILD — never production-ready without deployment and production security gates"
+    },
+
+    "GREG": {
+      "human_id": "HUMAN-GREG-001",
+      "role": "COMMERCIAL_GROWTH_LEAD",
+      "workspace": "Riesgo de Obra — Global Growth",
+      "invitation_status": "NOT_SENT — deliberately. Synthetic-user testing must pass first."
+    },
+
+    "RIESGO_DE_OBRA": {
+      "growth_status": "PREPARE_ONLY",
+      "baseline": "51f8028",
+      "production_main": "96d4a1c",
+      "growth_branch_head": "a2be1a3",
+      "growth_branch_prior_head": "9bf4628",
+      "merge_status": "Governance blocker cleared; merge remains an OWNER decision, not automatic.",
+      "ads": "Prepared. Zero euros spent.",
+      "outreach": "Prepared and HELD. No mass sending.",
+      "tenders": "Research only. No submission.",
+      "uae_dubai": "Commercial backlog. No execution.",
+      "open_blocker": {
+        "id": "RADAR_EGRESS_BLOCKED",
+        "detail": "Awardee-name extraction blocked by session egress policy — boe.es, gobierto and TED unfetchable from the Growth session.",
+        "agent_behaviour": "Correct: reported the blocker and fabricated no names.",
+        "needs": "A human or a session with the required network egress."
+      }
+    },
+
+    "ATLAS_005_INTEGRITY": {
+      "confirmed": "The historical snapshot still exists on its canonical branch and still records Mission Engine as REMOTE_EMPTY.",
+      "position": "That was correct when frozen. It must not be modified retrospectively. Forward-only correction is the rule."
+    }
   }
 }
