@@ -1,0 +1,116 @@
+{
+  "cycle": "ATLAS_006",
+  "status": "OPEN",
+  "opened_at_utc": "2026-08-08T01:12:47Z",
+  "predecessor": "ATLAS_005",
+  "predecessor_artifact": "cycles/ATLAS_005_CANONICAL_SNAPSHOT.json",
+  "predecessor_immutable": true,
+  "predecessor_note": "ATLAS_005 is historical evidence and MUST NOT be rewritten. State transitions occurring after its freeze are recorded here, not backported into it.",
+
+  "events": [
+    {
+      "event_id": "ATLAS_006_EVT_001",
+      "event": "CEOS_RESCUE",
+      "recorded_at_utc": "2026-08-08T01:20Z",
+      "occurred_at_utc": "2026-08-08T01:12:47Z",
+      "subject": "coresyn-mission-engine",
+      "transition": {
+        "from": "REMOTE_EMPTY",
+        "to": "RECOVERED_AND_PUSHED",
+        "from_recorded_in": "ATLAS_005 -> entries.coresyn-mission-engine"
+      },
+
+      "correctness_note": "ATLAS_005 was NOT in error. REMOTE_EMPTY was independently verified at freeze time via GitHub API list_branches returning [] and git ls-remote --heads returning zero refs with exit 0. The remote state changed AFTER the ATLAS_005 freeze, as a result of this rescue. Historical accuracy of ATLAS_005 is preserved.",
+
+      "trigger": {
+        "initiated_by": "ATLAS_OWNER (session_01GRe8KsYVKDyVTZ8Zdr5XCS)",
+        "mechanism": "persistent-session Routine poke",
+        "target_session": "session_01MUbcfa7vMYtfgxsJ3osSSy (CEOS CORESYN)",
+        "reason": "Six commits existed only inside a container that had been disconnected since 2026-08-05; containers are reclaimed on inactivity, so the work was at risk of loss."
+      },
+
+      "outcome": {
+        "result": "RECOVERED",
+        "repository": "Kikefractalformulastokes/coresyn-mission-engine",
+        "branch": "master",
+        "commits_recovered": 6,
+        "commits_expected_from_stale_summary": 5,
+        "commit_count_note": "The earlier figure of 5 came from the session's 2026-08-05 post-turn summary. The session reported 6 on completion.",
+        "remote_head": "7832b22e2ba4b7a62d3ac87f1000791d9a9e88d7",
+        "default_branch_symref": "refs/heads/master",
+        "default_branch_mismatch": false,
+        "secret_scan": "clean (reported by executing session prior to push)",
+        "hashes": "verified (reported by executing session prior to push)"
+      },
+
+      "verification": {
+        "verified_independently_by": "ATLAS_OWNER",
+        "method": [
+          "mcp__github__list_branches -> [{name: master, sha: 7832b22e2ba4b7a62d3ac87f1000791d9a9e88d7}]",
+          "git ls-remote --heads origin -> 7832b22 refs/heads/master",
+          "git ls-remote --symref origin HEAD -> ref: refs/heads/master"
+        ],
+        "conclusion": "Remote HEAD confirmed present and matching the executing session's report. Not accepted on the session's word alone.",
+        "not_verified_by_atlas_owner": [
+          "secret scan (performed by the executing session; not independently re-run here)",
+          "hash verification (same)",
+          "commit contents (the six commits were not reviewed by ATLAS_OWNER)"
+        ]
+      },
+
+      "status": "CLOSED"
+    }
+  ],
+
+  "carried_forward_from_atlas_005": {
+    "ECLIPSE_2026": {
+      "state": "LOCAL_CUSTODY_REQUIRED",
+      "priority": "P0-A",
+      "hard_deadline": "2026-08-12 (eclipse event)",
+      "operational_target": "SEALED BY 2026-08-10",
+      "blocked_on": "OWNER local action: locate artifact, compute SHA-256 with two independent tools, freeze, supply metadata and choose the separate public commitment channel.",
+      "note": "Interrupts all other work if the artifact appears. No hash may be invented, inferred or reconstructed."
+    },
+    "CDGA001": { "state": "NO_RESULT_RETURNED", "action": "reconstruct scope from canonical registry" },
+    "POC-MEM-001": { "state": "NO_RESULT_RETURNED", "action": "reconstruct scope from canonical registry" },
+    "CCFA001": {
+      "state": "DATASET_REFERENCE_VERIFIED / BINARY_LOCAL_ONLY",
+      "manuscript_state": "MANUSCRIPT_COMPLETE_PENDING_EVIDENCE_AND_REFERENCES",
+      "explicitly_not": "READY_FOR_PREPRINT"
+    },
+    "TEMPORAL_M2": {
+      "state": "REVIEW_PACK_COMPLETE / EXTERNAL_REPRODUCTION_NOT_ESTABLISHED",
+      "retained_claim": "22/22 (internal reproduction only)"
+    },
+    "NSMDS_AERO": { "state": "PERFORMANCE_CONFLICT_OPEN" }
+  },
+
+  "active_workstreams": [
+    {
+      "id": "ATLAS_BUILD",
+      "priority": "P0-C",
+      "session": "session_0198spMsH4558Qccb9B8cfj4",
+      "repository": "coresyn-agent-factory",
+      "model": "claude-opus-5",
+      "mission": "ATLAS-TEAM-WORKSPACE-001C with all approved amendments",
+      "isolation": "single repository; no access to CEOS or Growth material",
+      "status": "RUNNING"
+    },
+    {
+      "id": "GREG_GROWTH",
+      "priority": "P1",
+      "session": "session_014M9KB3MGptesL8y5GZSLvx (HANDOFF COORDINATOR)",
+      "mission": "RO-GLOBAL-GROWTH-001 with PHASE 0 canonical baseline inheritance",
+      "status": "DISPATCHED_AWAITING_RESPONSE",
+      "governance_caveat": "HANDOFF has previously stated its governance forbids executing marketing/commercial work. Being technically reachable does not change its role. If it declines, its handoff is to be preserved and a dedicated GREG_GROWTH_EXECUTION session launched with riesgodeobra-site. Its identity must not be overridden and the refusal must not be pressed."
+    }
+  ],
+
+  "binding_constraints": {
+    "claims_register": "riesgodeobra-site :: RIESGODEOBRA_CLAIMS_REGISTER.md @ 51f8028 is binding on all Growth output.",
+    "informe_48h": "PARTIALLY_SUPPORTED. Published already; no fulfillment evidence. Carry forward unchanged, never propagate, never convert to SLA or guarantee.",
+    "cendoj": "Methodological reconstruction from public sources. Never 'integration', 'connected' or 'real time'.",
+    "unsupported_claims": ["65-70% reduction", "AES-256 / security certifications", "automatic CENDOJ integration", "customers / validations / success cases that do not exist"],
+    "panama_demo": "Requires full human read before any commercial use."
+  }
+}
