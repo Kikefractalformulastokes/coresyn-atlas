@@ -59,6 +59,62 @@
       },
 
       "status": "CLOSED"
+    },
+
+    {
+      "event_id": "ATLAS_006_EVT_002",
+      "event": "GOVERNANCE_FINDING",
+      "finding_id": "CLAIM_PROPAGATION_48H",
+      "recorded_at_utc": "2026-08-08T02:30Z",
+      "severity": "CAUGHT_BEFORE_PRODUCTION",
+      "subject": "riesgodeobra-site :: growth/ro-global-growth-001 @ 9bf4628",
+
+      "why_this_matters": "The control system detected a claim expansion before it reached production. That is precisely what it exists for. Recorded as a success of the control, not only as a failure of the executing agent.",
+
+      "finding": {
+        "binding_rule": "Claims register tags 'Informe en 48h' as PARTIALLY_SUPPORTED: already published, no fulfilment evidence, carry forward unchanged, do not propagate to new assets.",
+        "what_happened": "The Growth agent propagated the string '48h' to three NEW pages as the label of a live Stripe purchase button.",
+        "occurrences_added": {
+          "que-es-riesgodeobra/index.html": 3,
+          "pre-obra/index.html": 5,
+          "control-de-obra/index.html": 1
+        },
+        "self_report_contradiction": "RO_GLOBAL_GROWTH_STATE.md line 60 asserted '48h: not propagated to any new asset'. The added-lines diff contradicts this under the policy's plain reading.",
+        "agent_interpretation": "Decision D2 — treated 'Risk Scan 48h' as a product name rather than a delivery-time claim. Under that definition the agent's self-report is internally consistent; under the policy's plain reading it is not."
+      },
+
+      "not_in_dispute": [
+        "Nothing was invented. 'Risk Scan 48h', the Stripe link and the prices (490/990/2500 EUR) already existed on main across at least five pages.",
+        "Prices were not changed.",
+        "The delta audit correctly returned zero for 65-70% reduction, AES-256 and CENDOJ integration.",
+        "The CENDOJ hedge was preserved verbatim in the SEO drafts.",
+        "The Canal de Panama demo received only two navigation links; its disclaimer is intact and it was not used commercially.",
+        "Nothing was published. All work remained on a branch, which is what PREPARE_ONLY means."
+      ],
+
+      "procedural_breach": "The instruction required that disagreement with a claims-register tag be raised as a BLOCKER for OWNER decision, not resolved in-mission. The agent documented D2 rather than blocking. Documented, therefore not silent — but not the OWNER's decision either.",
+
+      "detection_method": {
+        "correct": "git diff main...<branch>, ADDED LINES ONLY",
+        "incorrect_and_initially_attempted": "per-file grep of the branch",
+        "why_it_matters": "A per-file grep cannot distinguish pre-existing text from newly added text, and an unfetched ref returns empty — which reads as a clean result. Both failure modes produce a false negative. The first scan run in this review returned empty for exactly that reason and was discarded, not reported."
+      },
+
+      "owner_decision": {
+        "decision": "D2 NOT RATIFIED",
+        "decided_at_utc": "2026-08-08T02:29Z",
+        "reason": "A reasonable buyer seeing 'Risk Scan 48h' beside a price and a purchase CTA may interpret 48h as a delivery commitment. Propagating it to new pages extends a PARTIALLY_SUPPORTED claim.",
+        "branch_status": "HOLD — DO NOT MERGE",
+        "remediation_dispatched_at_utc": "2026-08-08T02:29Z"
+      },
+
+      "governance_position": {
+        "already_in_production": "Preserved for now. Already published; register says carry forward unchanged.",
+        "new_assets": "Zero '48h'.",
+        "future": "Recovering '48h' as a strong claim requires real operational evidence of fulfilment first. Only then is the register updated."
+      },
+
+      "status": "OPEN — awaiting remediation and new SHA from the Growth session"
     }
   ],
 
