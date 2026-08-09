@@ -188,6 +188,67 @@
     "panama_demo": "Requires full human read before any commercial use."
   },
 
+  "governance_model": {
+    "effective_from_utc": "2026-08-09T18:00Z",
+    "roles": {
+      "ATLAS_3_33_COWORK": "Sole Operational Orchestrator. Only party permitted to issue BUILD_REQUESTs to Atlas Code Owner.",
+      "ATLAS_CODE_OWNER": "Sole Platform Engineer. Session session_0198spMsH4558Qccb9B8cfj4, repository coresyn-agent-factory.",
+      "ATLAS_OWNER": "Registrar / Verifier / Governance Authority. This session. Does not build platform features and does not originate BUILD_REQUESTs.",
+      "OWNER_HUMAN": "Enrique. Sole authority for spend, DNS, secrets, go-live, mock-to-real switches and external effects."
+    },
+    "repo_orchestration_rule": "FROZEN — only ATLAS 3.33 may issue new BUILD_REQUESTs into coresyn-agent-factory.",
+    "atlas_owner_constraints": ["Do not move main", "Do not merge unknown mission branches", "Issue READY_FOR_ATLAS_3_33 only when evidence supports it"]
+  },
+
+  "build_requests": [
+    {
+      "id": "BR-ATLAS-DEPLOY-001",
+      "requestor": "ATLAS 3.33 / Cowork",
+      "assigned_to": "ATLAS CODE OWNER",
+      "verifier_registrar": "ATLAS OWNER",
+      "canonical_document": "claude/BUILD_REQUEST_BR-ATLAS-DEPLOY-001.md",
+      "objective": "Bring coresyn-agent-factory from local/mock to a governed, deployed runtime reachable at atlas.coresyn.io.",
+      "owner_go": {
+        "granted_at_utc": "2026-08-09T18:00Z",
+        "scope_authorised": "Build, test, CI preparation and deployment preparation, up to READY_FOR_OWNER_GATE.",
+        "scope_withheld": [
+          "spend of any kind",
+          "creation of paid Azure resources",
+          "DNS changes",
+          "go-live",
+          "real providers",
+          "any external action"
+        ],
+        "non_interference": "Must not interfere with AERO-JOB-VOL-001."
+      },
+      "emission_status": "NOT_EMITTED_BY_ATLAS_OWNER — emission is ATLAS 3.33's remit under the frozen orchestration rule. Recorded here, not dispatched from this session.",
+      "registrar_notes_on_acceptance_criteria": [
+        "Acceptance test 1 cites '109/109 in CI'. That figure is already stale: 109/109 was verified by ATLAS OWNER on main@8131dc7, but ATLAS CODE OWNER reports 126 tests on feat/deployment-hardening. The pinned SHA must be stated explicitly and the expected count read from that SHA, not carried forward as a constant.",
+        "ATLAS CODE OWNER is currently BLOCKED awaiting an answer on whether to implement a password-reset flow. Until that is answered the assignee cannot start.",
+        "Acceptance test 7 assigns independent verification to ATLAS OWNER: reproduce the hash, re-run the suite from a clean clone, register canonically. Accepted."
+      ],
+      "status": "AUTHORISED_BY_OWNER / AWAITING_EMISSION_BY_ATLAS_3_33"
+    }
+  ],
+
+  "open_governance_items": [
+    {
+      "id": "GOV-001",
+      "item": "mission/coresyn-design-partner-001 (566e5be)",
+      "issue": "Five commits authored under the OWNER's git identity, not Claude Code, carrying commercial strategy — $1B scale thesis, GTM intelligence, target cohort, Founding Design Partner offer — into the platform code repository. Private repo, so no leak, but it breaks the boundary that the platform repo holds code and schemas only.",
+      "risk": "The branch already contains current main, so a merge is trivial and would carry commercial strategy into main.",
+      "state": "UNRESOLVED — no OWNER decision recorded. Not merged. main not moved.",
+      "required": "Decide whether the commercial content moves to a private business repository, leaving only platform material on the branch."
+    },
+    {
+      "id": "GOV-002",
+      "item": "riesgodeobra-site main 697d10e — Rung-1 lead-magnet landing published",
+      "issue": "The landing previously recorded as HELD / NOT_PUBLISHED is live. The commit message invokes 'owner GO, step 1'. That GO is not recorded in this session's register.",
+      "verified_clean": "Added-lines scan of the production diff shows zero '48h' occurrences. The CLAIM_PROPAGATION_48H remediation held through deployment.",
+      "state": "AWAITING_OWNER_CONFIRMATION — if the GO was given, this is a record gap to close; if it was not, it is a finding."
+    }
+  ],
+
   "master_state": {
     "consolidated_at_utc": "2026-08-08T02:45Z",
     "consolidated_by": "ATLAS_OWNER",
