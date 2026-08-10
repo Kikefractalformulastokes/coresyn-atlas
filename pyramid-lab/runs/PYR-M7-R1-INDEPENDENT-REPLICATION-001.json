@@ -1,0 +1,34 @@
+{
+  "execution_id": "PYR-M7-R1-INDEPENDENT-REPLICATION-001",
+  "status": "DONE_PENDING_CMOS",
+  "executed_at": "2026-08-09T03:14:00+02:00",
+  "parent_execution": "PYR-M7-ROOT-CAUSE-001",
+  "parent_m7_package_sha256": "092186f35867d41cda65d041f03b2561561c7b17f2b15dd4a7d4da37484ae085",
+  "parent_r4_package_sha256": "3b0d14762af2147849bb80010aa652e77e57dbb0653e3f0967576be5c5d9b70d",
+  "package_sha256": "bf37238575251b0967694c129383354d660a010e8b02bae8f6e7dff87359d600",
+  "metrics": {
+    "cases": 240,
+    "width_failures": 32,
+    "incompatible_cases": 26,
+    "incompatible_width_failures": 26,
+    "incompatible_share_of_width_failures": 0.8125,
+    "compatible_only_width_coverage_posthoc": 0.9719626168224299,
+    "unsafe_frame_cases_estimated_before_gate": 114,
+    "unsafe_frame_fraction": 0.475,
+    "compatibility_true_rejects": 26,
+    "compatibility_false_rejects": 3,
+    "tests_passed": 9
+  },
+  "replication": {
+    "prior_m7_counts_agree": true,
+    "prior_m7_coverage_agrees": true
+  },
+  "new_findings": [
+    "Fusion occurred before the compatibility decision.",
+    "Fusion occurred before coordinate-frame permission.",
+    "The reported unsafe-fusion rate was hardcoded false and is invalid."
+  ],
+  "decision": "Prior M7 independently replicated and extended. R4 remains failed and immutable. Open M8 corrective preregistration; no rescoring.",
+  "boundary": "Synthetic benchmark implementation diagnosis only; no historical, archaeological, muography, or construction validation.",
+  "self_accepted": false
+}
