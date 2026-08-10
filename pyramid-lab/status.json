@@ -1,1 +1,339 @@
-{"schema_version":"1.1.0","program":"CoreSyn Pyramid","surface":"Pyramid Lab","atlas_snapshot":"2026-08-03T08:46:27+02:00","governance":{"owner":"Atlas","independent_reviewer":"CMOS","acceptance_policy":"No gate is self-accepted. DONE means implementation complete and pending independent CMOS review.","claim_policy":"Measured facts, documentary facts, academic hypotheses, analogies and myths remain separated. Mathematical compatibility is not historical truth."},"summary":{"gates_done_pending_cmos":7,"gates_open":1,"tests_passed":46,"tests_failed":2,"external_review_requests_sent":5,"unsafe_coordinate_fusions":0,"sensational_claims":0,"synthetic_holdout_cases":164},"current_gate":{"id":"PYR-M6-R1-COVERAGE-DIAGNOSIS-001","title":"Width-interval undercoverage diagnosis","status":"OPEN","objective":"Diagnose the frozen M6 width coverage failure without changing the seed, case set or preregistered threshold; distinguish finite-sample variation, interval approximation and implementation error.","required_outputs":["coverage confidence interval and expected finite-sample variability","case-level residual audit","independent formula cross-check","decision: implementation defect, calibration revision, or statistically plausible miss","reproducible corrective package with hashes"]},"gates":[{"id":"PYR-M0-SOURCE-001","title":"Source and claim boundary","status":"DONE_PENDING_CMOS","metrics":["14 sources","12 classified claims","7/7 tests"],"sha256":"8d7147490bc79869659976889310d63a81f48001521d854332a0e14c8a6ff68d"},{"id":"PYR-M1-INGEST-001","title":"Published measurement ingest","status":"DONE_PENDING_CMOS","metrics":["10 published estimates","2 independent instrument families","7/7 tests"],"sha256":"ac31bbc1cd37777fb40ebdd514329933d777806ca7041e0d3175fecc14dd1890"},{"id":"PYR-M2-FRAME-001","title":"Coordinate-frame registry","status":"DONE_PENDING_CMOS","metrics":["3 frames registered","unsafe position fusion blocked"],"sha256":"e27e1adae587afc1a48bcaaed7a2229bc30b34ab538cd5f0e3cc376d7d80082c"},{"id":"PYR-M3-BASELINE-001","title":"Independent-family compatibility baseline","status":"DONE_PENDING_CMOS","metrics":["width z=1.20","height z=1.59","7/7 tests"],"sha256":"9b5b36bce11f644240d36e2f6c5514af775b07446353ebe4c578f8e5227c869e"},{"id":"PYR-M4-EXTERNAL-REVIEW-SUPERGATE","title":"Adversarial external review","status":"DONE_PENDING_RESPONSES_AND_CMOS","metrics":["5 requests sent","AERA/Lehner","IFAO/Tallet","Fermilab/Bross","CEA/Procureur","Nagoya/Morishima"],"sha256":"7f8654b5c3350d5e3b7fe3e30f48aeaa40b411dcf5272d4a8acc38d3e7bbf45b"},{"id":"PYR-M5-INVERSE-CLOSURE-001","title":"Conditional inverse closure","status":"DONE_PENDING_CMOS","metrics":["200000 Monte Carlo samples","conditional rectangular volume 35.25 +/- 1.94 m3","4/4 tests"],"sha256":"b21e087d0aa06d4b0e42a86b40edbd55d9a64d8db3cffe634775d912f153a697"},{"id":"PYR-BENCH-001","title":"Audit benchmark specification","status":"SPEC_DONE_PENDING_CMOS","metrics":["6 benchmark tasks","2 independent reviewers required","3 clean reproductions required","4/4 tests"],"sha256":"7ae884152799a232d27a307156554e2acd17f64969e06fd0a18a4130868681eb"},{"id":"PYR-M6-SYNTHETIC-HOLDOUT-001","title":"Synthetic holdout and failure detection","status":"EXECUTED_GATE_NOT_PASSED","metrics":["164 synthetic cases","6/8 tests passed","width 95% coverage=0.88 < 0.90 gate","height coverage=0.98","length coverage=1.00","0 unsafe fusions","0 critical claim false positives","naive negative control failed critical gates"],"sha256":"de83b372bc53cfda46a4ef4da91bf57daadcd3e12c0becac33cee5b9b53713aa"}],"measured_results":{"combined_width_m":{"value":1.9856,"standard_uncertainty":0.0527},"combined_height_m":{"value":1.9597,"standard_uncertainty":0.098},"single_family_length_m":{"value":9.06,"standard_uncertainty":0.07,"boundary":"Nagoya only"},"conditional_rectangular_volume_m3":{"value":35.25,"standard_uncertainty":1.94,"boundary":"Model-dependent; not an exact physical volume"}},"benchmark_results":{"m6_synthetic_holdout":{"status":"EXECUTED_GATE_NOT_PASSED","cases":164,"guarded":{"transcription_field_accuracy":1.0,"compatibility_decision_accuracy":1.0,"unsafe_frame_fusion_rate":0.0,"claim_macro_f1":1.0,"critical_claim_false_positive_rate":0.0,"coverage_95":{"width":0.88,"height":0.98,"length":1.0,"conditional_volume":0.98}},"negative_control":{"unsafe_frame_fusion_rate":1.0,"critical_claim_false_positive_rate":1.0},"boundary":"Synthetic calibration only; not historical or muography validation."}},"contradictions_and_blocks":["Published detector-family dimensions can be compared, but lateral positions cannot be fused without a documented transform and covariance.","Raw particle tracks, author reconstruction code and full 3D source model have not been acquired.","Muon evidence supports a corridor/void observation; it does not establish purpose or construction method.","External-review silence is not validation.","The frozen M6 synthetic run achieved 0.88 width interval coverage, below the preregistered 0.90 minimum; M6 cannot be marked DONE."],"product":{"name":"Pyramid Reconstruction Assurance Pack","legitimate_category":"Auditable comparison and reconstruction framework","users":["archaeology teams","digital heritage teams","museums","scientific documentary teams"],"deliverable":"Provenance, measurements with uncertainty, direct/inverse comparison, compatible alternatives, hashes, tests and claim limits.","prohibited_positioning":"Not a validated historical solution to pyramid construction."}}
+{
+  "schema_version": "1.2.0",
+  "program": "CoreSyn Pyramid",
+  "surface": "Pyramid Lab",
+  "atlas_snapshot": "2026-08-10T03:34:00+02:00",
+  "governance": {
+    "owner": "Atlas",
+    "independent_reviewer": "CMOS",
+    "acceptance_policy": "No gate is self-accepted. DONE means implementation complete and pending independent CMOS review.",
+    "claim_policy": "Measured facts, documentary facts, academic hypotheses, analogies and myths remain separated. Mathematical compatibility is not historical truth."
+  },
+  "summary": {
+    "gates_done_pending_cmos": 13,
+    "gates_open": 1,
+    "tests_passed": 84,
+    "tests_failed": 3,
+    "external_review_requests_sent": 5,
+    "unsafe_coordinate_fusions": null,
+    "unsafe_coordinate_metric_status": "R4_REPORTED_ZERO_INVALIDATED",
+    "precheck_estimates_on_unsafe_frames": 114,
+    "sensational_claims": 0,
+    "synthetic_cases_latest_executed": 240,
+    "synthetic_cases_frozen_next": 432
+  },
+  "current_gate": {
+    "id": "CMOS-REVIEW-PYR-M8-CORRECTIVE-PREREG-001",
+    "title": "Independent review of corrected benchmark preregistration",
+    "status": "OPEN",
+    "objective": "Independently verify the frozen M8 protocol, hashes, event-derived safety metrics, eligibility denominators and claim boundary before PYR-M8-RUN-001 may execute.",
+    "required_outputs": [
+      "confirm R4 remains failed and immutable",
+      "verify 432-case complete balanced factorial and fresh seed",
+      "verify frame_permission -> compatibility_decision -> estimation control flow",
+      "verify false abstentions count against truth-eligible coverage",
+      "verify no benchmark scorecard or execution output exists",
+      "decision: accept preregistration for execution, require new protocol ID, or reject method"
+    ]
+  },
+  "gates": [
+    {
+      "id": "PYR-M0-SOURCE-001",
+      "title": "Source and claim boundary",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "14 sources",
+        "12 classified claims",
+        "7/7 tests"
+      ],
+      "sha256": "8d7147490bc79869659976889310d63a81f48001521d854332a0e14c8a6ff68d"
+    },
+    {
+      "id": "PYR-M1-INGEST-001",
+      "title": "Published measurement ingest",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "10 published estimates",
+        "2 independent instrument families",
+        "7/7 tests"
+      ],
+      "sha256": "ac31bbc1cd37777fb40ebdd514329933d777806ca7041e0d3175fecc14dd1890"
+    },
+    {
+      "id": "PYR-M2-FRAME-001",
+      "title": "Coordinate-frame registry",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "3 frames registered",
+        "unsafe position fusion blocked"
+      ],
+      "sha256": "e27e1adae587afc1a48bcaaed7a2229bc30b34ab538cd5f0e3cc376d7d80082c"
+    },
+    {
+      "id": "PYR-M3-BASELINE-001",
+      "title": "Independent-family compatibility baseline",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "width z=1.20",
+        "height z=1.59",
+        "7/7 tests"
+      ],
+      "sha256": "9b5b36bce11f644240d36e2f6c5514af775b07446353ebe4c578f8e5227c869e"
+    },
+    {
+      "id": "PYR-M4-EXTERNAL-REVIEW-SUPERGATE",
+      "title": "Adversarial external review",
+      "status": "DONE_PENDING_RESPONSES_AND_CMOS",
+      "metrics": [
+        "5 requests sent",
+        "AERA/Lehner",
+        "IFAO/Tallet",
+        "Fermilab/Bross",
+        "CEA/Procureur",
+        "Nagoya/Morishima"
+      ],
+      "sha256": "7f8654b5c3350d5e3b7fe3e30f48aeaa40b411dcf5272d4a8acc38d3e7bbf45b"
+    },
+    {
+      "id": "PYR-M5-INVERSE-CLOSURE-001",
+      "title": "Conditional inverse closure",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "200000 Monte Carlo samples",
+        "conditional rectangular volume 35.25 +/- 1.94 m3",
+        "4/4 tests"
+      ],
+      "sha256": "b21e087d0aa06d4b0e42a86b40edbd55d9a64d8db3cffe634775d912f153a697"
+    },
+    {
+      "id": "PYR-BENCH-001",
+      "title": "Audit benchmark specification",
+      "status": "SPEC_DONE_PENDING_CMOS",
+      "metrics": [
+        "6 benchmark tasks",
+        "2 independent reviewers required",
+        "3 clean reproductions required",
+        "4/4 tests"
+      ],
+      "sha256": "7ae884152799a232d27a307156554e2acd17f64969e06fd0a18a4130868681eb"
+    },
+    {
+      "id": "PYR-M6-SYNTHETIC-HOLDOUT-001",
+      "title": "Synthetic holdout and failure detection",
+      "status": "EXECUTED_GATE_NOT_PASSED",
+      "metrics": [
+        "164 synthetic cases",
+        "6/8 tests passed",
+        "width 95% coverage=0.88 < 0.90 gate",
+        "height coverage=0.98",
+        "length coverage=1.00",
+        "0 unsafe fusions",
+        "0 critical claim false positives",
+        "naive negative control failed critical gates"
+      ],
+      "sha256": "de83b372bc53cfda46a4ef4da91bf57daadcd3e12c0becac33cee5b9b53713aa"
+    },
+    {
+      "id": "PYR-M6-R1-COVERAGE-DIAGNOSIS-001",
+      "title": "Width-interval undercoverage diagnosis",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "146 rounded 0.88 count/denominator combinations",
+        "4/4 tests",
+        "aggregate result insufficient for root cause"
+      ],
+      "sha256": "2b16f6a3ef294373c8ab87724a1602e1d4cd482a9d5ca630480fee9c84219f3d"
+    },
+    {
+      "id": "PYR-M6-R2-EVIDENCE-RECOVERY-001",
+      "title": "Lost M6 evidence recovery",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "164 aggregate cases recovered",
+        "original manifest, seed, code and residuals not recovered",
+        "exact replay blocked"
+      ],
+      "sha256": "17be8f1194ae8fc36adcd377524065a7112bad096bd7fa31b8cca658df3ba795"
+    },
+    {
+      "id": "PYR-M6-R3-RECONSTRUCTION-PREREG-001",
+      "title": "Independent reconstruction preregistration",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "240 cases",
+        "120/120 partitions",
+        "5/5 tests",
+        "master seed 26080301"
+      ],
+      "sha256": "64f851e84b80b09b3d5752039989e199da06a4239e2c3ce2770e47e491699d18"
+    },
+    {
+      "id": "PYR-M6-R4-RECONSTRUCTION-RUN-001",
+      "title": "Preregistered reconstruction execution",
+      "status": "EXECUTED_GATE_NOT_PASSED",
+      "metrics": [
+        "240 cases",
+        "width coverage 0.8667 < 0.90",
+        "5/6 gates passed",
+        "3 identical reproductions",
+        "reported unsafe-fusion metric later invalidated"
+      ],
+      "sha256": "3b0d14762af2147849bb80010aa652e77e57dbb0653e3f0967576be5c5d9b70d"
+    },
+    {
+      "id": "PYR-M7-ROOT-CAUSE-001",
+      "title": "R4 width-failure root cause",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "26/26 incompatible cases missed width coverage",
+        "26/32 = 81.25% of width failures",
+        "compatible-only coverage 208/214 diagnostic only",
+        "5/5 tests"
+      ],
+      "sha256": "092186f35867d41cda65d041f03b2561561c7b17f2b15dd4a7d4da37484ae085"
+    },
+    {
+      "id": "PYR-M7-R1-INDEPENDENT-REPLICATION-001",
+      "title": "Independent M7 replication and control-flow audit",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "9/9 tests",
+        "114/240 unsafe-frame cases estimated before gate",
+        "fusion preceded compatibility and frame permission",
+        "unsafe metric hardcoded false"
+      ],
+      "sha256": "bf37238575251b0967694c129383354d660a010e8b02bae8f6e7dff87359d600"
+    },
+    {
+      "id": "PYR-M8-CORRECTIVE-PREREG-001",
+      "title": "Corrected benchmark preregistration",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "432 balanced cases",
+        "216 development / 216 evaluation holdout",
+        "10/10 preregistration tests",
+        "benchmark not executed",
+        "fresh seed 26081001"
+      ],
+      "sha256": "31f54e396e3cfda9ae35760f9f0b00183aae51589bccf9bd6ec4dad66f491119"
+    }
+  ],
+  "measured_results": {
+    "combined_width_m": {
+      "value": 1.9856,
+      "standard_uncertainty": 0.0527
+    },
+    "combined_height_m": {
+      "value": 1.9597,
+      "standard_uncertainty": 0.098
+    },
+    "single_family_length_m": {
+      "value": 9.06,
+      "standard_uncertainty": 0.07,
+      "boundary": "Nagoya only"
+    },
+    "conditional_rectangular_volume_m3": {
+      "value": 35.25,
+      "standard_uncertainty": 1.94,
+      "boundary": "Model-dependent; not an exact physical volume"
+    }
+  },
+  "benchmark_results": {
+    "m6_synthetic_holdout": {
+      "status": "EXECUTED_GATE_NOT_PASSED",
+      "cases": 164,
+      "guarded": {
+        "transcription_field_accuracy": 1,
+        "compatibility_decision_accuracy": 1,
+        "unsafe_frame_fusion_rate": 0,
+        "claim_macro_f1": 1,
+        "critical_claim_false_positive_rate": 0,
+        "coverage_95": {
+          "width": 0.88,
+          "height": 0.98,
+          "length": 1,
+          "conditional_volume": 0.98
+        }
+      },
+      "negative_control": {
+        "unsafe_frame_fusion_rate": 1,
+        "critical_claim_false_positive_rate": 1
+      },
+      "boundary": "Synthetic calibration only; not historical or muography validation."
+    },
+    "m6_r4_reconstruction": {
+      "status": "EXECUTED_GATE_NOT_PASSED",
+      "cases": 240,
+      "coverage_95": {
+        "width": 0.8666666667,
+        "height": 0.975,
+        "length": 0.9708333333,
+        "conditional_volume": 0.93125,
+        "conditional_volume_n": 160
+      },
+      "compatibility_decision_accuracy": 0.9875,
+      "reported_unsafe_frame_fusion_rate": 0,
+      "unsafe_metric_status": "INVALIDATED_BY_M7_R1_CODE_AUDIT",
+      "precheck_estimates_on_unsafe_frames": 114,
+      "clean_reproductions_identical": 3,
+      "boundary": "Synthetic calibration only; result remains failed and is not historical or muography validation."
+    },
+    "m7_root_cause": {
+      "status": "DONE_PENDING_CMOS",
+      "cases": 240,
+      "width_failures": 32,
+      "incompatible_cases": 26,
+      "incompatible_width_failures": 26,
+      "incompatible_share_of_width_failures": 0.8125,
+      "compatible_only_width_coverage_posthoc": 0.9719626168,
+      "note": "Post-hoc compatible-only coverage is diagnostic and cannot rescore R4."
+    },
+    "m8_corrective_preregistration": {
+      "status": "FROZEN_NOT_EXECUTED_PENDING_CMOS",
+      "cases": 432,
+      "partitions": {
+        "development": 216,
+        "evaluation_holdout": 216
+      },
+      "design": "complete balanced factorial",
+      "master_seed": 26081001,
+      "control_flow": [
+        "frame_permission",
+        "compatibility_decision",
+        "estimation"
+      ],
+      "preregistration_tests": {
+        "passed": 10,
+        "failed": 0
+      },
+      "protocol_sha256": "57b9099f37e934d9ab4f06431945481a095d81354033667d1e88a9fadf1cb9a2",
+      "case_manifest_sha256": "2fa95d6ef9d2aad85448add3875da7cafce5c0931cd869e9507c98c36d4767c9",
+      "boundary": "Synthetic assurance benchmark only; no historical, archaeological, muography or construction-method validation."
+    }
+  },
+  "contradictions_and_blocks": [
+    "Published detector-family dimensions can be compared, but lateral positions cannot be fused without a documented transform and covariance.",
+    "Raw particle tracks, author reconstruction code and full 3D source model have not been acquired.",
+    "Muon evidence supports a corridor/void observation; it does not establish purpose or construction method.",
+    "External-review silence is not validation.",
+    "R4 remains EXECUTED_GATE_NOT_PASSED: width coverage 0.8667 was below the frozen 0.90 gate.",
+    "All 26 deliberately incompatible R4 cases were fused before compatibility was applied and account for 81.25% of width failures.",
+    "114/240 missing-transform or wrong-handed-transform cases received estimates before frame permission.",
+    "The R4 unsafe-fusion rate of 0.0 is invalid because the implementation forced the flag false with `and False`.",
+    "Compatible-only width coverage 208/214 is diagnostic only and does not retrospectively pass R4.",
+    "M8 is frozen but not executed; execution is blocked pending independent CMOS preregistration review."
+  ],
+  "product": {
+    "name": "Pyramid Reconstruction Assurance Pack",
+    "legitimate_category": "Auditable comparison and reconstruction framework",
+    "users": [
+      "archaeology teams",
+      "digital heritage teams",
+      "museums",
+      "scientific documentary teams"
+    ],
+    "deliverable": "Provenance, measurements with uncertainty, direct/inverse comparison, compatible alternatives, hashes, tests and claim limits.",
+    "prohibited_positioning": "Not a validated historical solution, construction method, archaeological certification, or substitute for raw detector data and domain review.",
+    "possible_channel": "Scoped technical-assurance engagement, institutional research license, or independent-method review package."
+  }
+}
