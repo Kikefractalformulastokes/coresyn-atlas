@@ -1,0 +1,20 @@
+{
+  "execution_id": "PYR-M7-ROOT-CAUSE-001",
+  "status": "DONE_PENDING_CMOS",
+  "executed_at": "2026-08-04T04:47:00+02:00",
+  "parent_execution": "PYR-M6-R4-RECONSTRUCTION-RUN-001",
+  "package_sha256": "092186f35867d41cda65d041f03b2561561c7b17f2b15dd4a7d4da37484ae085",
+  "metrics": {
+    "cases": 240,
+    "width_failures": 32,
+    "incompatible_cases": 26,
+    "incompatible_width_failures": 26,
+    "incompatible_share_of_width_failures": 0.8125,
+    "compatible_only_width_coverage_posthoc": 0.9719626168224299,
+    "tests_passed": 5
+  },
+  "classification": "BENCHMARK_DESIGN_DEFECT_ESTIMAND_MISMATCH",
+  "decision": "R4 remains failed; open a new preregistration; do not rescore R4.",
+  "boundary": "Synthetic benchmark diagnosis only; no historical, archaeological, muography, or construction validation.",
+  "self_accepted": false
+}
