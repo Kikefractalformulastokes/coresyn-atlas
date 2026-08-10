@@ -1,0 +1,48 @@
+{
+  "execution_id": "PYR-M8-CORRECTIVE-PREREG-001",
+  "status": "DONE_PENDING_CMOS",
+  "benchmark_status": "FROZEN_NOT_EXECUTED_PENDING_CMOS",
+  "created_at": "2026-08-10T03:18:00+02:00",
+  "parent_execution": "PYR-M7-R1-INDEPENDENT-REPLICATION-001",
+  "package_sha256": "31f54e396e3cfda9ae35760f9f0b00183aae51589bccf9bd6ec4dad66f491119",
+  "protocol_sha256": "57b9099f37e934d9ab4f06431945481a095d81354033667d1e88a9fadf1cb9a2",
+  "case_manifest_sha256": "2fa95d6ef9d2aad85448add3875da7cafce5c0931cd869e9507c98c36d4767c9",
+  "frozen_design": {
+    "master_seed": 26081001,
+    "cases": 432,
+    "development": 216,
+    "evaluation_holdout": 216,
+    "design": "complete balanced factorial",
+    "factors": {
+      "geometry_families": 3,
+      "noise_regimes": 3,
+      "frame_conditions": 4,
+      "compatibility_conditions": 2,
+      "claim_classes": 6
+    }
+  },
+  "mandatory_control_flow": [
+    "frame_permission",
+    "compatibility_decision",
+    "estimation"
+  ],
+  "gate_policy": {
+    "false_abstentions_count_as_coverage_misses": true,
+    "unsafe_frame_fusion_rate_from_events": true,
+    "incompatible_false_merge_rate_max": 0,
+    "frame_abstention_recall_min": 1,
+    "incompatible_abstention_recall_min": 0.95,
+    "compatible_retention_rate_min": 0.95,
+    "coverage_95_min": 0.9,
+    "clean_reproductions_required": 3
+  },
+  "preregistration_tests": {
+    "passed": 10,
+    "failed": 0
+  },
+  "r4_status_unchanged": "EXECUTED_GATE_NOT_PASSED",
+  "benchmark_executed": false,
+  "decision": "Preregistration frozen for independent CMOS review. Do not execute PYR-M8-RUN-001 before review.",
+  "boundary": "Synthetic assurance benchmark only; no historical, archaeological, muography, geometry-of-the-Great-Pyramid, or construction-method validation.",
+  "self_accepted": false
+}
