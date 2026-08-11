@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.2.0",
+  "schema_version": "1.3.0",
   "program": "CoreSyn Pyramid",
   "surface": "Pyramid Lab",
-  "atlas_snapshot": "2026-08-10T03:34:00+02:00",
+  "atlas_snapshot": "2026-08-11T03:38:00+02:00",
   "governance": {
     "owner": "Atlas",
     "independent_reviewer": "CMOS",
@@ -10,9 +10,9 @@
     "claim_policy": "Measured facts, documentary facts, academic hypotheses, analogies and myths remain separated. Mathematical compatibility is not historical truth."
   },
   "summary": {
-    "gates_done_pending_cmos": 13,
+    "gates_done_pending_cmos": 14,
     "gates_open": 1,
-    "tests_passed": 84,
+    "tests_passed": 96,
     "tests_failed": 3,
     "external_review_requests_sent": 5,
     "unsafe_coordinate_fusions": null,
@@ -20,20 +20,23 @@
     "precheck_estimates_on_unsafe_frames": 114,
     "sensational_claims": 0,
     "synthetic_cases_latest_executed": 240,
-    "synthetic_cases_frozen_next": 432
+    "synthetic_cases_frozen_next": 432,
+    "m8_preflight_critical_findings": 3,
+    "m8_preflight_major_findings": 2,
+    "m8_execution_author_blocked": true
   },
   "current_gate": {
-    "id": "CMOS-REVIEW-PYR-M8-CORRECTIVE-PREREG-001",
-    "title": "Independent review of corrected benchmark preregistration",
+    "id": "CMOS-REVIEW-PYR-M8-R1-PREREG-ASSURANCE-AUDIT-001",
+    "title": "Independent decision on M8 preflight defects",
     "status": "OPEN",
-    "objective": "Independently verify the frozen M8 protocol, hashes, event-derived safety metrics, eligibility denominators and claim boundary before PYR-M8-RUN-001 may execute.",
+    "objective": "Review the reproducible author-side finding that M8 must not execute in its current form and decide whether a new protocol ID is required.",
     "required_outputs": [
-      "confirm R4 remains failed and immutable",
-      "verify 432-case complete balanced factorial and fresh seed",
-      "verify frame_permission -> compatibility_decision -> estimation control flow",
-      "verify false abstentions count against truth-eligible coverage",
-      "verify no benchmark scorecard or execution output exists",
-      "decision: accept preregistration for execution, require new protocol ID, or reject method"
+      "verify the exact M8 parent package and 13/13 internal manifest entries",
+      "verify development and evaluation_holdout are pooled in summarize()",
+      "verify predicted_claim copies ground-truth claim_class",
+      "verify execution checks protocol JSON hash only",
+      "review partition denominators 52/56 for dimensions and 30/42 for conditional volume",
+      "decision: return M8 for a new protocol ID, accept with rationale, or reject benchmark method"
     ]
   },
   "gates": [
@@ -216,6 +219,20 @@
         "fresh seed 26081001"
       ],
       "sha256": "31f54e396e3cfda9ae35760f9f0b00183aae51589bccf9bd6ec4dad66f491119"
+    },
+    {
+      "id": "PYR-M8-R1-PREREG-ASSURANCE-AUDIT-001",
+      "title": "Adversarial preregistration assurance audit",
+      "status": "DONE_PENDING_CMOS",
+      "metrics": [
+        "12/12 audit tests",
+        "13/13 parent manifest files verified",
+        "3 critical findings",
+        "2 major findings",
+        "M8 benchmark not executed",
+        "author recommendation: DO_NOT_EXECUTE_M8"
+      ],
+      "sha256": "cb677c067721092bf3b14b6466c980a74c090930e1452d0d441e7165dd97b5b5"
     }
   ],
   "measured_results": {
@@ -309,6 +326,44 @@
       "protocol_sha256": "57b9099f37e934d9ab4f06431945481a095d81354033667d1e88a9fadf1cb9a2",
       "case_manifest_sha256": "2fa95d6ef9d2aad85448add3875da7cafce5c0931cd869e9507c98c36d4767c9",
       "boundary": "Synthetic assurance benchmark only; no historical, archaeological, muography or construction-method validation."
+    },
+    "m8_r1_prereg_assurance_audit": {
+      "status": "DONE_PENDING_CMOS",
+      "parent_m8_status": "FROZEN_NOT_EXECUTED_PENDING_CMOS",
+      "benchmark_executed": false,
+      "author_recommendation": "DO_NOT_EXECUTE_M8",
+      "findings": {
+        "critical": 3,
+        "major": 2,
+        "holdout_scored_separately": false,
+        "claim_ground_truth_leakage": true,
+        "complete_execution_hash_guard": false,
+        "partition_denominators": {
+          "development": {
+            "dimension_eligible": 52,
+            "conditional_volume_eligible": 30
+          },
+          "evaluation_holdout": {
+            "dimension_eligible": 56,
+            "conditional_volume_eligible": 42
+          }
+        }
+      },
+      "exact_binomial_checks": {
+        "dimension_coverage": {
+          "n": 108,
+          "minimum_hits_for_0_90": 98,
+          "pass_probability_if_true_p_0_90": 0.4788327110179964
+        },
+        "conditional_volume_coverage": {
+          "n": 72,
+          "minimum_hits_for_0_90": 65,
+          "pass_probability_if_true_p_0_90": 0.5674678525087473
+        }
+      },
+      "proposed_next_protocol": "PYR-M9-CORRECTIVE-PREREG-001",
+      "package_sha256": "cb677c067721092bf3b14b6466c980a74c090930e1452d0d441e7165dd97b5b5",
+      "boundary": "Synthetic benchmark assurance only; no historical, archaeological, muography, pyramid-geometry or construction-method validation."
     }
   },
   "contradictions_and_blocks": [
@@ -321,7 +376,13 @@
     "114/240 missing-transform or wrong-handed-transform cases received estimates before frame permission.",
     "The R4 unsafe-fusion rate of 0.0 is invalid because the implementation forced the flag false with `and False`.",
     "Compatible-only width coverage 208/214 is diagnostic only and does not retrospectively pass R4.",
-    "M8 is frozen but not executed; execution is blocked pending independent CMOS preregistration review."
+    "M8 is frozen but not executed; execution is blocked pending independent CMOS preregistration review.",
+    "M8 development and evaluation_holdout rows are pooled; the named holdout has no independent acceptance gate.",
+    "M8 predicted_claim copies the ground-truth claim_class, so the critical-claim false-positive gate is tautological.",
+    "M8 execution verifies only the protocol JSON hash, not case-manifest, benchmark-code or parent-package hashes.",
+    "M8 partitions have equal total size but unequal eligible denominators: dimensions 52/56 and conditional volume 30/42.",
+    "M8 publishes seeds, full manifest and executable; the evaluation set is sealed and reproducible but not independently blinded.",
+    "Author preflight recommends DO_NOT_EXECUTE_M8; CMOS has not accepted or rejected this recommendation."
   ],
   "product": {
     "name": "Pyramid Reconstruction Assurance Pack",
