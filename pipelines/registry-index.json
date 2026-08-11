@@ -1,0 +1,74 @@
+{
+  "by_branch": {
+    "aerospace": [
+      "exp-plaplacian-sgs",
+      "bm-naca0012-gregory",
+      "bm-naca0012-ladson",
+      "tr-nsmds-oem-brief",
+      "tr-nsmds-project-diary"
+    ],
+    "assurance": [
+      "wp-coresyn-2026-07",
+      "tr-validation-investor-brief"
+    ],
+    "core": [
+      "tr-temporal-m2-repro"
+    ],
+    "science": [
+      "exp-ccfa001-2mpp"
+    ]
+  },
+  "by_category": {
+    "benchmarks": [
+      "bm-naca0012-gregory",
+      "bm-naca0012-ladson"
+    ],
+    "experimental": [
+      "exp-ccfa001-2mpp",
+      "exp-plaplacian-sgs"
+    ],
+    "techreports": [
+      "tr-nsmds-oem-brief",
+      "tr-validation-investor-brief",
+      "tr-nsmds-project-diary",
+      "tr-temporal-m2-repro"
+    ],
+    "whitepapers": [
+      "wp-coresyn-2026-07"
+    ]
+  },
+  "by_status": {
+    "VERIFIED_BENCHMARK_SOURCE": [
+      "bm-naca0012-gregory",
+      "bm-naca0012-ladson"
+    ],
+    "VERIFIED_DOCUMENT": [
+      "exp-ccfa001-2mpp",
+      "exp-plaplacian-sgs",
+      "wp-coresyn-2026-07",
+      "tr-nsmds-oem-brief",
+      "tr-validation-investor-brief",
+      "tr-nsmds-project-diary",
+      "tr-temporal-m2-repro"
+    ]
+  },
+  "by_visibility": {
+    "private": [
+      "exp-ccfa001-2mpp",
+      "exp-plaplacian-sgs",
+      "wp-coresyn-2026-07",
+      "tr-nsmds-oem-brief",
+      "tr-validation-investor-brief",
+      "tr-nsmds-project-diary"
+    ],
+    "public": [
+      "bm-naca0012-gregory",
+      "bm-naca0012-ladson",
+      "tr-temporal-m2-repro"
+    ]
+  },
+  "generated_at_commit": "c2040a5bec8d171f7f0cfa0e2569150b4aedfbf6",
+  "generated_from": "evidence-registry.json",
+  "source_version": "2026-07-24",
+  "total_items": 9
+}

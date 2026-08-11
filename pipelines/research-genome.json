@@ -1,0 +1,62 @@
+{
+  "generated_from": "evidence-registry.json",
+  "items": [
+    {
+      "evidence_id": "exp-ccfa001-2mpp",
+      "registry_status": "VERIFIED_DOCUMENT",
+      "stage": "Reproduction"
+    },
+    {
+      "evidence_id": "exp-plaplacian-sgs",
+      "registry_status": "VERIFIED_DOCUMENT",
+      "stage": "Reproduction"
+    },
+    {
+      "evidence_id": "bm-naca0012-gregory",
+      "registry_status": "VERIFIED_BENCHMARK_SOURCE",
+      "stage": "UNMAPPED"
+    },
+    {
+      "evidence_id": "bm-naca0012-ladson",
+      "registry_status": "VERIFIED_BENCHMARK_SOURCE",
+      "stage": "UNMAPPED"
+    },
+    {
+      "evidence_id": "wp-coresyn-2026-07",
+      "registry_status": "VERIFIED_DOCUMENT",
+      "stage": "Reproduction"
+    },
+    {
+      "evidence_id": "tr-nsmds-oem-brief",
+      "registry_status": "VERIFIED_DOCUMENT",
+      "stage": "Reproduction"
+    },
+    {
+      "evidence_id": "tr-validation-investor-brief",
+      "registry_status": "VERIFIED_DOCUMENT",
+      "stage": "Reproduction"
+    },
+    {
+      "evidence_id": "tr-nsmds-project-diary",
+      "registry_status": "VERIFIED_DOCUMENT",
+      "stage": "Reproduction"
+    },
+    {
+      "evidence_id": "tr-temporal-m2-repro",
+      "registry_status": "VERIFIED_DOCUMENT",
+      "stage": "Reproduction"
+    }
+  ],
+  "mapping_table_version": "2026-08-04-v1",
+  "publication_chain": [
+    "Paper",
+    "Reproduction",
+    "Stress test",
+    "Improvement",
+    "Evidence",
+    "External validation",
+    "Publication",
+    "SEO",
+    "Product"
+  ]
+}
