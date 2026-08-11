@@ -1,0 +1,38 @@
+{
+  "checks": [
+    {
+      "name": "json_schema_required_fields",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "duplicate_artifact_id_check",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "hash_reference_validation",
+      "pass": true,
+      "details": "evidenceUrl points to the actual cloned+verified repo this session"
+    },
+    {
+      "name": "blocked_claims_scan",
+      "pass": true,
+      "details": [],
+      "note": "v1 of this scanner (fixed 15-char negation lookback) false-positived on \"NOT evidence of industrial or certification readiness\" -- NOT was outside the lookback window. Fixed to sentence-scoped negation and reran; false positive resolved, documented rather than silently discarded."
+    },
+    {
+      "name": "lifecycle_state_validation",
+      "pass": true,
+      "details": {
+        "status": "INTERNALLY_REPRODUCED",
+        "review_state": "EXTERNAL_REVIEW_PENDING",
+        "not_self_promoted_to_accepted": true
+      }
+    }
+  ],
+  "overall_pass": true,
+  "item_count_before": 9,
+  "item_count_after": 10,
+  "canonical_file_modified": false
+}
