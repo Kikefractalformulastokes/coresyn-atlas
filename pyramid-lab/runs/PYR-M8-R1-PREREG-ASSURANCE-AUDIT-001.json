@@ -1,0 +1,62 @@
+{
+  "execution_id": "PYR-M8-R1-PREREG-ASSURANCE-AUDIT-001",
+  "status": "DONE_PENDING_CMOS",
+  "executed_at": "2026-08-11T03:31:00+02:00",
+  "parent_execution": "PYR-M8-CORRECTIVE-PREREG-001",
+  "parent_m8_status_unchanged": "FROZEN_NOT_EXECUTED_PENDING_CMOS",
+  "parent_m8_package_sha256": "31f54e396e3cfda9ae35760f9f0b00183aae51589bccf9bd6ec4dad66f491119",
+  "package_sha256": "cb677c067721092bf3b14b6466c980a74c090930e1452d0d441e7165dd97b5b5",
+  "verification": {
+    "parent_internal_manifest_files_checked": 13,
+    "parent_internal_manifest_failures": 0,
+    "audit_tests_passed": 12,
+    "audit_tests_failed": 0,
+    "benchmark_executed": false
+  },
+  "findings": [
+    {
+      "id": "M8-AUDIT-HOLDOUT-POOLING",
+      "severity": "CRITICAL",
+      "fact": "summarize() does not read partition; development and evaluation_holdout are pooled."
+    },
+    {
+      "id": "M8-AUDIT-CLAIM-LEAKAGE",
+      "severity": "CRITICAL",
+      "fact": "predicted_claim is copied directly from the ground-truth claim_class."
+    },
+    {
+      "id": "M8-AUDIT-HASH-GUARD",
+      "severity": "CRITICAL",
+      "fact": "execution verifies protocol JSON hash only, not case-manifest, benchmark-code or parent-package hashes."
+    },
+    {
+      "id": "M8-AUDIT-PARTITION-IMBALANCE",
+      "severity": "MAJOR",
+      "fact": "eligible denominators are dimension 52/56 and conditional volume 30/42 across development/evaluation."
+    },
+    {
+      "id": "M8-AUDIT-NOT-BLINDED",
+      "severity": "MAJOR",
+      "fact": "seeds, full manifest and executable are public before the recorded run; the set is sealed but not blinded."
+    }
+  ],
+  "statistical_checks": {
+    "dimension_coverage": {
+      "n": 108,
+      "minimum_hits_for_0_90": 98,
+      "pass_probability_if_true_p_0_90": 0.4788327110179964,
+      "pass_probability_if_true_p_0_95": 0.9804861662010316
+    },
+    "conditional_volume_coverage": {
+      "n": 72,
+      "minimum_hits_for_0_90": 65,
+      "pass_probability_if_true_p_0_90": 0.5674678525087473,
+      "pass_probability_if_true_p_0_95": 0.9728403037013951
+    }
+  },
+  "author_recommendation": "DO_NOT_EXECUTE_M8; request a new protocol ID with separate holdout scoring, independent claim prediction, full execution hash verification and stratified partitions.",
+  "proposed_next_protocol": "PYR-M9-CORRECTIVE-PREREG-001",
+  "cmos_decision_pending": true,
+  "self_accepted": false,
+  "boundary": "Synthetic benchmark assurance only; no historical, archaeological, muography, pyramid-geometry or construction-method validation."
+}
