@@ -249,6 +249,49 @@
     }
   ],
 
+  "RDO_DIGITAL_PRESENCE": {
+    "recorded_at_utc": "2026-08-12T00:00Z",
+    "mission": "RIESGODEOBRA DIGITAL + ATLAS + ENTREGA REAL",
+    "executed_by": "ATLAS OWNER",
+    "content_location": "Delivered as RDO_ATLAS.xlsx and RDO_DIGITAL_HANDOFF_FOR_BRANDON.docx. The copy itself is NOT committed here: coresyn-atlas is public, and 30 posts plus 20 ad concepts are commercial strategy. Only state is recorded.",
+
+    "blocker": {
+      "id": "RDO_EGRESS_BLOCKED",
+      "detail": "Network egress policy denies all nine target hosts with 403 CONNECT: linkedin.com, facebook.com, instagram.com, x.com, tiktok.com, youtube.com, milanuncios.com, google.com, and riesgodeobra.es itself.",
+      "evidence": "Agent-proxy telemetry, recentRelayFailures, 2026-08-12. Control host api.github.com returned 200 in the same test, so the network works — these destinations are denied.",
+      "consequence": "Phases 1-9 and 12 are not executable from this session."
+    },
+
+    "delivered": {
+      "posts": 30,
+      "posts_split": "5 educational, 5 pain-signal, 5 investors, 5 property administrators, 5 lawyers/experts, 5 public works — the exact split requested",
+      "posts_status": "DRAFT, none published",
+      "ads": 20,
+      "ads_split": "10 direct + 10 reverse-engineering built on real deliverables (checklist, guide, risk map, template, diagnostic, study, evaluation, research participation)",
+      "ads_status": "DRAFT_NOT_ACTIVATED, 0 EUR spent",
+      "bios_and_positioning": "All 8 platforms, ready to paste",
+      "claims_register": "Applied as binding and shipped with the handoff"
+    },
+
+    "not_delivered": {
+      "accounts_verified": 0,
+      "accounts_created": 0,
+      "handles_verified": 0,
+      "groups_and_communities": "0 of the 120 requested (50 Facebook, 30 LinkedIn, 20 Instagram, 20 X). Not attempted rather than fabricated: the mission forbids inventing groups, and a plausible-looking invented list is worse than an empty one because it gets acted on.",
+      "note": "Zero accounts verified does NOT mean none exist. It means none could be checked."
+    },
+
+    "claims_compliance": {
+      "binding_source": "RIESGODEOBRA_CLAIMS_REGISTER.md @ 51f8028, plus the OWNER rejection of D2 on 2026-08-08",
+      "verified": "Automated scan of both deliverables for 48h, 65-70%, AES-256 and CENDOJ 'integration'/'real time'. All hits confined to the section that prohibits them; the single content occurrence of 'real time' is the required negation in the CENDOJ post.",
+      "result": "CLEAN"
+    },
+
+    "irreversible_actions_taken": "None. No account created, no message sent, no money spent, no advertising contracted, no lead contacted.",
+
+    "next_action": "Phases 1-9 and 12 require a browser-capable session (the 'Claude Chrome Presence' role in the stated architecture) or manual execution by a human."
+  },
+
   "master_state": {
     "consolidated_at_utc": "2026-08-08T02:45Z",
     "consolidated_by": "ATLAS_OWNER",
