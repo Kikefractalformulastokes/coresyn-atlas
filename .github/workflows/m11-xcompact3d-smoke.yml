@@ -1,0 +1,55 @@
+name: M11 Xcompact3D external smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [m11-external-replication]
+    paths:
+      - '.github/workflows/m11-xcompact3d-smoke.yml'
+
+jobs:
+  xcompact3d-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout CoreSyn protocol repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git
+
+      - name: Clone genuine upstream Xcompact3D
+        run: |
+          git clone --depth 1 https://github.com/xcompact3d/Incompact3d.git xcompact3d
+          git -C xcompact3d rev-parse HEAD | tee XCOMPACT3D_UPSTREAM_SHA.txt
+
+      - name: Inspect upstream build and TGV assets
+        run: |
+          find xcompact3d -maxdepth 3 -type f | sort | head -300 | tee upstream_files.txt
+          find xcompact3d -type f \( -iname '*tgv*' -o -iname '*taylor*' \) -print | tee tgv_files.txt
+          test -s tgv_files.txt
+
+      - name: Configure/build upstream solver
+        run: |
+          cmake -S xcompact3d -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build -j2
+          find build -maxdepth 3 -type f -perm -111 -print | tee built_executables.txt
+
+      - name: Freeze smoke evidence
+        if: always()
+        run: |
+          mkdir -p evidence
+          cp XCOMPACT3D_UPSTREAM_SHA.txt evidence/ 2>/dev/null || true
+          cp upstream_files.txt evidence/ 2>/dev/null || true
+          cp tgv_files.txt evidence/ 2>/dev/null || true
+          cp built_executables.txt evidence/ 2>/dev/null || true
+          printf 'This CI job is only an external-source/build smoke gate. It MUST NOT be described as the full 513^3 M11 replication.\n' > evidence/STATUS.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m11-xcompact3d-smoke-evidence
+          path: evidence
