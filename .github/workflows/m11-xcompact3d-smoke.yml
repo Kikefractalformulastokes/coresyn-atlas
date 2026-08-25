@@ -20,7 +20,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git python3
+          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git python3 python3-numpy
 
       - name: Clone genuine upstream Xcompact3D
         run: |
