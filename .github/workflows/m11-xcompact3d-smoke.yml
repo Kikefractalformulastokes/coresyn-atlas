@@ -20,7 +20,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git
+          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git python3
 
       - name: Clone genuine upstream Xcompact3D
         run: |
@@ -39,7 +39,12 @@ jobs:
           cmake --build build -j2
           find build -maxdepth 3 -type f -perm -111 -print | tee built_executables.txt
 
-      - name: Freeze smoke evidence
+      - name: Run genuine upstream TGV validation test
+        run: |
+          set -o pipefail
+          ctest --test-dir build -R TGV-Taylor-Green-vortex -V 2>&1 | tee tgv_ctest.log
+
+      - name: Collect TGV outputs and provenance
         if: always()
         run: |
           mkdir -p evidence
@@ -47,11 +52,16 @@ jobs:
           cp upstream_files.txt evidence/ 2>/dev/null || true
           cp tgv_files.txt evidence/ 2>/dev/null || true
           cp built_executables.txt evidence/ 2>/dev/null || true
-          printf 'This CI job is only an external-source/build smoke gate. It MUST NOT be described as the full 513^3 M11 replication.\n' > evidence/STATUS.txt
+          cp tgv_ctest.log evidence/ 2>/dev/null || true
+          find build -type f \( -name 'time_evol.dat' -o -name 'Testing.xml' -o -name 'LastTest.log' \) -exec cp {} evidence/ \; 2>/dev/null || true
+          cp xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat evidence/ 2>/dev/null || true
+          cp xcompact3d/tests/TGV-Taylor-Green-vortex/reference_input.i3d evidence/ 2>/dev/null || true
+          printf 'This CI job executes the genuine upstream Xcompact3D TGV validation test against its upstream reference. It is still NOT the full 513^3 M11 scientific precision replication.\n' > evidence/STATUS.txt
+          sha256sum evidence/* | sort > evidence/SHA256SUMS.txt || true
 
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m11-xcompact3d-smoke-evidence
+          name: m11-xcompact3d-tgv-evidence
           path: evidence
