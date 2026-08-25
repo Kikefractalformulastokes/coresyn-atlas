@@ -2,8 +2,10 @@ name: M11 Xcompact3D external smoke
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
   push:
-    branches: [m11-external-replication]
+    branches: [main]
     paths:
       - '.github/workflows/m11-xcompact3d-smoke.yml'
 
