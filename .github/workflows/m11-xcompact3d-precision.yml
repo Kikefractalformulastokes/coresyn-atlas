@@ -1,0 +1,113 @@
+name: M11 Xcompact3D precision experiment
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/m11-xcompact3d-precision.yml'
+
+jobs:
+  precision-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout CoreSyn protocol repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git python3 python3-numpy
+
+      - name: Clone frozen upstream Xcompact3D
+        run: |
+          git clone https://github.com/xcompact3d/Incompact3d.git xcompact3d
+          git -C xcompact3d checkout abb010e615cff520f949a210278945346995966c
+          git -C xcompact3d rev-parse HEAD | tee XCOMPACT3D_UPSTREAM_SHA.txt
+
+      - name: Build FP64 upstream baseline
+        run: |
+          cmake -S xcompact3d -B build64 -DCMAKE_BUILD_TYPE=Release -DDOUBLE_PRECISION=ON
+          cmake --build build64 -j2
+
+      - name: Run FP64 official TGV validation
+        run: |
+          set -o pipefail
+          ctest --test-dir build64 -R TGV-Taylor-Green-vortex -V 2>&1 | tee fp64_ctest.log
+
+      - name: Build genuine FP32 upstream variant
+        run: |
+          cmake -S xcompact3d -B build32 -DCMAKE_BUILD_TYPE=Release -DDOUBLE_PRECISION=OFF
+          cmake --build build32 -j2
+
+      - name: Run FP32 genuine TGV test
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ctest --test-dir build32 -R TGV-Taylor-Green-vortex -V 2>&1 | tee fp32_ctest.log
+
+      - name: Quantify FP32 versus FP64/reference
+        run: |
+          python3 - <<'PY'
+          import json
+          import numpy as np
+          from pathlib import Path
+
+          ref = np.loadtxt('xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat')
+          p64 = Path('build64/RunTests/TGV-Taylor-Green-vortex/time_evol.dat')
+          p32 = Path('build32/RunTests/TGV-Taylor-Green-vortex/time_evol.dat')
+          if not p64.exists():
+              raise SystemExit('FP64 time_evol.dat missing')
+          if not p32.exists():
+              raise SystemExit('FP32 time_evol.dat missing')
+          a64 = np.loadtxt(p64)
+          a32 = np.loadtxt(p32)
+          if a64.shape != ref.shape or a32.shape != ref.shape:
+              raise SystemExit(f'shape mismatch ref={ref.shape} fp64={a64.shape} fp32={a32.shape}')
+
+          rows=[]
+          for j in range(ref.shape[1]):
+              denom=np.maximum(np.abs(ref[:,j]),1e-30)
+              e64=np.abs(a64[:,j]-ref[:,j])/denom
+              e32=np.abs(a32[:,j]-ref[:,j])/denom
+              rows.append({
+                  'column':j+1,
+                  'fp64_max_rel_pct':float(100*np.max(e64)),
+                  'fp32_max_rel_pct':float(100*np.max(e32)),
+                  'fp32_rms_rel_pct':float(100*np.sqrt(np.mean(e32**2))),
+                  'fp32_max_abs':float(np.max(np.abs(a32[:,j]-ref[:,j]))),
+                  'pass_1pct':bool(np.max(e32)<=0.01),
+                  'pass_2pct':bool(np.max(e32)<=0.02),
+                  'pass_5pct':bool(np.max(e32)<=0.05),
+              })
+          Path('precision_metrics.json').write_text(json.dumps(rows,indent=2))
+          with open('precision_metrics.csv','w') as f:
+              f.write('column,fp64_max_rel_pct,fp32_max_rel_pct,fp32_rms_rel_pct,fp32_max_abs,pass_1pct,pass_2pct,pass_5pct\n')
+              for r in rows:
+                  f.write(','.join(str(r[k]) for k in ['column','fp64_max_rel_pct','fp32_max_rel_pct','fp32_rms_rel_pct','fp32_max_abs','pass_1pct','pass_2pct','pass_5pct'])+'\n')
+          print(json.dumps(rows,indent=2))
+          PY
+
+      - name: Freeze M11-X5 evidence
+        if: always()
+        run: |
+          mkdir -p evidence
+          cp XCOMPACT3D_UPSTREAM_SHA.txt evidence/ 2>/dev/null || true
+          cp fp64_ctest.log evidence/ 2>/dev/null || true
+          cp fp32_ctest.log evidence/ 2>/dev/null || true
+          cp precision_metrics.json evidence/ 2>/dev/null || true
+          cp precision_metrics.csv evidence/ 2>/dev/null || true
+          cp build64/RunTests/TGV-Taylor-Green-vortex/time_evol.dat evidence/fp64_time_evol.dat 2>/dev/null || true
+          cp build32/RunTests/TGV-Taylor-Green-vortex/time_evol.dat evidence/fp32_time_evol.dat 2>/dev/null || true
+          cp xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat evidence/reference_time_evol.dat 2>/dev/null || true
+          cp xcompact3d/tests/TGV-Taylor-Green-vortex/reference_input.i3d evidence/reference_input.i3d 2>/dev/null || true
+          printf 'M11-X5 compares genuine upstream Xcompact3D FP64 and FP32 builds on the official 65^3 TGV validation case. This is an external precision test, not the full 513^3 scientific replication.\n' > evidence/STATUS.txt
+          sha256sum evidence/* | sort > evidence/SHA256SUMS.txt || true
+
+      - name: Upload M11-X5 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m11-xcompact3d-fp64-fp32-evidence
+          path: evidence
