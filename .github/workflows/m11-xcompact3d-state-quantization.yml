@@ -14,22 +14,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qbits: [23, 20, 16, 12, 10, 8, 6]
+        qbits: [23, 22, 21, 20]
 
     steps:
       - uses: actions/checkout@v4
-
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git python3 python3-numpy
-
       - name: Clone frozen upstream Xcompact3D
         run: |
           git clone https://github.com/xcompact3d/Incompact3d.git xcompact3d
           git -C xcompact3d checkout abb010e615cff520f949a210278945346995966c
           git -C xcompact3d rev-parse HEAD | tee upstream_sha.txt
-
       - name: Inject explicit FP32 mantissa quantizer into time integrator
         env:
           QBITS: ${{ matrix.qbits }}
@@ -37,103 +34,72 @@ jobs:
           python3 - <<'PY'
           import os
           from pathlib import Path
-
-          q = int(os.environ['QBITS'])
-          if not (0 <= q <= 23):
-              raise SystemExit('qbits must be between 0 and 23')
-
-          p = Path('xcompact3d/src/time_integrators.f90')
-          s = p.read_text()
-
-          old = '''  implicit none\n\n  private\n  public :: int_time\n\ncontains\n'''
-          new = f'''  use iso_fortran_env, only : int32\n\n  implicit none\n\n  private\n  public :: int_time\n\n  integer, parameter :: m11_qbits = {q}\n\ncontains\n\n  pure elemental function m11_quantize_fp32(x) result(y)\n    real(mytype), intent(in) :: x\n    real(mytype) :: y\n    integer(int32) :: raw\n    integer :: b\n\n    raw = transfer(x, raw)\n    if (m11_qbits < 23) then\n       do b = 0, 22-m11_qbits\n          raw = ibclr(raw, b)\n       end do\n    end if\n    y = transfer(raw, y)\n  end function m11_quantize_fp32\n'''
-          if old not in s:
-              raise SystemExit('module insertion anchor not found')
-          s = s.replace(old, new, 1)
-
-          anchor = '''#ifdef DEBG\n    dep=maxval(abs(var1))\n'''
-          injection = '''    ! M11-X7: controlled in-solver FP32 mantissa quantization.\n    ! qbits=23 is native FP32. Lower values clear only low mantissa bits.\n    if (m11_qbits < 23) var1(:,:,:) = m11_quantize_fp32(var1(:,:,:))\n\n#ifdef DEBG\n    dep=maxval(abs(var1))\n'''
-          if anchor not in s:
-              raise SystemExit('post-update anchor not found')
-          s = s.replace(anchor, injection, 1)
+          q=int(os.environ['QBITS'])
+          p=Path('xcompact3d/src/time_integrators.f90')
+          s=p.read_text()
+          old='''  implicit none\n\n  private\n  public :: int_time\n\ncontains\n'''
+          new=f'''  use iso_fortran_env, only : int32\n\n  implicit none\n\n  private\n  public :: int_time\n\n  integer, parameter :: m11_qbits = {q}\n\ncontains\n\n  pure elemental function m11_quantize_fp32(x) result(y)\n    real(mytype), intent(in) :: x\n    real(mytype) :: y\n    integer(int32) :: raw\n    integer :: b\n    raw = transfer(x, raw)\n    if (m11_qbits < 23) then\n       do b = 0, 22-m11_qbits\n          raw = ibclr(raw, b)\n       end do\n    end if\n    y = transfer(raw, y)\n  end function m11_quantize_fp32\n'''
+          if old not in s: raise SystemExit('module insertion anchor not found')
+          s=s.replace(old,new,1)
+          anchor='''#ifdef DEBG\n    dep=maxval(abs(var1))\n'''
+          injection='''    if (m11_qbits < 23) var1(:,:,:) = m11_quantize_fp32(var1(:,:,:))\n\n#ifdef DEBG\n    dep=maxval(abs(var1))\n'''
+          if anchor not in s: raise SystemExit('post-update anchor not found')
+          s=s.replace(anchor,injection,1)
           p.write_text(s)
-
-          Path('quantizer_manifest.txt').write_text(
-              f'upstream=abb010e615cff520f949a210278945346995966c\n'
-              f'numeric_base=FP32 (DOUBLE_PRECISION=OFF)\n'
-              f'retained_fraction_bits={q}\n'
-              f'cleared_fraction_bits={23-q}\n'
-              'injection=post-update var1 in time_integrators::intt\n'
-              'method=clear low IEEE-754 binary32 fraction bits via ibclr/transfer\n'
-              'not_claimed=FP16,BF16,hardware-low-precision\n'
-          )
+          Path('quantizer_manifest.txt').write_text(f'upstream=abb010e615cff520f949a210278945346995966c\nnumeric_base=FP32\nretained_fraction_bits={q}\ncleared_fraction_bits={23-q}\ninjection=post-update var1 in time_integrators::intt\nmethod=clear low IEEE-754 binary32 fraction bits via ibclr/transfer\nnot_claimed=FP16,BF16,hardware-low-precision\n')
           PY
           git -C xcompact3d diff -- src/time_integrators.f90 | tee quantizer_patch.diff
-          test -s quantizer_patch.diff
-
       - name: Build patched FP32 solver
         run: |
           cmake -S xcompact3d -B build -DCMAKE_BUILD_TYPE=Release -DDOUBLE_PRECISION=OFF
           cmake --build build -j2
-
       - name: Run genuine TGV with in-solver quantization
         continue-on-error: true
         run: |
           set -o pipefail
           ctest --test-dir build -R TGV-Taylor-Green-vortex -V 2>&1 | tee ctest.log
-
-      - name: Quantify against frozen FP64 reference
+      - name: Quantify against frozen FP64 reference with Fortran-safe parser
         run: |
           python3 - <<'PY'
-          import json
+          import json,re
           import numpy as np
           from pathlib import Path
-
-          ref = np.loadtxt('xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat')
-          outp = Path('build/RunTests/TGV-Taylor-Green-vortex/time_evol.dat')
-          if not outp.exists():
-              Path('metrics.json').write_text(json.dumps({'status':'NO_OUTPUT'}, indent=2))
-              raise SystemExit('time_evol.dat missing: numerical run did not produce auditable output')
-          x = np.loadtxt(outp)
-          if x.shape != ref.shape:
-              raise SystemExit(f'shape mismatch output={x.shape} ref={ref.shape}')
-
+          def load_fortran(path):
+              rows=[]
+              pat=re.compile(r'^([+-]?(?:\d+(?:\.\d*)?|\.\d+))([+-]\d{2,3})$')
+              for line in Path(path).read_text().splitlines():
+                  if not line.strip(): continue
+                  vals=[]
+                  for tok in line.split():
+                      m=pat.match(tok)
+                      if m and 'e' not in tok.lower() and 'd' not in tok.lower(): tok=m.group(1)+'E'+m.group(2)
+                      vals.append(float(tok.replace('D','E').replace('d','e')))
+                  rows.append(vals)
+              return np.array(rows,float)
+          ref=load_fortran('xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat')
+          outp=Path('build/RunTests/TGV-Taylor-Green-vortex/time_evol.dat')
+          if not outp.exists(): raise SystemExit('time_evol.dat missing')
+          x=load_fortran(outp)
+          if x.shape != ref.shape: raise SystemExit(f'shape mismatch output={x.shape} ref={ref.shape}')
           rows=[]
           for j in range(ref.shape[1]):
-              d=np.abs(x[:,j]-ref[:,j])
-              rel=d/np.maximum(np.abs(ref[:,j]),1e-30)
-              rows.append({
-                  'column':j+1,
-                  'max_rel_pct':float(100*rel.max()),
-                  'rms_rel_pct':float(100*np.sqrt(np.mean(rel**2))),
-                  'max_abs':float(d.max()),
-                  'pass_0_1pct':bool(rel.max()<=0.001),
-                  'pass_1pct':bool(rel.max()<=0.01),
-                  'pass_2pct':bool(rel.max()<=0.02),
-                  'pass_5pct':bool(rel.max()<=0.05),
-              })
+              d=np.abs(x[:,j]-ref[:,j]); rel=d/np.maximum(np.abs(ref[:,j]),1e-30)
+              rows.append({'column':j+1,'max_rel_pct':float(100*rel.max()),'rms_rel_pct':float(100*np.sqrt(np.mean(rel**2))),'max_abs':float(d.max()),'pass_0_1pct':bool(rel.max()<=.001),'pass_1pct':bool(rel.max()<=.01),'pass_2pct':bool(rel.max()<=.02),'pass_5pct':bool(rel.max()<=.05)})
           payload={'qbits':${{ matrix.qbits }},'rows':rows}
-          Path('metrics.json').write_text(json.dumps(payload,indent=2))
-          print(json.dumps(payload,indent=2))
+          Path('metrics.json').write_text(json.dumps(payload,indent=2)); print(json.dumps(payload,indent=2))
           PY
-
       - name: Freeze evidence
         if: always()
         run: |
           mkdir -p evidence
-          cp upstream_sha.txt evidence/ 2>/dev/null || true
-          cp quantizer_manifest.txt evidence/ 2>/dev/null || true
-          cp quantizer_patch.diff evidence/ 2>/dev/null || true
-          cp ctest.log evidence/ 2>/dev/null || true
-          cp metrics.json evidence/ 2>/dev/null || true
+          cp upstream_sha.txt quantizer_manifest.txt quantizer_patch.diff ctest.log metrics.json evidence/ 2>/dev/null || true
           cp build/RunTests/TGV-Taylor-Green-vortex/time_evol.dat evidence/time_evol_q${{ matrix.qbits }}.dat 2>/dev/null || true
           cp xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat evidence/reference_fp64_time_evol.dat 2>/dev/null || true
-          printf 'M11-X7 qbits=${{ matrix.qbits }}. This is controlled FP32 mantissa truncation inside the time integrator; it is NOT claimed to be FP16 or BF16.\n' > evidence/STATUS.txt
+          printf 'M11-X7 refined frontier qbits=${{ matrix.qbits }}. Controlled FP32 mantissa truncation inside time integrator.\n' > evidence/STATUS.txt
           sha256sum evidence/* | sort > evidence/SHA256SUMS.txt || true
-
       - name: Upload X7 evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m11-x7-q${{ matrix.qbits }}
+          name: m11-x7-refined-q${{ matrix.qbits }}
           path: evidence
