@@ -48,20 +48,21 @@ jobs:
               if anchor not in s: raise SystemExit('entry anchor missing')
               s=s.replace(anchor,ins,1)
           elif mode=='postupdate_q22':
-              # Quantize after each explicit var1 update statement inside intt.
               reps=[
-                'var1(:,:,:)=var1(:,:,:)+gdt(itr)*dvar1(:,:,:)+adt(itr)*forcing1(:,:,:)',
-                'var1(:,:,:)=var1(:,:,:)+gdt(itr)*dvar1(:,:,:)',
-                'var1(:,:,:)=var1(:,:,:)+adt(itr)*forcing1(:,:,:)',
+                'var1(:,:,:)=gdt(itr)*dvar1(:,:,:,1)+var1(:,:,:)',
+                'var1(:,:,:)=adt(itr)*dvar1(:,:,:,1)+bdt(itr)*dvar1(:,:,:,2)+var1(:,:,:)',
+                'var1(:,:,:)=dt*dvar1(:,:,:,1)+var1(:,:,:)',
+                'var1(:,:,:)=onepfive*dt*dvar1(:,:,:,1)-half*dt*dvar1(:,:,:,2)+var1(:,:,:)',
+                'var1(:,:,:)=adt(itr)*dvar1(:,:,:,1)+bdt(itr)*dvar1(:,:,:,2)+cdt(itr)*dvar1(:,:,:,3)+var1(:,:,:)',
               ]
               touched=0
               for r in reps:
                   if r in s:
-                      s=s.replace(r,r+'\n    var1(:,:,:) = m11_q22(var1(:,:,:))')
+                      s=s.replace(r,r+'\n       var1(:,:,:) = m11_q22(var1(:,:,:))')
                       touched+=1
-              if touched==0: raise SystemExit('no post-update statements matched')
+              if touched < 4: raise SystemExit(f'only {touched} post-update statements matched')
           p.write_text(s)
-          Path('location_manifest.txt').write_text(f'mode={mode}\nupstream=abb010e615cff520f949a210278945346995966c\nbase=FP32\nq22=clear IEEE754 binary32 fraction bit 0\nentry_q22=quantize at intt entry\npostupdate_q22=quantize after matched var1 updates\noutputonly_q22=no in-solver change; output quantized only during analysis\nnative_q23=no quantization\n')
+          Path('location_manifest.txt').write_text(f'mode={mode}\nupstream=abb010e615cff520f949a210278945346995966c\nbase=FP32\nq22=clear IEEE754 binary32 fraction bit 0\nentry_q22=quantize at intt entry\npostupdate_q22=quantize immediately after explicit var1 update statements in intt\noutputonly_q22=no in-solver change; output quantized only during analysis\nnative_q23=no quantization\n')
           PY
           git -C xcompact3d diff -- src/time_integrators.f90 | tee location_patch.diff
       - name: Build FP32 solver
@@ -97,8 +98,7 @@ jobs:
           ref=loadf('xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat')
           x=loadf('build/RunTests/TGV-Taylor-Green-vortex/time_evol.dat')
           if mode=='outputonly_q22':
-              y=x.astype(np.float32).copy()
-              u=y.view(np.uint32); u &= np.uint32(0xFFFFFFFE); x=u.view(np.float32).astype(np.float64)
+              y=x.astype(np.float32).copy(); u=y.view(np.uint32); u &= np.uint32(0xFFFFFFFE); x=u.view(np.float32).astype(np.float64)
           rows=[]
           for j in range(ref.shape[1]):
               d=np.abs(x[:,j]-ref[:,j]); rel=d/np.maximum(np.abs(ref[:,j]),1e-30)
