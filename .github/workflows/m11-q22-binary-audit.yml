@@ -1,0 +1,42 @@
+name: M11 Q22 binary semantics audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/m11-q22-binary-audit.yml'
+      - 'audit/m11_q22_binary_semantics.f90'
+
+jobs:
+  binary-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Compile audit
+        run: gfortran -std=f2008 -Wall -Wextra -fcheck=all audit/m11_q22_binary_semantics.f90 -o m11_q22_binary_audit
+      - name: Execute audit
+        run: ./m11_q22_binary_audit | tee m11_q22_binary_audit.csv
+      - name: Freeze environment
+        run: |
+          gfortran --version > compiler.txt
+          uname -a > environment.txt
+          printf 'expected: xor_hex is 00000000 or 00000001 only; q22 bit0 always clear; relative error <= 2*epsilon(real32)\n' > ACCEPTANCE.txt
+      - name: Hash evidence
+        run: sha256sum m11_q22_binary_audit.csv compiler.txt environment.txt ACCEPTANCE.txt audit/m11_q22_binary_semantics.f90 | sort > SHA256SUMS.txt
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: m11-q22-binary-audit
+          path: |
+            m11_q22_binary_audit.csv
+            compiler.txt
+            environment.txt
+            ACCEPTANCE.txt
+            SHA256SUMS.txt
+            audit/m11_q22_binary_semantics.f90
