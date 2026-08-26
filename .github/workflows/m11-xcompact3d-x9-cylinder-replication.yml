@@ -7,6 +7,9 @@ on:
     paths:
       - '.github/workflows/m11-xcompact3d-x9-cylinder-replication.yml'
 
+# X9 clean retrigger after the initial Actions run ended before jobs started.
+# Scientific configuration is intentionally unchanged.
+
 jobs:
   x9-cylinder:
     runs-on: ubuntu-latest
