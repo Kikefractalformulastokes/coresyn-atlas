@@ -1,0 +1,92 @@
+name: M11 Xcompact3D precision frontier
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/m11-xcompact3d-frontier.yml'
+
+jobs:
+  frontier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        variant:
+          - fp64
+          - fp32
+          - fp32_store
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git python3 python3-numpy
+      - name: Clone frozen upstream
+        run: |
+          git clone https://github.com/xcompact3d/Incompact3d.git xcompact3d
+          git -C xcompact3d checkout abb010e615cff520f949a210278945346995966c
+          git -C xcompact3d rev-parse HEAD | tee upstream_sha.txt
+      - name: Configure numerical variant
+        shell: bash
+        run: |
+          case '${{ matrix.variant }}' in
+            fp64)
+              echo 'DP=ON' >> "$GITHUB_ENV"
+              echo 'FFLAGS=' >> "$GITHUB_ENV"
+              ;;
+            fp32)
+              echo 'DP=OFF' >> "$GITHUB_ENV"
+              echo 'FFLAGS=' >> "$GITHUB_ENV"
+              ;;
+            fp32_store)
+              echo 'DP=OFF' >> "$GITHUB_ENV"
+              echo 'FFLAGS=-ffloat-store' >> "$GITHUB_ENV"
+              ;;
+          esac
+      - name: Build variant
+        run: |
+          cmake -S xcompact3d -B build -DCMAKE_BUILD_TYPE=Release -DDOUBLE_PRECISION=$DP -DCMAKE_Fortran_FLAGS="$FFLAGS"
+          cmake --build build -j2
+      - name: Run genuine TGV
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ctest --test-dir build -R TGV-Taylor-Green-vortex -V 2>&1 | tee ctest.log
+      - name: Measure against frozen FP64 reference
+        run: |
+          python3 - <<'PY'
+          import json
+          import numpy as np
+          from pathlib import Path
+          ref=np.loadtxt('xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat')
+          p=Path('build/RunTests/TGV-Taylor-Green-vortex/time_evol.dat')
+          if not p.exists(): raise SystemExit('time_evol.dat missing')
+          x=np.loadtxt(p)
+          if x.shape != ref.shape: raise SystemExit(f'shape mismatch {x.shape} {ref.shape}')
+          out=[]
+          for j in range(ref.shape[1]):
+              d=np.abs(x[:,j]-ref[:,j])
+              rel=d/np.maximum(np.abs(ref[:,j]),1e-30)
+              out.append({'column':j+1,'max_rel_pct':float(100*rel.max()),'rms_rel_pct':float(100*np.sqrt(np.mean(rel**2))),'max_abs':float(d.max()),'pass_1pct':bool(rel.max()<=.01),'pass_2pct':bool(rel.max()<=.02),'pass_5pct':bool(rel.max()<=.05)})
+          Path('metrics.json').write_text(json.dumps(out,indent=2))
+          print(json.dumps(out,indent=2))
+          PY
+      - name: Freeze evidence
+        if: always()
+        run: |
+          mkdir -p evidence
+          cp upstream_sha.txt evidence/ || true
+          cp ctest.log evidence/ || true
+          cp metrics.json evidence/ || true
+          cp build/RunTests/TGV-Taylor-Green-vortex/time_evol.dat evidence/time_evol_${{ matrix.variant }}.dat 2>/dev/null || true
+          cp xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat evidence/ || true
+          printf '%s\n' 'Variant=${{ matrix.variant }}. fp32_store is NOT FP16/BF16; it is an explicitly labeled compiler-level FP32 storage perturbation. Scientific claims require measured output only.' > evidence/STATUS.txt
+          sha256sum evidence/* | sort > evidence/SHA256SUMS.txt || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m11-frontier-${{ matrix.variant }}
+          path: evidence
