@@ -1,0 +1,123 @@
+name: M11 Xcompact3D quantization location control
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/m11-xcompact3d-location-control.yml'
+
+jobs:
+  location-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [entry_q22, postupdate_q22, outputonly_q22, native_q23]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git python3 python3-numpy
+      - name: Clone frozen upstream Xcompact3D
+        run: |
+          git clone https://github.com/xcompact3d/Incompact3d.git xcompact3d
+          git -C xcompact3d checkout abb010e615cff520f949a210278945346995966c
+          git -C xcompact3d rev-parse HEAD | tee upstream_sha.txt
+      - name: Inject location-specific one-bit quantization control
+        env:
+          MODE: ${{ matrix.mode }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          mode=os.environ['MODE']
+          p=Path('xcompact3d/src/time_integrators.f90')
+          s=p.read_text()
+          if mode!='native_q23':
+              old='''  implicit none\n\n  private\n  public :: int_time\n\ncontains\n'''
+              new='''  use iso_fortran_env, only : int32\n\n  implicit none\n\n  private\n  public :: int_time\n\ncontains\n\n  pure elemental function m11_q22(x) result(y)\n    real(mytype), intent(in) :: x\n    real(mytype) :: y\n    integer(int32) :: raw\n    raw = transfer(x, raw)\n    raw = ibclr(raw, 0)\n    y = transfer(raw, y)\n  end function m11_q22\n'''
+              if old not in s: raise SystemExit('module anchor missing')
+              s=s.replace(old,new,1)
+          if mode=='entry_q22':
+              anchor='''#ifdef DEBG\n    dep=maxval(abs(var1))\n'''
+              ins='''    var1(:,:,:) = m11_q22(var1(:,:,:))\n\n#ifdef DEBG\n    dep=maxval(abs(var1))\n'''
+              if anchor not in s: raise SystemExit('entry anchor missing')
+              s=s.replace(anchor,ins,1)
+          elif mode=='postupdate_q22':
+              # Quantize after each explicit var1 update statement inside intt.
+              reps=[
+                'var1(:,:,:)=var1(:,:,:)+gdt(itr)*dvar1(:,:,:)+adt(itr)*forcing1(:,:,:)',
+                'var1(:,:,:)=var1(:,:,:)+gdt(itr)*dvar1(:,:,:)',
+                'var1(:,:,:)=var1(:,:,:)+adt(itr)*forcing1(:,:,:)',
+              ]
+              touched=0
+              for r in reps:
+                  if r in s:
+                      s=s.replace(r,r+'\n    var1(:,:,:) = m11_q22(var1(:,:,:))')
+                      touched+=1
+              if touched==0: raise SystemExit('no post-update statements matched')
+          p.write_text(s)
+          Path('location_manifest.txt').write_text(f'mode={mode}\nupstream=abb010e615cff520f949a210278945346995966c\nbase=FP32\nq22=clear IEEE754 binary32 fraction bit 0\nentry_q22=quantize at intt entry\npostupdate_q22=quantize after matched var1 updates\noutputonly_q22=no in-solver change; output quantized only during analysis\nnative_q23=no quantization\n')
+          PY
+          git -C xcompact3d diff -- src/time_integrators.f90 | tee location_patch.diff
+      - name: Build FP32 solver
+        run: |
+          cmake -S xcompact3d -B build -DCMAKE_BUILD_TYPE=Release -DDOUBLE_PRECISION=OFF
+          cmake --build build -j2
+      - name: Run genuine TGV
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ctest --test-dir build -R TGV-Taylor-Green-vortex -V 2>&1 | tee ctest.log
+      - name: Measure location control versus frozen FP64 reference
+        env:
+          MODE: ${{ matrix.mode }}
+        run: |
+          python3 - <<'PY'
+          import os,json,re
+          import numpy as np
+          from pathlib import Path
+          mode=os.environ['MODE']
+          pat=re.compile(r'^([+-]?(?:\d+(?:\.\d*)?|\.\d+))([+-]\d{2,3})$')
+          def loadf(path):
+              rows=[]
+              for line in Path(path).read_text().splitlines():
+                  if not line.strip(): continue
+                  vals=[]
+                  for tok in line.split():
+                      m=pat.match(tok)
+                      if m and 'e' not in tok.lower() and 'd' not in tok.lower(): tok=m.group(1)+'E'+m.group(2)
+                      vals.append(float(tok.replace('D','E').replace('d','e')))
+                  rows.append(vals)
+              return np.array(rows,float)
+          ref=loadf('xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat')
+          x=loadf('build/RunTests/TGV-Taylor-Green-vortex/time_evol.dat')
+          if mode=='outputonly_q22':
+              y=x.astype(np.float32).copy()
+              u=y.view(np.uint32); u &= np.uint32(0xFFFFFFFE); x=u.view(np.float32).astype(np.float64)
+          rows=[]
+          for j in range(ref.shape[1]):
+              d=np.abs(x[:,j]-ref[:,j]); rel=d/np.maximum(np.abs(ref[:,j]),1e-30)
+              rows.append({'column':j+1,'max_rel_pct':float(100*rel.max()),'rms_rel_pct':float(100*np.sqrt(np.mean(rel**2))),'max_abs':float(d.max()),'pass_0_1pct':bool(rel.max()<=.001),'pass_1pct':bool(rel.max()<=.01),'pass_5pct':bool(rel.max()<=.05)})
+          payload={'mode':mode,'rows':rows}
+          Path('metrics.json').write_text(json.dumps(payload,indent=2)); print(json.dumps(payload,indent=2))
+          PY
+      - name: Freeze X8 evidence
+        if: always()
+        run: |
+          mkdir -p evidence
+          cp upstream_sha.txt location_manifest.txt location_patch.diff ctest.log metrics.json evidence/ 2>/dev/null || true
+          cp build/RunTests/TGV-Taylor-Green-vortex/time_evol.dat evidence/time_evol_${{ matrix.mode }}.dat 2>/dev/null || true
+          cp xcompact3d/tests/TGV-Taylor-Green-vortex/reference_time_evol.dat evidence/reference_fp64_time_evol.dat 2>/dev/null || true
+          printf 'M11-X8 mode=${{ matrix.mode }}. One-bit location control. Claims limited to measured behavior.\n' > evidence/STATUS.txt
+          sha256sum evidence/* | sort > evidence/SHA256SUMS.txt || true
+      - name: Upload X8 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m11-x8-${{ matrix.mode }}
+          path: evidence
