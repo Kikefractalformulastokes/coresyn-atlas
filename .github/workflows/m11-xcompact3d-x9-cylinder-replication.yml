@@ -1,0 +1,91 @@
+name: M11 X9 Cylinder-wake one-bit replication
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/m11-xcompact3d-x9-cylinder-replication.yml'
+
+jobs:
+  x9-cylinder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [native_q23, entry_q22, postupdate_q22]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran openmpi-bin libopenmpi-dev make cmake git python3
+      - name: Clone frozen upstream
+        run: |
+          git clone https://github.com/xcompact3d/Incompact3d.git xcompact3d
+          git -C xcompact3d checkout abb010e615cff520f949a210278945346995966c
+          git -C xcompact3d rev-parse HEAD | tee upstream_sha.txt
+      - name: Inject X9 q22 control
+        env:
+          MODE: ${{ matrix.mode }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          mode=os.environ['MODE']; p=Path('xcompact3d/src/time_integrators.f90'); s=p.read_text()
+          if mode!='native_q23':
+              old='''  implicit none\n\n  private\n  public :: int_time\n\ncontains\n'''
+              new='''  use iso_fortran_env, only : int32\n\n  implicit none\n\n  private\n  public :: int_time\n\ncontains\n\n  pure elemental function m11_q22(x) result(y)\n    real(mytype), intent(in) :: x\n    real(mytype) :: y\n    integer(int32) :: raw\n    raw = transfer(x, raw)\n    raw = ibclr(raw, 0)\n    y = transfer(raw, y)\n  end function m11_q22\n'''
+              if old not in s: raise SystemExit('module anchor missing')
+              s=s.replace(old,new,1)
+          if mode=='entry_q22':
+              a='''#ifdef DEBG\n    dep=maxval(abs(var1))\n'''; b='''    var1(:,:,:) = m11_q22(var1(:,:,:))\n\n#ifdef DEBG\n    dep=maxval(abs(var1))\n'''
+              if a not in s: raise SystemExit('entry anchor missing')
+              s=s.replace(a,b,1)
+          elif mode=='postupdate_q22':
+              reps=['var1(:,:,:)=gdt(itr)*dvar1(:,:,:,1)+var1(:,:,:)','var1(:,:,:)=adt(itr)*dvar1(:,:,:,1)+bdt(itr)*dvar1(:,:,:,2)+var1(:,:,:)','var1(:,:,:)=dt*dvar1(:,:,:,1)+var1(:,:,:)','var1(:,:,:)=onepfive*dt*dvar1(:,:,:,1)-half*dt*dvar1(:,:,:,2)+var1(:,:,:)','var1(:,:,:)=adt(itr)*dvar1(:,:,:,1)+bdt(itr)*dvar1(:,:,:,2)+cdt(itr)*dvar1(:,:,:,3)+var1(:,:,:)']
+              touched=0
+              for r in reps:
+                  if r in s:
+                      s=s.replace(r,r+'\n       var1(:,:,:) = m11_q22(var1(:,:,:))'); touched+=1
+              if touched < 4: raise SystemExit(f'only {touched} update anchors matched')
+          p.write_text(s)
+          Path('x9_manifest.txt').write_text(f'case=Cylinder-wake\nmode={mode}\nupstream=abb010e615cff520f949a210278945346995966c\nbase=FP32\nq22=clear fraction bit 0\npurpose=independent-case falsification of TGV X8 location effect\n')
+          PY
+          git -C xcompact3d diff -- src/time_integrators.f90 | tee x9_patch.diff
+      - name: Build FP32
+        run: |
+          cmake -S xcompact3d -B build -DCMAKE_BUILD_TYPE=Release -DDOUBLE_PRECISION=OFF
+          cmake --build build -j2
+      - name: Run independent Cylinder-wake test
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ctest --test-dir build -R '^Cylinder-wake$' -V 2>&1 | tee cylinder.log
+      - name: Classify execution
+        env:
+          MODE: ${{ matrix.mode }}
+        run: |
+          python3 - <<'PY'
+          import json,os,re
+          from pathlib import Path
+          t=Path('cylinder.log').read_text(errors='replace')
+          payload={'case':'Cylinder-wake','mode':os.environ['MODE'],'finished_successfully':('finished successfully' in t.lower()),'ctest_pass':bool(re.search(r'100% tests passed',t,re.I)),'nan_or_inf':bool(re.search(r'(^|[^A-Za-z])(nan|inf)([^A-Za-z]|$)',t,re.I))}
+          Path('classification.json').write_text(json.dumps(payload,indent=2)); print(json.dumps(payload,indent=2))
+          PY
+      - name: Freeze X9 evidence
+        if: always()
+        run: |
+          mkdir -p evidence
+          cp upstream_sha.txt x9_manifest.txt x9_patch.diff cylinder.log classification.json evidence/ 2>/dev/null || true
+          find build/RunTests/Cylinder-wake -maxdepth 1 -type f -size -5M -exec cp {} evidence/ \; 2>/dev/null || true
+          printf 'M11-X9 independent Cylinder-wake replication; no TGV reference reused. mode=${{ matrix.mode }}\n' > evidence/STATUS.txt
+          sha256sum evidence/* | sort > evidence/SHA256SUMS.txt || true
+      - name: Upload X9 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m11-x9-cylinder-${{ matrix.mode }}
+          path: evidence
