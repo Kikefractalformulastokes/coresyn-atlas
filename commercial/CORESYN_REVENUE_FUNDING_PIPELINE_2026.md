@@ -13,6 +13,7 @@ Governance: Atlas truth → CMOS/CEOS execution. No claim may exceed evidence.
 4. Impact & Investment Evidence Gate
 5. Funding Readiness & Post-award Assurance
 6. Smart Cities & Urban Resilience Gate
+7. Project Intelligence & Funding Engine
 
 All doors converge on the CoreSyn Evidence Gate:
 QUESTION → CLAIM/DECISION → DATA → METHOD → ASSUMPTIONS → EVIDENCE → STRESS TEST → TRACEABILITY → GATE → HUMAN DECISION.
@@ -27,6 +28,7 @@ Gate states: PASS / CONDITIONAL / HOLD / FAIL / NOT TESTED.
 - Climate Risk / Double Materiality / Impact Design Gate: EUR 10k–40k
 - Investment Impact Due Diligence: EUR 25k–50k
 - Project Evidence & Impact Pack: EUR 25k–75k
+- End-to-End Project Intelligence engagement: EUR 25k–100k+
 - Portfolio / Multi-site Assurance: EUR 75k–200k+
 - Smart City / Urban Resilience Programme: EUR 100k–300k+
 - Institutional / Enterprise Evidence Infrastructure: EUR 200k–500k+
@@ -80,6 +82,13 @@ These are pricing hypotheses to test. They are not validated sales, market rates
 - Smart Infrastructure / IoT / AI Assurance
 - Urban Funding Readiness
 
+### Project Intelligence & Funding
+CoreSyn may use all evidence-governed domain brains to take a bounded sustainability project from opportunity detection to funding readiness and post-award assurance.
+Workflow:
+OPPORTUNITY SIGNAL → COMPANY / ASSET PAIN → PROJECT CONCEPT → SUSTAINABILITY DESIGN → CLIMATE/CARBON/CIRCULARITY/BIODIVERSITY/SMART-CITY ANALYSIS → ODS/IRIS+ IMPACT MODEL → BASELINE/KPI → EVIDENCE GRAPH → PARTNER / CONSORTIUM SEARCH → FUNDING MATCH → ELIGIBILITY CHECK → APPLICATION EVIDENCE PACK → HUMAN SUBMISSION / DECISION → POST-AWARD MONITORING → IMPACT ASSURANCE → EXPANSION.
+
+CoreSyn does not guarantee funding and does not act as legal, audit or certification authority unless separately and lawfully qualified. Its role is project intelligence, evidence architecture, technical assurance and decision support.
+
 ## 4. Knowledge / evidence source families
 
 Primary/reference layers already identified:
@@ -131,6 +140,8 @@ Track all 17 autonomous communities plus Ceuta/Melilla for sustainability, energ
 Schema:
 REGION | ORGANISM | PROGRAMME | STATUS | DEADLINE | BUDGET | MAX_AID | BENEFICIARY | SECTOR | PROJECT_TYPE | TRL | COFINANCING | EVIDENCE_REQUIRED | CORESYN_FIT | LEAD_SIGNAL.
 
+Current signal: IDAE 2026 industrial-efficiency programme is coordinated through autonomous-community calls; this can generate both CoreSyn funding intelligence and qualified industrial leads. Verify each regional call before outreach.
+
 ## 7. Commercial pipeline stages
 
 SIGNAL → QUALIFIED ACCOUNT → VERIFIED CONTACT → OUTREACH SENT → HUMAN RESPONSE → MEETING BOOKED → DISCOVERY COMPLETE → PAID DIAGNOSTIC → EVIDENCE GATE → EXPANSION → ENTERPRISE / PORTFOLIO.
@@ -165,13 +176,14 @@ No Sustainability meeting is to be claimed until a human explicitly accepts or a
 Each hourly cycle should:
 1. Read Gmail first for human replies, bounces, opt-outs and meeting signals.
 2. Update pipeline; deduplicate and mark dead addresses.
-3. Prioritise all fronts, not just Sustainability: AI/model assurance, aerospace, materials, energy/infrastructure, RiesgoDeObra, climate/carbon, circularity, impact/investment, funding, smart cities, research/validation partnerships.
+3. Prioritise all fronts, not just Sustainability: AI/model assurance, aerospace, materials, energy/infrastructure, RiesgoDeObra, climate/carbon, circularity, impact/investment, funding, smart cities, research/validation partnerships and Project Intelligence.
 4. Select up to 3 highest-quality new outbound actions with verified recipient, verified fit and a specific trigger. Prefer quality over volume.
 5. Send only individualised one-to-one outreach that is authorised by the founder and does not contain unsupported claims.
 6. Do not mass-mail, guess addresses, spam, or resend to bounced/no-contact recipients.
 7. Where a live funding call exists, derive commercial leads from likely eligible organisations and offer a bounded Funding Readiness review rather than generic ESG consulting.
-8. Log what was sent, source, recipient, rationale and next follow-up date.
-9. Update Atlas/CMOS handoff with material changes only.
+8. For Project Intelligence opportunities, seek both a buyer and plausible consortium/technical/funding paths; keep prospect, partner and funder roles separate.
+9. Log what was sent, source, recipient, rationale and next follow-up date.
+10. Update Atlas/CMOS handoff with material changes only.
 
 ## 10. Funnel logic
 
@@ -205,9 +217,12 @@ Primary monthly KPIs:
 - expansion rate
 - average initial ticket
 - enterprise pipeline value (hypothesis vs signed)
+- project opportunities detected
+- project concepts structured
 - funding programmes screened
 - funding applications/readiness packs prepared
 - partner/consortium introductions
+- post-award assurance opportunities
 - bounce rate and opt-out rate
 
-The KPI is not email volume. The KPI is qualified meetings, paid evidence work and expansion.
+The KPI is not email volume. The KPI is qualified meetings, paid evidence work, funded-project readiness and expansion.
