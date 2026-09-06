@@ -3,6 +3,28 @@
 Status: BINDING SALES PROCESS
 Principle: NO GENERIC CALLS. NO GENERIC VISITS. Every account gets its own researched conversation.
 
+## Brand positioning to weave into commercial messages
+
+When relevant, introduce CoreSyn as an independent Spanish startup/lab built by a new generation of professionals working at the intersection of sustainability, evidence and technology.
+
+Preferred formulation:
+
+"CoreSyn es una startup española independiente, nacida para convertir sostenibilidad, datos y tecnología en decisiones que puedan demostrarse. Estamos construyendo una nueva generación de servicios de evidence assurance para empresas y administraciones que necesitan saber no solo qué dicen sus datos, sino si pueden defenderlos."
+
+Shorter formulation for calls:
+
+"Somos una startup española independiente, con un equipo joven y especializado, y estamos construyendo una forma más rigurosa y accesible de revisar evidencia de sostenibilidad."
+
+Use this as identity/context, not as the main pitch. The account-specific trigger and commercial pain always come first.
+
+Avoid:
+- claiming youth of every team member if not true;
+- saying CoreSyn has worked in sustainability 'for years' unless that statement is supportable for the people or entity making it;
+- emotional appeals that replace the business case;
+- positioning as inexperienced merely because the company is young.
+
+The intended effect is: independent + Spanish + founder-led/new-generation + technically serious + accessible alternative to large consultancies.
+
 ## Sequence per account
 
 1. ACCOUNT RESEARCH DOSSIER
