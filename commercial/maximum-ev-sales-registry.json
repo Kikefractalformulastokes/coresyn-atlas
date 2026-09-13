@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0.0-proposal",
+  "status": "PROPOSED_FOR_REVIEW",
+  "snapshot_date": "2026-09-13",
+  "atlas": {
+    "repository": "Kikefractalformulastokes/coresyn-atlas",
+    "base_commit": "136fb3adda604bff2ffd97908df0cfcfe35945fa",
+    "entrypoint": "index.html",
+    "current_runtime": "STATIC_MAP_AND_GITHUB_ACTIONS",
+    "autonomous_revenue_loop": "NOT_FOUND"
+  },
+  "governance": {
+    "work_protocol": [
+      "OPEN",
+      "CLAIMED",
+      "DONE",
+      "ACCEPTED",
+      "REJECTED"
+    ],
+    "invariants": [
+      "DONE_NE_ACCEPTED",
+      "EXECUTOR_CANNOT_SELF_ACCEPT",
+      "NO_SOURCE_NO_CLAIM",
+      "PROOF_BEFORE_TRUST",
+      "APPEND_CONTRARY_EVIDENCE",
+      "IDEMPOTENT_EXTERNAL_ACTIONS"
+    ]
+  },
+  "commercial": {
+    "orchestrator": {
+      "id": "revenue_orchestrator",
+      "kind": "ATTENTION_ALLOCATOR_NOT_SELLER",
+      "status": "PROPOSED"
+    },
+    "agents": [
+      {
+        "id": "cash_sniper",
+        "status": "PROPOSED",
+        "objective": "MAXIMUM_EXPECTED_VALUE_AND_CASH",
+        "specialty": "QUICK_CASH"
+      },
+      {
+        "id": "high_ticket_hunter",
+        "status": "PROPOSED",
+        "objective": "MAXIMUM_EXPECTED_VALUE_AND_CASH",
+        "specialty": "HIGH_TICKET"
+      },
+      {
+        "id": "distribution_partner_agent",
+        "status": "PROPOSED",
+        "objective": "MAXIMUM_EXPECTED_VALUE_AND_CASH",
+        "specialty": "PARTNERS_AND_DISTRIBUTION"
+      },
+      {
+        "id": "account_domination_agent",
+        "status": "PROPOSED",
+        "objective": "MAXIMUM_EXPECTED_VALUE_AND_CASH",
+        "specialty": "LTV_AND_EXPANSION"
+      },
+      {
+        "id": "opportunistic_ev_agent",
+        "status": "PROPOSED",
+        "objective": "MAXIMUM_EXPECTED_VALUE_AND_CASH",
+        "specialty": "ASYMMETRIC_BETS"
+      }
+    ],
+    "shared_states": [
+      "SIGNAL",
+      "QUALIFIED",
+      "CONTACT_READY",
+      "CONTACTED",
+      "ENGAGED",
+      "MEETING",
+      "DIAGNOSTIC",
+      "PROPOSAL",
+      "NEGOTIATION",
+      "PROCUREMENT",
+      "WON",
+      "EXPANSION",
+      "LOST",
+      "PARKED"
+    ],
+    "coordinated_loop": [
+      "INGEST",
+      "DEDUPLICATE",
+      "QUALIFY",
+      "PRICE_EV",
+      "RANK",
+      "ASSIGN",
+      "ACT",
+      "OBSERVE",
+      "UPDATE_ATLAS",
+      "FOLLOW_UP",
+      "RERANK"
+    ],
+    "portfolio_buckets": [
+      "QUICK_CASH",
+      "MID_TICKET",
+      "HIGH_TICKET",
+      "RECURRING",
+      "PARTNERS",
+      "ASYMMETRIC_BETS"
+    ],
+    "global_revenue_book": {
+      "status": "SCHEMA_PROPOSED",
+      "canonical_storage": "NOT_FOUND",
+      "private_operational_source": "LIVE_CRM",
+      "public_data": "EXCLUDED"
+    }
+  },
+  "integrations": {
+    "crm": {
+      "provider": "HUBSPOT",
+      "status": "CONNECTED_PRIVATE"
+    },
+    "document_store": {
+      "provider": "GOOGLE_DRIVE",
+      "status": "CONNECTED_PRIVATE"
+    },
+    "email": {
+      "provider": "GMAIL",
+      "status": "CONNECTED_PRIVATE"
+    },
+    "scheduling": {
+      "provider": "CODEX_HEARTBEAT",
+      "status": "EXPERIMENTAL_EXTERNAL"
+    },
+    "stripe": {
+      "status": "NOT_FOUND"
+    },
+    "canonical_transactional_database": {
+      "status": "NOT_FOUND"
+    }
+  },
+  "security": {
+    "contains_secrets": false,
+    "contains_personal_data": false,
+    "contains_private_crm_ids": false
+  },
+  "rollback": {
+    "branch": "codex/canonical-revenue-loop-bootstrap-20260913",
+    "base_commit": "136fb3adda604bff2ffd97908df0cfcfe35945fa"
+  }
+}
