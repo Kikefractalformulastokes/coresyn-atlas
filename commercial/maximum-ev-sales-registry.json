@@ -6,7 +6,8 @@
     "repository": "Kikefractalformulastokes/coresyn-atlas",
     "base_commit": "136fb3adda604bff2ffd97908df0cfcfe35945fa",
     "entrypoint": "index.html",
-    "current_runtime": "STATIC_MAP_AND_GITHUB_ACTIONS",
+    "presentation_runtime": "STATIC_HTML_CSS_JS_JSON",
+    "repository_automation": "GITHUB_ACTIONS_SCIENTIFIC_VERIFICATION",
     "autonomous_revenue_loop": "NOT_FOUND"
   },
   "governance": {
@@ -104,38 +105,24 @@
     "global_revenue_book": {
       "status": "SCHEMA_PROPOSED",
       "canonical_storage": "NOT_FOUND",
-      "private_operational_source": "LIVE_CRM",
+      "private_operational_source": "WITHHELD",
       "public_data": "EXCLUDED"
     }
   },
-  "integrations": {
-    "crm": {
-      "provider": "HUBSPOT",
-      "status": "CONNECTED_PRIVATE"
-    },
-    "document_store": {
-      "provider": "GOOGLE_DRIVE",
-      "status": "CONNECTED_PRIVATE"
-    },
-    "email": {
-      "provider": "GMAIL",
-      "status": "CONNECTED_PRIVATE"
-    },
-    "scheduling": {
-      "provider": "CODEX_HEARTBEAT",
-      "status": "EXPERIMENTAL_EXTERNAL"
-    },
-    "stripe": {
-      "status": "NOT_FOUND"
-    },
-    "canonical_transactional_database": {
-      "status": "NOT_FOUND"
-    }
+  "boundaries": {
+    "private_crm": "FOUND_DETAILS_WITHHELD",
+    "private_document_store": "FOUND_DETAILS_WITHHELD",
+    "private_email": "FOUND_DETAILS_WITHHELD",
+    "external_experimental_scheduler": "FOUND_DETAILS_WITHHELD",
+    "public_payment_layer": "NOT_FOUND",
+    "canonical_transactional_database": "NOT_FOUND"
   },
   "security": {
     "contains_secrets": false,
     "contains_personal_data": false,
-    "contains_private_crm_ids": false
+    "contains_private_crm_ids": false,
+    "contains_private_repository_names": false,
+    "contains_private_operational_metadata": false
   },
   "rollback": {
     "branch": "codex/canonical-revenue-loop-bootstrap-20260913",
