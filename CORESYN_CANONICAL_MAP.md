@@ -4,7 +4,7 @@ Status: PROPOSED_FOR_REVIEW
 Snapshot date: 2026-09-13  
 Base commit: `136fb3adda604bff2ffd97908df0cfcfe35945fa`
 
-This public map records verified system boundaries without credentials, personal data, CRM identifiers or local filesystem paths. It does not promote this branch, a chat or a prototype to canonical truth.
+This public map records non-sensitive, verified system boundaries. It does not expose private repositories, operational providers, account identifiers, personal data or local paths. It does not promote this branch, a chat or a prototype to canonical truth.
 
 ## Authority
 
@@ -14,8 +14,9 @@ Inspectable source artifacts and immutable revisions outrank accepted registry p
 
 - Purpose: evidence-led scientific/model assurance business and research system.
 - Root: distributed; no single canonical monorepo verified.
-- Main repositories: `coresyn-atlas`, `coresyn-mission-engine`, `coresyn-agent-factory`, `coresyn-lab`, `Nsmds`, `coresyn-alpha-gate`, `coresyn-core-aero-001-verifier`, `coresyn-public-commitments`.
-- Production classification: must be verified per repository/deployment; repository existence is not production evidence.
+- Public repositories verified: `coresyn-atlas`, `Nsmds`, `coresyn-alpha-gate`, `coresyn-core-aero-001-verifier`, `coresyn-public-commitments`.
+- Additional private systems exist but their names and topology are intentionally excluded.
+- Production classification must be verified per deployment; repository existence is not production evidence.
 - Main commercial domain: `coresyn.io`; hosting path NOT_FOUND.
 
 ## Atlas
@@ -23,39 +24,31 @@ Inspectable source artifacts and immutable revisions outrank accepted registry p
 - Repository: `Kikefractalformulastokes/coresyn-atlas`.
 - Branch: `main` is the published baseline.
 - Entry point: `index.html`.
-- Runtime: static HTML/JSON plus M11 GitHub Actions.
-- State: `atlas-state.json` and `evidence-registry.json` are snapshots, not a verified transactional database.
-- Deployment: GitHub Pages enabled; exact public URL/domain NOT_VERIFIED.
+- Presentation runtime: static HTML/CSS/JavaScript and JSON.
+- Repository automation: GitHub Actions for M11 scientific verification; this is not the Atlas web runtime.
+- State: `atlas-state.json` and `evidence-registry.json` are projected snapshots, not a verified transactional database.
+- Deployment: GitHub Pages enabled; exact custom domain NOT_VERIFIED.
 - Governance loop: `OPEN → CLAIMED → DONE → independent review → ACCEPTED/REJECTED → state projection`.
 - Autonomous continuous revenue runner on `main`: NOT_FOUND.
 - Status: `ACTIVE_AS_MAP`; `AUTONOMOUS_RUNTIME_NOT_FOUND`.
 - Atlas 1.1 registry/pipeline work exists in unmerged PRs #6 → #7 → #8 and is not current `main`.
 
-## CEO OS
+## Private operating systems
 
-- Purpose: private executive and revenue operating interface.
-- Repository/deployment/domain: NOT_FOUND.
-- A local Node.js/SQLite implementation exists as an EXPERIMENTAL ADAPTER.
-- It is not Atlas and must not be presented as canonical Atlas state.
+Private executive, mission, CRM, communication, document and scheduling systems exist outside this public repository. Their names, providers, identifiers, paths and topology are intentionally excluded. Their existence does not make them Atlas.
 
-## Mission Engine
+Verified boundary statements:
 
-- Repository: `Kikefractalformulastokes/coresyn-mission-engine`.
-- Default branch observed: `master`.
-- Runtime, database, deployment and current authority: NOT_VERIFIED.
-
-## CRM and commercial state
-
-- Operational CRM: connected HubSpot portal.
-- A local SQLite mirror exists only as an experimental adapter.
-- Precedence: live CRM record > local mirror > report/chat summary.
-- Sensitive account, contact and deal identifiers are intentionally excluded from this public file.
+- A private CRM is the live source for commercial records.
+- A private experimental executive adapter exists and is not canonical Atlas.
+- An external experimental scheduler exists and is not an accepted in-repository Atlas runtime.
+- A unified canonical transactional database was NOT_FOUND.
 
 ## Revenue loop
 
 - Canonical governance protocol: Atlas review lifecycle above.
 - Accepted in-repository continuous sales loop: NOT_FOUND.
-- An external Codex heartbeat and local experimental runner currently exercise the workflow; neither is canonical merely because it runs.
+- Experimental orchestration outside this public repository must not be labelled canonical merely because it runs.
 - Promotion requires inspectable artifacts and independent acceptance.
 
 ## Five sales agents
@@ -68,7 +61,7 @@ Proposed exact IDs:
 4. `account_domination_agent`
 5. `opportunistic_ev_agent`
 
-All are sellers sharing one Global Revenue Book. They are executors, not scientific authorities or independent reviewers. They may hand off ownership when this improves expected value.
+All are sellers sharing one Global Revenue Book. They are executors, not scientific authorities or independent reviewers. They may transfer ownership when this increases expected value.
 
 ## Shared commercial states
 
@@ -76,37 +69,36 @@ All are sellers sharing one Global Revenue Book. They are executors, not scienti
 
 These commercial states do not replace the Atlas review lifecycle.
 
-## Data and systems
+## Publicly safe system status
 
-- Atlas: public projected JSON/artifact state.
-- CRM: live commercial system of record.
-- Google Drive: documentary/evidence source store.
-- Source code: repository branch/commit.
-- Automation: scheduler/runtime record.
-- Unified canonical transactional database: NOT_FOUND.
-- Stripe layer: NOT_FOUND.
-- Vercel production projects: NOT_FOUND from available inventory.
-- Cloudflare account inventory: NOT_VERIFIED.
-
-## Websites
-
-- CoreSyn commercial site/domain: `coresyn.io`; deployment path NOT_FOUND.
-- CoreSyn engineering story and AlphaGate sites exist on a managed Sites platform.
-- GitHub Pages is enabled for Atlas.
-- `atlas.coresyn.io` is NOT_VERIFIED and must not be assumed.
+- Atlas public projection: FOUND.
+- Public scientific/research repositories: FOUND.
+- Private commercial source of record: FOUND, details withheld.
+- Accepted Atlas transactional store: NOT_FOUND.
+- Accepted in-repository revenue runner: NOT_FOUND.
+- Public payment layer: NOT_FOUND.
+- Public custom Atlas domain: NOT_VERIFIED.
 
 ## Research/product families
 
-Verified families include NS-MDS, CoreSyn Lab, AlphaGate, aerospace verification, Atlas/Pyramid Lab and Carbon/Sustainability commercial materials. A concept, repository, prototype, pilot, externally validated result and production service are different states and must never be conflated.
+Verified public families include NS-MDS, AlphaGate, aerospace verification and Atlas/Pyramid Lab. Additional private product/research families are withheld. A concept, repository, prototype, pilot, externally validated result and production service are different states and must never be conflated.
 
 ## System precedence
 
 - Scientific/evidence claims: accepted Atlas artifact plus cited evidence.
-- Commercial accounts/deals: live CRM.
+- Commercial accounts/deals: private live CRM.
 - Documents: source artifact/revision.
 - Code: repository commit.
 - Automation: runtime record.
 - Chats: non-authoritative context.
+
+## Security classification
+
+- Secrets: none.
+- Personal data: none.
+- Private CRM identifiers: none.
+- Private repository names: none.
+- Private operational providers/topology: none.
 
 ## Rollback
 
